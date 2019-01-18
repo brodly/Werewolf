@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Timer = props => {
+const Timer = (props) => {
   const { time } = props;
 
   return (
@@ -10,7 +10,7 @@ const Timer = props => {
         {time}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Timer;
