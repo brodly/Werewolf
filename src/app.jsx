@@ -3,11 +3,11 @@ import Timer from './components/timer';
 
 export default class App extends React.Component {
   constructor() {
-    super()
+    super();
 
     this.state = {
       time: 5,
-    }
+    };
   }
 
   render() {
@@ -15,9 +15,9 @@ export default class App extends React.Component {
 
     return (
       <div>
-        <h2>Werewolf App</h2>
+        <h3>Werewolf App</h3>
         <Timer time={time} />
       </div>
-    )
+    );
   }
 }
