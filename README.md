@@ -1,0 +1,1 @@
+#Web Manager for The Werewolf Game
