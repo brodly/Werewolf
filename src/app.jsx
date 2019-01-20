@@ -1,22 +1,26 @@
 import React from 'react';
 import Timer from './components/timer';
+import Admin from './components/admin';
 
 export default class App extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      time: 5,
+      timer: 5,
+      nightTime: false,
+
     };
   }
 
   render() {
-    const { time } = this.state;
+    const { timer, nightTime } = this.state;
 
     return (
       <div>
         <h3>Werewolf App</h3>
-        <Timer time={time} />
+        <Timer timer={timer} />
+        <Admin />
       </div>
     );
   }

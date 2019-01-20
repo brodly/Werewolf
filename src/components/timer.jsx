@@ -4,9 +4,9 @@ const Timer = (props) => {
   const { time } = props;
 
   return (
-    <div>
+    <div id="timer-container">
       <h2>Timer</h2>
-      <div>
+      <div id="timer-countdown">
         {time}
       </div>
     </div>
