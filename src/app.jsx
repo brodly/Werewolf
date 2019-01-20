@@ -17,7 +17,7 @@ export default class App extends React.Component {
     const { timer, nightTime } = this.state;
 
     return (
-      <div>
+      <div id="app-container">
         <h3>Werewolf App</h3>
         <Timer timer={timer} />
         <Admin />

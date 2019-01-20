@@ -10,7 +10,7 @@ export default class Admin extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id="admin-container">
         <h2>Admin Page</h2>
       </div>
     );
