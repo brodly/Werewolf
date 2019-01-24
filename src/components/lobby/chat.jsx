@@ -7,24 +7,18 @@ export default class Chat extends React.Component {
 
     this.state = {
       message: '',
-      messages: [
-        {
-          id: 0,
-          username: 'testname',
-          message: 'testmessage',
-        },
-      ],
+      messages: [],
     };
 
+    this.socket = io();
     this.handleUpdateMessage = this.handleUpdateMessage.bind(this);
     this.handleOnSubmit = this.handleOnSubmit.bind(this);
   }
 
   componentDidMount() {
     const { messages } = this.state;
-    const socket = io();
 
-    socket.on('chat message', (data) => {
+    this.socket.on('chat message', (data) => {
       const updatedMessages = messages;
       updatedMessages.push(data);
       this.setState({ messages: updatedMessages });
@@ -34,10 +28,9 @@ export default class Chat extends React.Component {
   handleOnSubmit(e) {
     const { message } = this.state;
     const { username } = this.props;
-    const socket = io();
 
     e.preventDefault();
-    socket.emit('chat message', { username, message });
+    this.socket.emit('chat message', { username, message });
     this.setState({ message: '' });
   }
 

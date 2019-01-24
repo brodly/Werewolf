@@ -9,15 +9,19 @@ export default class Lobby extends React.Component {
     super(props);
 
     this.state = {
-      players: [props.username],
+      players: [],
     };
+
+    this.socket = io();
   }
 
   componentDidMount() {
-    const { players } = this.state;
-    const socket = io();
+    const { username } = this.props;
 
-    socket.emit('new user', players[0]);
+    this.socket.emit('new user', username);
+    this.socket.on('update players', (players) => {
+      this.setState({ players });
+    });
   }
 
   render() {
