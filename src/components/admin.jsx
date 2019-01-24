@@ -11,7 +11,9 @@ export default class Admin extends React.Component {
   render() {
     return (
       <div id="admin-container">
-        <h2>Admin Page</h2>
+        <h2>Admin Controls</h2>
+        Kick User
+        Start Game
       </div>
     );
   }
