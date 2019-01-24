@@ -1,0 +1,97 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font: 13px Helvetica, Arial;
+}
+
+#header {
+  border: 1px solid black;
+  height: 75px;
+  padding: 20px;
+  margin: 10px;
+}
+
+#login-container {
+  border: 1px solid black;
+  width: 300px;
+  padding: 10px;
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+#login-header {
+  padding-bottom: 20px;
+}
+
+#lobby-container {
+  border: 1px solid black;
+  padding: 10px;
+  margin: 10px;
+}
+
+form {
+  padding: 3px;
+  bottom: 0;
+  width: 100%;
+}
+
+form input {
+  border: 1px solid grey;
+  padding: 10px;
+  width: 90%;
+  margin-right: .5%;
+  margin-bottom: 10px;
+}
+
+form button {
+  width: 9%;
+  background: rgb(130, 224, 255);
+  border: 1px solid grey;
+  padding: 10px;
+}
+
+#chat-container form {
+  position: absolute;
+  bottom: 0;
+}
+
+#messages {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#messages li {
+  padding: 5px 10px;
+}
+
+#messages li:nth-child(odd) {
+  background: #eee;
+}
+
+#admin-container {
+  border: 1px solid black;
+  padding: 10px;
+  margin: 10px;
+}
+
+#player-id-container {
+  border: 1px solid black;
+  width: 100px;
+  height: 150px;
+  padding: 5px;
+  margin: 10px;
+}
+
+#chat-container {
+  padding: 20px;
+  margin: 10px;
+  border: 1px solid black;
+  height: 300px;
+}
