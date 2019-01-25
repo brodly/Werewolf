@@ -4,44 +4,38 @@ const express = require('express');
 const http = require('http');
 const socketsIO = require('socket.io');
 const routes = require('./routes/index');
+const { Player } = require('./models/player');
+const { Chat, Message } = require('./models/chat');
 
+// server variables
 const app = express();
 const server = http.createServer(app);
 const io = socketsIO(server);
-
 const port = process.env.PORT || 3000;
 
-// Current player list
-const chat = {
-  count: 1,
-  list: [],
+// create a new instance of a chatroom
+const chat = new Chat();
 
-  addPlayer: (user) => {
-    chat.list.push(user);
-  },
-
-  removePlayer: (user) => {
-    const playerList = chat.list;
-    const index = playerList.indexOf(user);
-    if (index > -1) {
-      playerList.splice(index, 1);
-    }
-  },
-};
-
+// Middleware
 app.use(routes.static);
 
+// Open socket connection
 io.on('connection', (client) => {
   client.on('new user', (username) => {
-    chat.addPlayer(username);
-    io.emit('update players', chat.list);
+    // create a new player
+    const player = new Player(username, 'moderator');
+
+    // add the player username to chat list
+    chat.addPlayer(player.username);
+
+    // broadcast new chatlist
+    io.emit('update players', chat.userlist);
     console.log(username, 'connected');
   });
 
-  client.on('chat message', (message) => {
-    message.id = chat.count;
-    chat.count += 1;
-    console.log(message);
+  client.on('chat message', (data) => {
+    // create new message
+    const message = new Message(chat.getId, data.username, data.message);
     io.emit('chat message', message);
   });
 
