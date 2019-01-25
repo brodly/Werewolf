@@ -15,5 +15,13 @@
   "extends": [
     "airbnb",
     "plugin:jest/recommended"
-  ]
+  ],
+  "rules": {
+    "no-underscore-dangle": [
+      "error",
+      {
+        "allowAfterThis": true
+      }
+    ]
+  }
 }
