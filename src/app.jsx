@@ -17,6 +17,16 @@ export default class App extends React.Component {
 
     this.handleUpdateUsername = this.handleUpdateUsername.bind(this);
     this.handleOnLoginSubmit = this.handleOnLoginSubmit.bind(this);
+    this.toggleLogin = this.toggleLogin.bind(this);
+  }
+
+  toggleLogin() {
+    const { login } = this.state;
+    let newLogin = login;
+
+    if (login) newLogin = false;
+    else newLogin = true;
+    this.setState({ login: newLogin });
   }
 
   handleOnLoginSubmit() {
@@ -52,6 +62,7 @@ export default class App extends React.Component {
             />
           ) : (
             <Lobby
+              toggleLogin={this.toggleLogin}
               username={username}
               type={type}
             />
