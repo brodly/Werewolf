@@ -1,6 +1,10 @@
 import React from 'react';
 
-const Login = ({ username, handleUpdateUsername, handleOnLoginSubmit }) => {
+const Login = ({
+  username,
+  handleUpdateUsername,
+  handleOnLoginSubmit
+}) => {
   const updateUsername = (e) => {
     handleUpdateUsername(e.target.value);
   };
