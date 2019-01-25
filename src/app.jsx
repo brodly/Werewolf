@@ -10,7 +10,7 @@ export default class App extends React.Component {
     this.state = {
       login: false,
       username: '',
-      type: '',
+      role: '',
       timer: 5,
       nightTime: false,
     };
@@ -30,7 +30,7 @@ export default class App extends React.Component {
   }
 
   handleOnLoginSubmit() {
-    this.setState({ type: 'moderator', login: true });
+    this.setState({ role: 'moderator', login: true });
   }
 
   handleUpdateUsername(username) {
@@ -39,7 +39,7 @@ export default class App extends React.Component {
 
   render() {
     const {
-      type,
+      role,
       username,
       timer,
       nightTime,
@@ -55,7 +55,7 @@ export default class App extends React.Component {
         {
           !login ? (
             <Login
-              type={type}
+              role={role}
               username={username}
               handleOnLoginSubmit={this.handleOnLoginSubmit}
               handleUpdateUsername={this.handleUpdateUsername}
@@ -64,7 +64,7 @@ export default class App extends React.Component {
             <Lobby
               toggleLogin={this.toggleLogin}
               username={username}
-              type={type}
+              role={role}
             />
           )
         }
