@@ -22,22 +22,14 @@ app.use(routes.static);
 // Open socket connection
 io.on('connection', (client) => {
   client.on('new user', (username) => {
-    // create a new player
     const player = new Player(username, 'moderator');
-
-    // add the player username to chat list
     chat.addPlayer(player.username);
-
-    // broadcast new chatlist
     io.emit('update players', chat.userlist);
     console.log(username, 'connected');
   });
 
   client.on('chat message', (data) => {
-    // create new message
     const message = new Message(chat.getId, data.username, data.message);
-
-    // broadcast message to clients
     io.emit('chat message', message);
   });
 
