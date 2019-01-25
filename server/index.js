@@ -36,10 +36,12 @@ io.on('connection', (client) => {
   client.on('chat message', (data) => {
     // create new message
     const message = new Message(chat.getId, data.username, data.message);
+
+    // broadcast message to clients
     io.emit('chat message', message);
   });
 
-  client.on('disconnect', (data) => {
+  client.on('disconnecting', (data) => {
     // TODO: remove user from playerList
     // Have to find how to pass username into the data object
     console.log(data, 'user disconnected');
