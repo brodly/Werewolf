@@ -4,7 +4,7 @@ const express = require('express');
 const http = require('http');
 const socketsIO = require('socket.io');
 const routes = require('./routes/index');
-const { Player } = require('./models/player');
+const { Player, Moderator } = require('./models/player');
 const { Chat, Message } = require('./models/chat');
 
 // server variables
@@ -41,7 +41,13 @@ io.on('connection', (client) => {
     io.emit('chat message', message);
   });
 
-  client.on('disconnecting', (data) => {
+  client.on('player leave', (username) => {
+    chat.removePlayer(username);
+    io.emit('update players', chat.userlist);
+    console.log(username, 'has left');
+  });
+
+  client.on('disconnect', (data) => {
     // TODO: remove user from playerList
     // Have to find how to pass username into the data object
     console.log(data, 'user disconnected');
