@@ -46,7 +46,7 @@ export default class Lobby extends React.Component {
   }
 
   render() {
-    const { username, type } = this.props;
+    const { username, role } = this.props;
     const { players } = this.state;
 
     return (
@@ -60,11 +60,11 @@ export default class Lobby extends React.Component {
           !
           <br />
         </div>
-        <div id="lobby-player-type">
+        <div id="lobby-player-role">
           <h4>
-            You are a {type}
+            You are a {role}
           </h4>
-          {type === 'moderator'
+          {role === 'moderator'
             ? (
               <ModeratorControls
                 handleRemoveUserOnClick={this.handleRemoveUserOnClick}
