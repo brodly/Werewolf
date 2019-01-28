@@ -29,10 +29,49 @@ body {
   padding-bottom: 20px;
 }
 
+/* LOBBY STYLING */
 #lobby-container {
   border: 1px solid black;
   padding: 10px;
   margin: 10px;
+}
+
+#lobby-header {
+  border: 1px solid black;
+  padding: 10px;
+  margin: 5px;
+}
+
+#lobby-display-username {
+  border: 1px solid black;
+  padding: 10px;
+  margin: 5px;
+  font-size: 1.5em;
+}
+
+#lobby-player-role {
+  border: 1px solid black;
+  padding: 10px;
+  margin: 5px;
+}
+
+#player-list-container {
+  border: 1px solid black;
+  padding: 10px;
+  margin: 5px;
+}
+
+#player-list-row {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+#player-id-container {
+  border: 1px solid black;
+  width: 100px;
+  height: 150px;
+  padding: 5px;
+  margin: 5px;
 }
 
 form {
@@ -81,18 +120,7 @@ form button {
   margin: 10px;
 }
 
-#player-id-container {
-  border: 1px solid black;
-  width: 100px;
-  height: 150px;
-  padding: 5px;
-  margin: 5px;
-}
 
-#player-list-container {
-  display: flex;
-  flex-flow: row nowrap;
-}
 
 #chat-container {
   padding: 20px;
