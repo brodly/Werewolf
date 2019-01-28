@@ -6,6 +6,7 @@ const socketsIO = require('socket.io');
 const routes = require('./routes/index');
 const { Player, Moderator } = require('./models/player');
 const { Chat, Message } = require('./models/chat');
+const { Game } = require('./models/game');
 
 // server variables
 const app = express();
@@ -15,6 +16,7 @@ const port = process.env.PORT || 3000;
 
 // create a new instance of a chatroom
 const chat = new Chat();
+const game = new Game();
 
 // Middleware
 app.use(routes.static);
@@ -22,9 +24,12 @@ app.use(routes.static);
 // Open socket connection
 io.on('connection', (client) => {
   client.on('new user', (username) => {
-    const player = new Player(username, 'moderator');
-    chat.addPlayer(player.username);
-    io.emit('update players', chat.userlist);
+    console.log(game);
+    game.addPlayer(username);
+    // const player = new Player(username, 'moderator');
+    // chat.addPlayer(username);
+    console.log(game);
+    io.emit('update players', game.players);
     console.log(username, 'connected');
   });
 
