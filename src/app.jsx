@@ -16,7 +16,8 @@ export default class App extends React.Component {
     };
 
     this.handleUpdateUsername = this.handleUpdateUsername.bind(this);
-    this.handleOnLoginSubmit = this.handleOnLoginSubmit.bind(this);
+    this.handleCreateGameOnSubmit = this.handleCreateGameOnSubmit.bind(this);
+    this.handleJoinGameOnSubmit = this.handleJoinGameOnSubmit.bind(this);
     this.toggleLogin = this.toggleLogin.bind(this);
   }
 
@@ -29,12 +30,16 @@ export default class App extends React.Component {
     this.setState({ login: newLogin });
   }
 
-  handleOnLoginSubmit() {
+  handleCreateGameOnSubmit() {
     this.setState({ role: 'moderator', login: true });
   }
 
   handleUpdateUsername(username) {
     this.setState({ username });
+  }
+
+  handleJoinGameOnSubmit() {
+    this.setState({ role: 'player', login: true });
   }
 
   render() {
@@ -57,8 +62,9 @@ export default class App extends React.Component {
             <Login
               role={role}
               username={username}
-              handleOnLoginSubmit={this.handleOnLoginSubmit}
+              handleCreateGameOnSubmit={this.handleCreateGameOnSubmit}
               handleUpdateUsername={this.handleUpdateUsername}
+              handleJoinGameOnSubmit={this.handleJoinGameOnSubmit}
             />
           ) : (
             <Lobby
@@ -70,7 +76,6 @@ export default class App extends React.Component {
         }
 
         {/* <Timer timer={timer} /> */}
-        {/* <Admin /> */}
       </div>
     );
   }
