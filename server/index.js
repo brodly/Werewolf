@@ -29,39 +29,20 @@ const chat = new Chat();
 // Middleware
 app.use(routes.static);
 
+app.get('/status', routes.router);
+
 // Open socket connection
 io.on('connection', (client) => {
+  // USER FUNCTIONALITY
   client.on('new user', (username) => {
-    controller.newUser(username);
-
-    // add player to game object
-    // game.addPlayer(username);
-
-    // // add player to player list
-    // chat.addPlayer(username);
-
-    // show player in chat
-
-    // broadcast new player to clients
-
-    // controller.addPlayer(username);
-
-
-    // console.log(game);
-    // io.emit('update players', game.players);
+    controller.player.createPlayer(username);
+    io.emit('update players', controller.player.getPlayerlist);
     console.log(username, 'connected');
   });
 
-  client.on('chat message', (data) => {
-    const message = new Message(chat.getId, data.username, data.message);
-    controller.player.updateRole(data.username, data.message);
-    console.log(db.playerlist);
-    io.emit('chat message', message);
-  });
-
   client.on('player leave', (username) => {
-    chat.removePlayer(username);
-    io.emit('update players', chat.userlist);
+    controller.player.deletePlayer(username);
+    io.emit('update players', controller.player.getPlayerlist);
     console.log(username, 'has left');
   });
 
@@ -69,6 +50,16 @@ io.on('connection', (client) => {
     // TODO: remove user from playerList
     // Have to find how to pass username into the data object
     console.log(data, 'user disconnected');
+  });
+
+
+
+
+  // CHAT FUNCTIONALITY
+  client.on('chat message', (data) => {
+    const message = new Message(chat.getId, data.username, data.message);
+    controller.player.updateRole(data.username, data.message);
+    io.emit('chat message', message);
   });
 });
 
