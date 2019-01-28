@@ -3,13 +3,11 @@ const { Chat, Message } = require('../models/chat');
 const { Moderator, Player } = require('../models/user');
 const db = require('../../database/index');
 
-module.exports.newUser = (username) => {
-  const player = module.exports.player.createPlayer(username);
-  db.playerlist.push(player);
-};
-
 module.exports.player = {
-  createPlayer: username => new Player(username),
+  createPlayer: (username) => {
+    const player = new Player(username);
+    db.playerlist.push(player);
+  },
   updateRole: (username, role) => {
     db.playerlist.forEach((player) => {
       if (player.username === username) {
@@ -18,26 +16,42 @@ module.exports.player = {
     });
   },
   deletePlayer: (username) => {
-    console.log('deleted', username);
+    let index = null;
+
+    db.playerlist.forEach((player, i) => {
+      if (player.username === username) {
+        index = i;
+      }
+    });
+
+    if (index !== null) {
+      db.playerlist.splice(index, 1);
+    } else {
+      console.log(`Error: ${username} does not exist in playerlist`);
+    }
   },
   getPlayer: (username) => {
-    console.log('getting' + username + 'object');
+    let result;
+
+    db.playerlist.forEach((player) => {
+      if (player.username === username) {
+        result = player;
+      }
+    });
+
+    return result;
+  },
+  get getPlayerlist() {
+    const result = [];
+    db.playerlist.forEach((player) => {
+      result.push(player.username);
+    });
+    return result;
   },
 };
 
 module.exports.game = {
-  addPlayer: (username) => {
-    console.log('added' + username + 'to game object');
-    game.addPlayer(username);
-    chat.addPlayer(username);
-  },
-
-  removePlayer: (username) => {
-    console.log('removed' + username + 'from game object')
-    game.removePlayer(username);
-  },
-
-  updatePlayer: (playerList) => { io.emit('update players'), game.playerList },
+  updatePlayer: () => { },
 
   playerLeave: () => { },
 
@@ -45,7 +59,7 @@ module.exports.game = {
 };
 
 module.exports.chat = {
-  chatMessage: (data) => {
+  createMessage: (data) => {
     const message = new Message(chat.getId, data.username, data.message);
     io.emit('chat message', message);
     chat.message(username, message);
