@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PlayerId = ({ name, image }) => (
+const PlayerId = ({ name, image, ready }) => (
   <div id="player-id-container">
     <div id="player-id-name">
       {name}
@@ -9,6 +9,9 @@ const PlayerId = ({ name, image }) => (
     <div id="player-id-image">
       TODO: Display Player Image Here
       {image}
+    </div>
+    <div id="player-ready-status">
+      {ready}
     </div>
   </div>
 );
