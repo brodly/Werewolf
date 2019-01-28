@@ -3,8 +3,16 @@ const axios = require('axios');
 const express = require('express');
 const http = require('http');
 const socketsIO = require('socket.io');
+
+// routes and controller
 const routes = require('./routes/index');
-const { Player, Moderator } = require('./models/player');
+const controller = require('./controllers/index');
+
+// game database
+const db = require('../database/index');
+
+// game models
+const { Player, Moderator } = require('./models/user');
 const { Chat, Message } = require('./models/chat');
 const { Game } = require('./models/game');
 
@@ -16,7 +24,7 @@ const port = process.env.PORT || 3000;
 
 // create a new instance of a chatroom
 const chat = new Chat();
-const game = new Game();
+// const game = new Game();
 
 // Middleware
 app.use(routes.static);
@@ -24,17 +32,30 @@ app.use(routes.static);
 // Open socket connection
 io.on('connection', (client) => {
   client.on('new user', (username) => {
-    console.log(game);
-    game.addPlayer(username);
-    // const player = new Player(username, 'moderator');
+    controller.newUser(username);
+
+    // add player to game object
+    // game.addPlayer(username);
+
+    // // add player to player list
     // chat.addPlayer(username);
-    console.log(game);
-    io.emit('update players', game.players);
+
+    // show player in chat
+
+    // broadcast new player to clients
+
+    // controller.addPlayer(username);
+
+
+    // console.log(game);
+    // io.emit('update players', game.players);
     console.log(username, 'connected');
   });
 
   client.on('chat message', (data) => {
     const message = new Message(chat.getId, data.username, data.message);
+    controller.player.updateRole(data.username, data.message);
+    console.log(db.playerlist);
     io.emit('chat message', message);
   });
 
@@ -52,3 +73,6 @@ io.on('connection', (client) => {
 });
 
 server.listen(port, () => { console.log('Listening on port:', port); });
+
+// module.exports.game = game;
+module.exports.chat = chat;
