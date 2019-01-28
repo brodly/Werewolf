@@ -3,7 +3,8 @@ import React from 'react';
 const Login = ({
   username,
   handleUpdateUsername,
-  handleOnLoginSubmit
+  handleCreateGameOnSubmit,
+  handleJoinGameOnSubmit,
 }) => {
   const updateUsername = (e) => {
     handleUpdateUsername(e.target.value);
@@ -11,7 +12,8 @@ const Login = ({
 
   const onSubmit = (e) => {
     e.preventDefault();
-    handleOnLoginSubmit(e);
+    console.log(e.target)
+    handleCreateGameOnSubmit(e);
   };
 
   return (
@@ -25,7 +27,8 @@ const Login = ({
           <input type="text" value={username} onChange={updateUsername} />
         </label>
         <p />
-        <input type="submit" value="Submit" />
+        <input type="submit" value="Join Game" />
+        <input type="submit" value="Create Game" />
       </form>
     </div>
   );
