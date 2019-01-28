@@ -17,6 +17,7 @@ export default class Lobby extends React.Component {
     this.handleRemoveUserOnClick = this.handleRemoveUserOnClick.bind(this);
     this.handleStartGameOnClick = this.handleStartGameOnClick.bind(this);
     this.handleUserLeaveOnClick = this.handleUserLeaveOnClick.bind(this);
+    this.handleUserReadyOnClick = this.handleUserReadyOnClick.bind(this);
   }
 
   componentDidMount() {
@@ -28,9 +29,15 @@ export default class Lobby extends React.Component {
     });
   }
 
-  handleUserLeaveOnClick(e) {
-    const { username, toggleLogin } = this.props;
+  handleUserReadyOnClick(e) {
     e.preventDefault();
+    this.socket.emit('player ready', username);
+    //TODO: Pass reeady status to props to playerId
+  }
+
+  handleUserLeaveOnClick(e) {
+    e.preventDefault();
+    const { username, toggleLogin } = this.props;
 
     this.socket.emit('player leave', username);
     this.socket.disconnect();
@@ -75,13 +82,18 @@ export default class Lobby extends React.Component {
             : (
               <UserControls
                 handleUserLeaveOnClick={this.handleUserLeaveOnClick}
+                handleUserReadyOnClick={this.handleUserReadyOnClick}
               />
             )
           }
         </div>
         <div id="player-list-container">
+          <div id="player-list-header">
           Player List
-          {players.map(player => <PlayerId name={player} image={null} />)}
+          </div>
+          <div id="player-list-row">
+            {players.map(player => <PlayerId name={player} image={null} />)}
+          </div>
         </div>
         <Chat username={username} />
       </div>
