@@ -1,6 +1,6 @@
 /* eslint-disable prefer-promise-reject-errors */
 const { Game } = require('../models/game');
-const { Chat, Message } = require('../models/chat');
+const { Chat, Message, Announcement } = require('../models/chat');
 const { Moderator, Player } = require('../models/users');
 const db = require('../../database/index');
 
@@ -90,10 +90,12 @@ module.exports.game = {
 };
 
 module.exports.chat = {
-  createMessage: (data) => {
-    const message = new Message(chat.getId, data.username, data.message);
-    io.emit('chat message', message);
-    chat.message(username, message);
+  createMessage: (username, msg) => {
+    const message = new Message(db.chat.getId, username, msg);
+    return new Promise((resolve, reject) => {
+      if (!message) reject('Message could not be created');
+      resolve(message);
+    });
   },
 };
 
