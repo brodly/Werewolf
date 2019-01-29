@@ -1,26 +1,12 @@
 class Chat {
   constructor() {
-    this.currentId = 1;
-    this.userlist = [];
+    this.messageId = 1;
   }
 
   get getId() {
-    const id = this.currentId;
-    this.currentId += 1;
+    const id = this.messageId;
+    this.messageId += 1;
     return id;
-  }
-
-  addPlayer(username) {
-    this.userlist.push(username);
-  }
-
-  removePlayer(username) {
-    const newUserlist = this.userlist;
-    const index = newUserlist.indexOf(username);
-
-    if (index > -1) {
-      newUserlist.splice(index, 1);
-    }
   }
 }
 
