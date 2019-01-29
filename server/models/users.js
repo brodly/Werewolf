@@ -8,8 +8,8 @@ class User {
 }
 
 class Moderator extends User {
-  constructor() {
-    super();
+  constructor(username) {
+    super(username);
     this.role = 'moderator';
   }
 }
@@ -31,6 +31,5 @@ class Player extends User {
   }
 }
 
-module.exports.User = User;
 module.exports.Moderator = Moderator;
 module.exports.Player = Player;
