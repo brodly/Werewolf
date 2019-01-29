@@ -1,5 +1,5 @@
 module.exports = {
   playerlist: [],
-  game: {},
-  chat: {},
+  game: null,
+  chat: null,
 };
