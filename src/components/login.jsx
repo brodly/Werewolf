@@ -1,4 +1,5 @@
 import React from 'react';
+import io from 'socket.io-client';
 
 const Login = ({
   username,
@@ -6,13 +7,16 @@ const Login = ({
   handleCreateGameOnSubmit,
   handleJoinGameOnSubmit,
 }) => {
+  const socket = io();
+
   const updateUsername = (e) => {
     handleUpdateUsername(e.target.value);
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target)
+    socket.emit('new game', username);
+    console.log(e.target);
     handleCreateGameOnSubmit(e);
   };
 
