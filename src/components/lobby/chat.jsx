@@ -44,7 +44,20 @@ export default class Chat extends React.Component {
     return (
       <div id="chat-container">
         <ul id="messages">
-          {messages.map(m => <div key={m.id}>{m.username}:{m.message}</div>)}
+          {messages.map((m) => {
+            if (m.username === null) {
+              return (
+                <div key={m.id}>
+                  {m.message}
+                </div>
+              );
+            }
+            return (
+              <div key={m.id}>
+                {m.username}:{m.message}
+              </div>
+            );
+          })}
         </ul>
         <form onSubmit={this.handleOnSubmit}>
           <input id="m" autoComplete="off" value={message} onChange={this.handleUpdateMessage} />
