@@ -2,7 +2,7 @@
 const axios = require('axios');
 const express = require('express');
 const http = require('http');
-const socketsIO = require('socket.io');
+const socketIO = require('socket.io');
 
 // routes and controller
 const routes = require('./routes/index');
@@ -13,13 +13,13 @@ const db = require('../database/index');
 
 // game models
 const { Player, Moderator } = require('./models/users');
-const { Chat, Message } = require('./models/chat');
+const { Message } = require('./models/chat');
 const { Game } = require('./models/game');
 
 // server variables
 const app = express();
 const server = http.createServer(app);
-const io = socketsIO(server);
+const io = socketIO(server);
 const port = process.env.PORT || 3000;
 
 // Middleware
@@ -40,14 +40,17 @@ io.on('connection', (client) => {
   client.on('new user', (username) => {
     controller.player.createPlayer(username)
       .then(() => { io.emit('update players', controller.player.getPlayerlist); })
+      .then(() => controller.chat.createMessage(null, `${username} has joined!`))
+      .then((message) => { io.emit('chat message', message); })
       .catch(err => console.log(err));
-    console.log(username, 'connected');
   });
 
   client.on('player leave', (username) => {
     controller.player.deletePlayer(username)
-      .then(() => { io.emit('update players', controller.player.getPlayerlist); });
-    console.log(username, 'has left');
+      .then(() => { io.emit('update players', controller.player.getPlayerlist); })
+      .then(() => controller.chat.createMessage(null, `${username} has left!`))
+      .then((message) => { io.emit('chat message', message); })
+      .catch(err => console.log(err));
   });
 
   client.on('disconnect', (data) => {
@@ -56,13 +59,14 @@ io.on('connection', (client) => {
     console.log(data, 'user disconnected');
   });
 
-
-
-
   // CHAT FUNCTIONALITY
+  // client.on('chat announce', (message) => {
+  //   io.emit('chat message', { id: 999, username: 'bot', message });
+  // });
+
   client.on('chat message', (data) => {
-    const message = new Message(chat.getId, data.username, data.message);
-    controller.player.updateRole(data.username, data.message);
+    const message = new Message(db.chat.getId, data.username, data.message);
+    // controller.player.updateRole(data.username, data.message);
     io.emit('chat message', message);
   });
 });
