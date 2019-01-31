@@ -6,7 +6,7 @@ const socketIO = require('socket.io');
 
 // routes and controller
 const routes = require('./routes/index');
-const controller = require('./controllers/models');
+const controller = require('./controllers/model');
 
 // game database
 const db = require('../database/index');
