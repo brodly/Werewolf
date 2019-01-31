@@ -1,6 +1,6 @@
 # TODO
 ## Braindump
-[ ] Socket.io
+[x] Socket.io
 [ ] Switch between day and night
 [ ] Save players as hash so no one is able to read state and know who is who
   [ ] Dead or alive
@@ -13,7 +13,7 @@
     [x] Submit Button
   [x] Lobby
     [x] Chatbox
-    [ ] List of players: Ready/Not Ready indicator
+    [x] List of players
     [ ] Ready button
   [ ] Moderator Start Button
 
@@ -22,8 +22,8 @@
   [ ] Custom Roles (Moderator can choose amount of Wolves, Seers, Doctors)
 
 [ ] Database to store each user
-  [ ] User model
-  [ ] Player type model (villager, wolf, seer, etc.)
+  [x] User model
+  [x] Player type model (villager, wolf, seer, etc.)
   [ ] Database schema
 
 [ ] API
@@ -45,3 +45,16 @@
 2) Start Game Button
 3) Load up lobby
 
+## Moderator
+1) Enter Name
+2) Click Create Game
+3) Load up Lobby
+  [ ] Display Moderator Controls
+  [ ] Controls:
+    [ ] Kick Player
+    [ ] Make Moderator
+    [ ] Leave Game
+    [ ] Start Game
+4) Click Start Game
+5) Load up Gameboard
+  [ ]
