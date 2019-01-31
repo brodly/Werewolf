@@ -11,7 +11,7 @@ export default class App extends React.Component {
       login: false,
       username: '',
       role: '',
-      timer: 5,
+      gameTimer: 5,
       nightTime: false,
     };
 
@@ -46,7 +46,7 @@ export default class App extends React.Component {
     const {
       role,
       username,
-      timer,
+      gameTimer,
       nightTime,
       login,
     } = this.state;
@@ -75,7 +75,7 @@ export default class App extends React.Component {
           )
         }
 
-        {/* <Timer timer={timer} /> */}
+        {/* <gameTimer gameTimer={gameTimer} /> */}
       </div>
     );
   }
