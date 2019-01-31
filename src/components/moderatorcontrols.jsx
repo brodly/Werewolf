@@ -9,12 +9,18 @@ export default class ModeratorControls extends React.Component {
   }
 
   render() {
-    const { handleUserLeaveOnClick } = this.props;
+    const {
+      handleUserLeaveOnClick,
+      handleMakeModeratorOnClick,
+      handleStartGameOnClick
+    } = this.props;
+
     return (
       <div id="moderator-container">
         <h2>Moderator Controls</h2>
         Kick User
-        Start Game
+        <button type="submit" onClick={handleStartGameOnClick}>Start Game</button>
+        <button type="submit" onClick={handleMakeModeratorOnClick}>Make Moderator</button>
         <button type="submit" onClick={handleUserLeaveOnClick}>Leave Game</button>
       </div>
     );
