@@ -11,6 +11,7 @@ export default class Lobby extends React.Component {
 
     this.state = {
       players: [],
+      playerSelected: null,
     };
 
     this.socket = io();
@@ -18,8 +19,16 @@ export default class Lobby extends React.Component {
     this.handleStartGameOnClick = this.handleStartGameOnClick.bind(this);
     this.handleUserLeaveOnClick = this.handleUserLeaveOnClick.bind(this);
     this.handleUserReadyOnClick = this.handleUserReadyOnClick.bind(this);
+    this.handleMakeModeratorOnClick = this.handleMakeModeratorOnClick.bind(this);
+    this.handlePlayerSelectOnClick = this.handlePlayerSelectOnClick.bind(this);
   }
 
+  /*
+    On lobby creation for a new player:
+    - Emit a 'new user' event with a username string to the socket.io server
+    - Listener event for 'update' player which get an updated
+      array of player objects
+  */
   componentDidMount() {
     const { username } = this.props;
 
@@ -29,12 +38,22 @@ export default class Lobby extends React.Component {
     });
   }
 
+  /*
+    Handles the click action when a user clicks ready
+    - Emits a 'player ready' event with username string
+  */
   handleUserReadyOnClick(e) {
     e.preventDefault();
     this.socket.emit('player ready', username);
     //TODO: Pass reeady status to props to playerId
   }
 
+  /*
+    Handles on click event for when a player leave game
+    - Emits 'player leave' event with username string
+    - Disconnects socket connection
+    - Toggles client login status to false, bringing user back to login page
+  */
   handleUserLeaveOnClick(e) {
     e.preventDefault();
     const { username, toggleLogin } = this.props;
@@ -44,12 +63,34 @@ export default class Lobby extends React.Component {
     toggleLogin();
   }
 
+  /*
+    Handles on click event when moderator removes a user
+    - Emit 'remove player' event with playerSelect string
+  */
   handleRemoveUserOnClick() {
     console.log('User Removed');
   }
 
+  /*
+    Handles on click event when moderator starts the game
+    - Emit 'start game' event
+  */
   handleStartGameOnClick() {
-    console.log('Game Started');
+    this.socket.emit('start game');
+  }
+
+  /*
+    Handles on click event when moderator gives up moderator to another player
+    - Emit 'update moderator' event with playerSelected string
+      indicated the player to switch controls to
+  */
+  handleMakeModeratorOnClick() {
+    const { playerSelected } = this.state;
+    this.socket.emit('update moderator', playerSelected);
+  }
+
+  handlePlayerSelectOnClick(playerSelected) {
+    this.setState({ playerSelected });
   }
 
   render() {
@@ -77,6 +118,7 @@ export default class Lobby extends React.Component {
                 handleRemoveUserOnClick={this.handleRemoveUserOnClick}
                 handleStartGameOnClick={this.handleStartGameOnClick}
                 handleUserLeaveOnClick={this.handleUserLeaveOnClick}
+                handleMakeModeratorOnClick={this.handleMakeModeratorOnClick}
               />
             )
             : (
@@ -92,7 +134,13 @@ export default class Lobby extends React.Component {
           Player List
           </div>
           <div id="player-list-row">
-            {players.map(player => <PlayerId name={player} image={null} />)}
+            {players.map(player => (
+              <PlayerId
+                name={player}
+                image={null}
+                handlePlayerSelectOnClick={this.handlePlayerSelectOnClick}
+              />
+            ))}
           </div>
         </div>
         <Chat username={username} />
