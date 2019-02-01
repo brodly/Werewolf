@@ -54,7 +54,10 @@ export default class Chat extends React.Component {
             }
             return (
               <div key={m.id}>
-                {m.username}:{m.message}
+                {m.username}
+                :
+                {'\u00A0'}
+                {m.message}
               </div>
             );
           })}
