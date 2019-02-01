@@ -2,19 +2,12 @@
 const axios = require('axios');
 const express = require('express');
 const http = require('http');
+const path = require('path');
 const socketIO = require('socket.io');
 
 // routes and controller
-const routes = require('./routes/index');
-const controller = require('./controllers/model');
-
-// game database
-const db = require('../database/index');
-
-// game models
-const { Player, Moderator } = require('./models/users');
-const { Message } = require('./models/chat');
-const { Game } = require('./models/game');
+const router = require('./routes/index');
+const controller = require('./controllers');
 
 // server variables
 const app = express();
@@ -23,18 +16,18 @@ const io = socketIO(server);
 const port = process.env.PORT || 3000;
 
 // Middleware
-app.use(routes.static);
+app.use(express.static(path.join(__dirname, '../dist')));
 
 // Routes
-app.get('/status', routes.router);
+app.get('/status', router);
 
 // Open socket connection
 io.on('connection', (client) => {
   client.on('new game', async (username) => {
     try {
-      await controller.createGame();
-      await controller.createChat();
-      await controller.createModerator(username);
+      await controller.Game.create();
+      await controller.Chat.create();
+      await controller.Player.createModerator(username);
     } catch (err) {
       console.error(err);
     }
@@ -44,7 +37,7 @@ io.on('connection', (client) => {
     try {
       await controller.Player.createPlayer(username);
       await io.emit('update players', controller.Player.getPlayerlist);
-      const message = await controller.Chat.createMessage(null, `${username} has joined!`);
+      const message = await controller.Chat.newMessage(null, `${username} has joined!`);
       await io.emit('chat message', message);
     } catch (err) {
       console.error(err);
@@ -55,7 +48,7 @@ io.on('connection', (client) => {
     try {
       await controller.Player.deletePlayer(username);
       await io.emit('update players', controller.Player.getPlayerlist);
-      const message = await controller.Chat.createMessage(null, `${username} has left!`);
+      const message = await controller.Chat.newMessage(null, `${username} has left!`);
       await io.emit('chat message', message);
     } catch (err) {
       console.error(err);
@@ -64,8 +57,8 @@ io.on('connection', (client) => {
 
   client.on('update moderator', async (username) => {
     try {
-      await controller.updateModerator(username);
-      const message = await controller.Chat.createMessage(null, `${username} is now the moderator`);
+      await controller.Player.updateModerator(username);
+      const message = await controller.Chat.newMessage(null, `${username} is now the moderator`);
       await io.emit('chat message', message);
     } catch (err) {
       console.error(err);
@@ -78,10 +71,13 @@ io.on('connection', (client) => {
     console.log(data, 'user disconnected');
   });
 
-  client.on('chat message', (data) => {
-    const message = new Message(db.chat.getId, data.username, data.message);
-    // controller.Player.updateRole(data.username, data.message);
-    io.emit('chat message', message);
+  client.on('chat message', async (data) => {
+    try {
+      const message = await controller.Chat.newMessage(data.username, data.message);
+      await io.emit('chat message', message);
+    } catch (err) {
+      console.error(err);
+    }
   });
 });
 
