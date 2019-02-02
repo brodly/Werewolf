@@ -50,10 +50,14 @@ io.on('connection', (client) => {
     }
   });
 
-  client.on('player ready', (username) => {
-    // update game object with player ready status as true
-    // emit 'update player ready' with an object showing player name and ready status
-    console.log(`${username} is ready`);
+  client.on('player ready', async (username) => {
+    try {
+      controller.Player.ready(username);
+      const message = await controller.Chat.newMessage(null, `${username} is ready`);
+      await io.emit('chat message', message);
+    } catch (err) {
+      console.error(err);
+    }
   });
 
   client.on('player leave', async (username) => {
@@ -77,8 +81,14 @@ io.on('connection', (client) => {
     }
   });
 
-  client.on('start game', () => {
-    controller.Game.startGame();
+  client.on('start game', async () => {
+    try {
+      const status = await controller.Game.startGame();
+      const message = await controller.Chat.newMessage(null, status);
+      await io.emit('chat message', message);
+    } catch (err) {
+      console.error(err);
+    }
   });
 
   client.on('disconnect', (data) => {
