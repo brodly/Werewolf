@@ -7,7 +7,8 @@ module.exports = {
     const moderator = new Moderator(username);
     return new Promise((resolve, reject) => {
       if (!moderator) reject('Moderator could not be created');
-      resolve(db.game.moderator = moderator);
+      db.game.moderator = moderator;
+      resolve(`${username} is now the moderator`);
     });
   },
   updateModerator(username) {
@@ -15,9 +16,9 @@ module.exports = {
     return new Promise((resolve, reject) => {
       if (!moderator) reject('Moderator could not be updated');
       else {
-        db.game.players.push(db.game.moderator);
+        db.game.players[username] = db.game.moderator;
         db.game.moderator = moderator;
-        resolve(username, 'is now the moderator');
+        resolve(`${username} is now the moderator`);
       }
     });
   },
@@ -25,49 +26,12 @@ module.exports = {
     const player = new Player(username);
     return new Promise((resolve, reject) => {
       if (!player) reject('Player could not be created');
-      resolve(db.playerlist.push(player));
+      db.game.players[username] = player;
+      resolve(`${username} was created`);
     });
   },
-  updateRole: (username, role) => {
-    db.playerlist.forEach((player) => {
-      if (player.username === username) {
-        player.role = role;
-      }
-    });
-  },
-  deletePlayer: (username) => {
-    return new Promise((resolve, reject) => {
-      let index = null;
-
-      db.playerlist.forEach((player, i) => {
-        if (player.username === username) {
-          index = i;
-        }
-      });
-
-      if (index !== null) {
-        resolve(db.playerlist.splice(index, 1));
-      } else {
-        reject(`Error: ${username} does not exist in playerlist`);
-      }
-    });
-  },
-  getPlayer: (username) => {
-    let result;
-
-    db.playerlist.forEach((player) => {
-      if (player.username === username) {
-        result = player;
-      }
-    });
-
-    return result;
-  },
-  get playerlist() {
-    const result = [];
-    db.playerlist.forEach((player) => {
-      result.push(player.username);
-    });
-    return result;
-  },
+  updateRole: (username, role) => { db.game.players[username].role = role; },
+  deletePlayer: username => delete db.game.players[username],
+  getPlayer: username => db.game.players[username],
+  get playerlist() { return Object.keys(db.game.players); },
 };
