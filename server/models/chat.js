@@ -1,6 +1,7 @@
 class Chat {
   constructor() {
     this.messageId = 1;
+    this.readylist = {};
   }
 
   get getId() {
