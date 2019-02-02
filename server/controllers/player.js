@@ -27,6 +27,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       if (!player) reject('Player could not be created');
       db.game.players[username] = player;
+      db.chat.readylist[username] = false;
       resolve(`${username} was created`);
     });
   },
@@ -34,4 +35,5 @@ module.exports = {
   deletePlayer: username => delete db.game.players[username],
   getPlayer: username => db.game.players[username],
   get playerlist() { return Object.keys(db.game.players); },
+  ready: (username) => { db.chat.readylist[username] = true; },
 };
