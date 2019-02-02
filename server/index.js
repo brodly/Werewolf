@@ -23,31 +23,43 @@ app.get('/status', router);
 
 // Open socket connection
 io.on('connection', (client) => {
-  client.on('new game', async (username) => {
-    try {
-      await controller.Game.create();
-      await controller.Chat.create();
-      await controller.Player.createModerator(username);
-    } catch (err) {
-      console.error(err);
-    }
+  client.on('new game', (username) => {
+    controller.Game.create();
+    controller.Chat.create();
+    controller.Player.createModerator(username);
   });
+
+  // async (username) => {
+  //   try {
+  //     await controller.Game.create();
+  //     await controller.Chat.create();
+  //     await controller.Player.createModerator(username);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // }
 
   client.on('new user', async (username) => {
     try {
       await controller.Player.createPlayer(username);
-      await io.emit('update players', controller.Player.getPlayerlist);
       const message = await controller.Chat.newMessage(null, `${username} has joined!`);
+      await io.emit('update player list', controller.Player.playerlist);
       await io.emit('chat message', message);
     } catch (err) {
       console.error(err);
     }
   });
 
+  client.on('player ready', (username) => {
+    // update game object with player ready status as true
+    // emit 'update player ready' with an object showing player name and ready status
+    console.log(username + 'is ready');
+  });
+
   client.on('player leave', async (username) => {
     try {
       await controller.Player.deletePlayer(username);
-      await io.emit('update players', controller.Player.getPlayerlist);
+      await io.emit('update player list', controller.Player.playerlist);
       const message = await controller.Chat.newMessage(null, `${username} has left!`);
       await io.emit('chat message', message);
     } catch (err) {
@@ -63,6 +75,10 @@ io.on('connection', (client) => {
     } catch (err) {
       console.error(err);
     }
+  });
+
+  client.on('start game', () => {
+    controller.Game.startGame();
   });
 
   client.on('disconnect', (data) => {
