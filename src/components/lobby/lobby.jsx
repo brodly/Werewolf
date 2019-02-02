@@ -1,8 +1,8 @@
 import React from 'react';
 import io from 'socket.io-client';
 import PlayerId from './playerId';
-import ModeratorControls from '../moderatorcontrols';
-import UserControls from '../usercontrols';
+import ModeratorControls from './moderatorcontrols';
+import UserControls from './usercontrols';
 import Chat from './chat';
 
 export default class Lobby extends React.Component {
@@ -31,10 +31,20 @@ export default class Lobby extends React.Component {
   */
   componentDidMount() {
     const { username } = this.props;
+    const { players } = this.state;
 
     this.socket.emit('new user', username);
-    this.socket.on('update players', (players) => {
+    this.socket.on('update player list', (players) => {
       this.setState({ players });
+    });
+    this.socket.on('update player ready', (playerStatus) => {
+      console.log(players);
+      // players.forEach(player => {
+      //   if (playerStatus.username === player.username) {
+      //     player.ready
+      //   }
+      // })
+      // this.setState( { })
     });
   }
 
@@ -44,6 +54,7 @@ export default class Lobby extends React.Component {
   */
   handleUserReadyOnClick(e) {
     e.preventDefault();
+    const { username } = this.props;
     this.socket.emit('player ready', username);
     //TODO: Pass reeady status to props to playerId
   }
@@ -77,6 +88,7 @@ export default class Lobby extends React.Component {
   */
   handleStartGameOnClick() {
     this.socket.emit('start game');
+    console.log('Start Button was clicked');
   }
 
   /*
