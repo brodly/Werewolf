@@ -12,10 +12,9 @@ export default class App extends React.Component {
       username: '',
       role: '',
       gameTimer: 5,
-      nightTime: false,
     };
 
-    this.handleUpdateUsername = this.handleUpdateUsername.bind(this);
+    this.handleUsernameInput = this.handleUsernameInput.bind(this);
     this.handleCreateGameOnClick = this.handleCreateGameOnClick.bind(this);
     this.handleJoinGameOnClick = this.handleJoinGameOnClick.bind(this);
     this.toggleLogin = this.toggleLogin.bind(this);
@@ -23,23 +22,23 @@ export default class App extends React.Component {
 
   toggleLogin() {
     const { login } = this.state;
-    let newLogin = login;
+    let status = login;
 
-    if (login) newLogin = false;
-    else newLogin = true;
-    this.setState({ login: newLogin });
+    if (login) status = false;
+    else status = true;
+    this.setState({ login: status });
+  }
+
+  handleUsernameInput(username) {
+    this.setState({ username });
   }
 
   handleCreateGameOnClick() {
     this.setState({ role: 'moderator', login: true });
   }
 
-  handleUpdateUsername(username) {
-    this.setState({ username });
-  }
-
   handleJoinGameOnClick() {
-    this.setState({ role: 'player', login: true });
+    this.setState({ role: null, login: true });
   }
 
   render() {
@@ -47,7 +46,6 @@ export default class App extends React.Component {
       role,
       username,
       gameTimer,
-      nightTime,
       login,
     } = this.state;
 
@@ -63,7 +61,7 @@ export default class App extends React.Component {
               role={role}
               username={username}
               handleCreateGameOnClick={this.handleCreateGameOnClick}
-              handleUpdateUsername={this.handleUpdateUsername}
+              handleUsernameInput={this.handleUsernameInput}
               handleJoinGameOnClick={this.handleJoinGameOnClick}
             />
           ) : (
