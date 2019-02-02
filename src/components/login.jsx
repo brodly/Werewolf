@@ -3,14 +3,14 @@ import io from 'socket.io-client';
 
 const Login = ({
   username,
-  handleUpdateUsername,
+  handleUsernameInput,
   handleCreateGameOnClick,
   handleJoinGameOnClick,
 }) => {
   const socket = io();
 
-  const updateUsername = (e) => {
-    handleUpdateUsername(e.target.value);
+  const usernameInput = (e) => {
+    handleUsernameInput(e.target.value);
   };
 
   const onClick = (e) => {
@@ -32,7 +32,7 @@ const Login = ({
         </div>
         <label>
           Name:
-          <input type="text" value={username} onChange={updateUsername} />
+          <input type="text" value={username} onChange={usernameInput} />
         </label>
         <p />
         <button id="login" type="submit" value="join" onClick={onClick}>Join Game</button>
