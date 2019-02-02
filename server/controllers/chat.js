@@ -8,7 +8,10 @@ module.exports = {
 
     return new Promise((resolve, reject) => {
       if (!chat) reject('Chat could not be created');
-      resolve(db.chat = chat);
+      else {
+        db.chat = chat;
+        resolve('Chat was created');
+      }
     });
   },
   newMessage(username, msg) {
@@ -16,7 +19,7 @@ module.exports = {
 
     return new Promise((resolve, reject) => {
       if (!message) reject('Message could not be created');
-      resolve(message);
+      else resolve(message);
     });
   },
 };
