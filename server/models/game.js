@@ -1,7 +1,7 @@
 class Game {
   constructor() {
     this.id = 1;
-    this.players = [];
+    this.players = {};
     this.moderator = null;
     this.roles = {
       wolves: {
