@@ -1,8 +1,5 @@
-const uuidv4 = require('uuid/v4');
-
 class User {
   constructor(username) {
-    this._id = uuidv4();
     this.username = username;
   }
 }
@@ -11,6 +8,7 @@ class Moderator extends User {
   constructor(username) {
     super(username);
     this.role = 'moderator';
+    this.alive = true;
   }
 }
 
