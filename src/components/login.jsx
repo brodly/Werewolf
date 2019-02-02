@@ -4,8 +4,8 @@ import io from 'socket.io-client';
 const Login = ({
   username,
   handleUpdateUsername,
-  handleCreateGameOnSubmit,
-  handleJoinGameOnSubmit,
+  handleCreateGameOnClick,
+  handleJoinGameOnClick,
 }) => {
   const socket = io();
 
@@ -13,16 +13,20 @@ const Login = ({
     handleUpdateUsername(e.target.value);
   };
 
-  const onSubmit = (e) => {
+  const onClick = (e) => {
     e.preventDefault();
-    socket.emit('new game', username);
-    console.log(e.target);
-    handleCreateGameOnSubmit(e);
+
+    if (e.target.value === 'join') {
+      handleJoinGameOnClick();
+    } else if (e.target.value === 'create') {
+      socket.emit('new game', username);
+      handleCreateGameOnClick();
+    }
   };
 
   return (
     <div id="login-container">
-      <form onSubmit={onSubmit}>
+      <form id="login">
         <div id="login-header">
           Login
         </div>
@@ -31,8 +35,8 @@ const Login = ({
           <input type="text" value={username} onChange={updateUsername} />
         </label>
         <p />
-        <input type="submit" value="Join Game" />
-        <input type="submit" value="Create Game" />
+        <button id="login" type="submit" value="join" onClick={onClick}>Join Game</button>
+        <button id="login" type="submit" value="create" onClick={onClick}>Create Game</button>
       </form>
     </div>
   );
