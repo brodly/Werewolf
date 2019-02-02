@@ -11,9 +11,9 @@ module.exports = {
       resolve(db.game = game);
     });
   },
-  updatePlayer: () => { },
-
-  playerLeave: () => { },
-
-  disconnect: () => { },
+  startGame() {
+    // TODO: Game.startGame()
+    // Randomly assign each player a role
+    console.log('Game is starting!!!');
+  },
 };
