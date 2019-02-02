@@ -1,6 +1,11 @@
 import React from 'react';
 
-const PlayerId = ({ name, image, ready, handlePlayerSelectOnClick }) => {
+const PlayerId = ({
+  name,
+  image,
+  ready,
+  handlePlayerSelectOnClick
+}) => {
   const onClick = (e) => {
     e.preventDefault();
     handlePlayerSelectOnClick(name);
@@ -13,7 +18,7 @@ const PlayerId = ({ name, image, ready, handlePlayerSelectOnClick }) => {
         <p />
       </div>
       <div id="player-id-image">
-        TODO: Display Player Image Here
+        Player Image
         {image}
       </div>
       <div id="player-ready-status">
