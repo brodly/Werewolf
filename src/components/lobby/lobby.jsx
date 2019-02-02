@@ -30,13 +30,23 @@ export default class Lobby extends React.Component {
       array of player objects
   */
   componentDidMount() {
-    const { username } = this.props;
+    const { username, role } = this.props;
     const { players } = this.state;
 
-    this.socket.emit('new user', username);
+    if (role === 'moderator') {
+      const message = {
+        username: null,
+        message: `${username} has created a new game`,
+      };
+      this.socket.emit('chat message', message);
+    } else {
+      this.socket.emit('new user', username);
+    }
+
     this.socket.on('update player list', (players) => {
       this.setState({ players });
     });
+
     this.socket.on('update player ready', (playerStatus) => {
       console.log(players);
       // players.forEach(player => {
@@ -98,7 +108,9 @@ export default class Lobby extends React.Component {
   */
   handleMakeModeratorOnClick() {
     const { playerSelected } = this.state;
-    this.socket.emit('update moderator', playerSelected);
+    console.log('this feature has not been implemented');
+    this.socket.emit('chat message', { username: null, message: 'this feature has not been implemented' });
+    // this.socket.emit('update moderator', playerSelected);
   }
 
   handlePlayerSelectOnClick(playerSelected) {
@@ -106,7 +118,7 @@ export default class Lobby extends React.Component {
   }
 
   render() {
-    const { username, role } = this.props;
+    const { username, role, ready } = this.props;
     const { players } = this.state;
 
     return (
@@ -149,7 +161,8 @@ export default class Lobby extends React.Component {
             {players.map(player => (
               <PlayerId
                 name={player}
-                image={null}
+                ready={ready}
+                image="Player Image"
                 handlePlayerSelectOnClick={this.handlePlayerSelectOnClick}
               />
             ))}
