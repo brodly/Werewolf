@@ -53,7 +53,7 @@ io.on('connection', (client) => {
   client.on('player ready', (username) => {
     // update game object with player ready status as true
     // emit 'update player ready' with an object showing player name and ready status
-    console.log(username + 'is ready');
+    console.log(`${username} is ready`);
   });
 
   client.on('player leave', async (username) => {
