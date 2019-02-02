@@ -63,7 +63,7 @@ body {
 
 #player-list-row {
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: row wrap;
 }
 
 #player-id-container {
@@ -80,7 +80,7 @@ form {
   width: 100%;
 }
 
-form input {
+form input, button#login {
   border: 1px solid grey;
   padding: 10px;
   width: 90%;
@@ -95,16 +95,23 @@ form button {
   padding: 10px;
 }
 
+#chat-container {
+  padding: 20px;
+  margin: 10px;
+  border: 1px solid black;
+  height: 300px;
+}
+
 #chat-container form {
-  position: absolute;
   vertical-align: bottom;
+  min-height: 20%;
 }
 
 #messages {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  height: 220px;
+  min-height: 80%;
 }
 
 #messages li {
@@ -112,7 +119,7 @@ form button {
 }
 
 #messages li:nth-child(odd) {
-  background: #eee;
+  background: rgb(88, 69, 69);
 }
 
 #admin-container {
@@ -121,9 +128,3 @@ form button {
   margin: 10px;
 }
 
-#chat-container {
-  padding: 20px;
-  margin: 10px;
-  border: 1px solid black;
-  height: 300px;
-}
