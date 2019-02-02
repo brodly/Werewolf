@@ -1,6 +1,6 @@
 /* eslint-disable prefer-promise-reject-errors */
 const db = require('../../database');
-const { Player, Moderator } = require('../models/user');
+const { Player, Moderator } = require('../models/player');
 
 module.exports = {
   createModerator: (username) => {
@@ -63,7 +63,7 @@ module.exports = {
 
     return result;
   },
-  get getPlayerlist() {
+  get playerlist() {
     const result = [];
     db.playerlist.forEach((player) => {
       result.push(player.username);
