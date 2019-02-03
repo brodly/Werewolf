@@ -19,7 +19,8 @@ const port = process.env.PORT || 3000;
 app.use(express.static(path.join(__dirname, '../dist')));
 
 // Routes
-app.get('/status', router);
+app.get('/database', router);
+app.get('/debug', router);
 
 // Open socket connection
 io.on('connection', (client) => {
