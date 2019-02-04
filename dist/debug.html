@@ -12,19 +12,50 @@
   <title>Status</title>
 </head>
 <body>
-  <div>GAME</div>
+  <div><u><b>Game:</b></u></div>
   <div id="game"></div>
+  <br/>
+  <div><u><b>Moderator:</b></u></div>
+  <div id="moderator"></div>
+  <br/>
+  <div><u><b>Players:</b></u></div>
+  <div id="players"></div>
+  <br/>
+  <div><u><b>Roles:</b></u></div>
+  <div id="roles"></div>
 </body>
 <script type="text/javascript">
   $(document).ready(function () {
-    var db;
-
     $.get("/database", function (data) {
       return data
     })
-      .done(function(data) { $('#game').html(data.game.id) });
+      .done(function(data) {
+        var ready = Object.keys(data.chat.readylist);
+        var readyArr = [];
 
+        var roles = Object.keys(data.game.roles);
+        var roleArr = [];
 
+        roles.forEach(r => {
+          roleArr.push(`<b>${r.toUpperCase()}</b>`);
+          roleArr.push('Current Alive:');
+          roleArr.push(data.game.roles[r].alive);
+          roleArr.push('Players:');
+          roleArr.push(data.game.roles[r].list);
+          roleArr.push('Max Roles');
+          roleArr.push(data.game.roles[r].max);
+          roleArr.push('<br/>');
+        });
+
+        ready.forEach(p => {
+          readyArr.push([p, data.chat.readylist[p]]);
+        });
+
+        $('#game').html(data.game.id);
+        $('#moderator').html(data.game.moderator.username);
+        $('#players').html(readyArr.join('<br/>'));
+        $('#roles').html(roleArr.join('<br/>'));
+      });
   });
 </script>
 </html>
