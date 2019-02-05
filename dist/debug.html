@@ -37,12 +37,16 @@
         var roleArr = [];
 
         roles.forEach(r => {
+          const roles = [];
+          data.game.roles[r].list.forEach(p => {
+            roles.push(p.username);
+          })
           roleArr.push(`<b>${r.toUpperCase()}</b>`);
-          roleArr.push('Current Alive:');
+          roleArr.push('<u>Current Alive:</u>');
           roleArr.push(data.game.roles[r].alive);
-          roleArr.push('Players:');
-          roleArr.push(data.game.roles[r].list);
-          roleArr.push('Max Roles');
+          roleArr.push('<u>Players:</u>');
+          roleArr.push(roles);
+          roleArr.push('<u>Max Roles:</u>');
           roleArr.push(data.game.roles[r].max);
           roleArr.push('<br/>');
         });
