@@ -16,51 +16,57 @@ module.exports = {
     });
   },
   startGame() {
-    const readylist = Object.keys(db.chat.readylist).filter(player => db.chat.readylist[player]);
     const players = Object.keys(db.game.players);
-    const roleIndex = {};
-    const roleArray = [];
+    const roles = Object.keys(db.game.roles);
+    const roleCount = roles.reduce((acc, role) => acc + db.game.roles[role].max, 0);
+    const villagerCount = players.length - roleCount;
+    const randRoles = [];
+    const randPlayers = [];
 
-    Object.keys(db.game.roles).forEach((role) => {
-      // push the role n number of times where n is the max number for the role
+    roles.forEach((role) => {
       if (role !== 'villagers') {
         for (let i = 0; i < db.game.roles[role].max; i += 1) {
           const ran = Math.random(1, 10) * 10;
           if (ran < 5) {
-            roleArray.push(role);
+            randRoles.push(role);
           } else {
-            roleArray.unshift(role);
+            randRoles.unshift(role);
+          }
+        }
+      } else {
+        for (let i = 0; i < villagerCount; i += 1) {
+          const ran = Math.random(1, 10) * 10;
+          if (ran < 5) {
+            randRoles.push(role);
+          } else {
+            randRoles.unshift(role);
           }
         }
       }
     });
 
+    players.forEach((player) => {
+      const ran = Math.random(1, 10) * 10;
+      if (ran < 5) {
+        randPlayers.push(player);
+      } else {
+        randPlayers.unshift(player);
+      }
+    });
+
     return new Promise((resolve, reject) => {
+      const readylist = Object.keys(db.chat.readylist).filter(player => db.chat.readylist[player]);
+
       if (readylist.length === players.length) {
-        // init roleArray
-        // for each role in db.game.roles
-
-
-        // generate a random number between 1 and players.length inclusive
-
-        // console.log(roleIndex);
-        // console.log(Object.keys(roleIndex));
-        // check if number has been selected
-          // if it has, generate a new one
-          // else push number into roleAssignments array
-
-        // iterate over roleArray
-          // assign player at current index in roleAssignemtsn to the current index of roleArray
-        // console.log(roleIndex);
-        roleArray.forEach((role, i) => {
-          db.game.roles[role].list.push(db.game.players[players[i]]);
+        randRoles.forEach((role, i) => {
+          db.game.roles[role].list.push(db.game.players[randPlayers[i]]);
+          controller.Player.deleteFromPlayerlist(randPlayers[i]);
+          controller.Player.deleteFromReadylist(randPlayers[i]);
         });
 
-        // console.log(roleArray);
-        // console.log(roleIndex);
-        resolve('Game is starting');
+        resolve([true, 'Game is starting']);
       } else {
-        resolve('Not all players are ready');
+        resolve([false, 'Not all players are ready']);
       }
 
       // TODO: Reject doesn't do anything at the moment
@@ -69,20 +75,19 @@ module.exports = {
   },
 };
 
-module.exports.create();
-controller.Chat.create();
-controller.Player.createModerator('josh');
-controller.Player.createPlayer('ryan');
-controller.Player.createPlayer('adam');
-controller.Player.createPlayer('cody');
-controller.Player.createPlayer('Phil');
-// module.exports.player.createPlayer('adam');
-// module.exports.player.createPlayer('ryan');
-module.exports.startGame();
-
-console.log(db.game);
-console.log(db.game.roles.wolves.list[0]);
-console.log(db.game.roles.seers.list);
-console.log(db.game.roles.doctors.list);
-console.log(db.game.roles.villagers.list);
-console.log(db.game.players);
+// module.exports.create();
+// controller.Chat.create();
+// controller.Player.createModerator('Josh');
+// controller.Player.createPlayer('Player 1');
+// controller.Player.createPlayer('Player 2');
+// controller.Player.createPlayer('Player 3');
+// controller.Player.createPlayer('Player 4');
+// controller.Player.createPlayer('Player 5');
+// controller.Player.createPlayer('Player 6');
+// controller.Player.createPlayer('Player 7');
+// controller.Player.createPlayer('Player 8');
+// controller.Player.createPlayer('Player 9');
+// controller.Player.createPlayer('Player 10');
+// controller.Player.createPlayer('Player 11');
+// controller.Player.createPlayer('Player 12');
+// module.exports.startGame();
