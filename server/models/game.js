@@ -10,14 +10,14 @@ class Game {
         max: 2,
       },
       seers: {
-        alive: 2,
+        alive: 1,
         list: [],
-        max: 2,
+        max: 1,
       },
       doctors: {
-        alive: 2,
+        alive: 1,
         list: [],
-        max: 2,
+        max: 1,
       },
       villagers: {
         alive: null,
