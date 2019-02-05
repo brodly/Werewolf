@@ -30,16 +30,6 @@ io.on('connection', (client) => {
     controller.Player.createModerator(username);
   });
 
-  // async (username) => {
-  //   try {
-  //     await controller.Game.create();
-  //     await controller.Chat.create();
-  //     await controller.Player.createModerator(username);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // }
-
   client.on('new user', async (username) => {
     try {
       await controller.Player.createPlayer(username);
@@ -82,14 +72,21 @@ io.on('connection', (client) => {
     }
   });
 
-  client.on('start game', async () => {
+  client.on('try start game', async () => {
     try {
       const status = await controller.Game.startGame();
-      const message = await controller.Chat.newMessage(null, status);
+      const message = await controller.Chat.newMessage(null, status[1]);
       await io.emit('chat message', message);
+      if (status[0]) {
+        await io.emit('start game', 'game');
+      }
     } catch (err) {
       console.error(err);
     }
+  });
+
+  client.on('start game', (data) => {
+    console.log(data);
   });
 
   client.on('disconnect', (data) => {
