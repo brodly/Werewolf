@@ -32,8 +32,10 @@ module.exports = {
     });
   },
   updateRole: (username, role) => { db.game.players[username].role = role; },
-  deletePlayer: username => delete db.game.players[username],
-  getPlayer: username => db.game.players[username],
+  deleteFromPlayerlist: username => delete db.game.players[username],
+  get: username => db.game.players[username],
   get playerlist() { return Object.keys(db.game.players); },
   ready: (username) => { db.chat.readylist[username] = true; },
+  unready: (username) => { db.chat.readylist[username] = false; },
+  deleteFromReadylist: (username) => { delete db.chat.readylist[username]; },
 };
