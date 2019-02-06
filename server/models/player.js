@@ -7,25 +7,19 @@ class User {
 class Moderator extends User {
   constructor(username) {
     super(username);
-    this.role = 'moderator';
-    this.alive = true;
+    this.alive = false;
   }
 }
 
 class Player extends User {
   constructor(username) {
     super(username);
-    this.role = null;
     this.alive = true;
   }
 
   toggleAlive() {
     if (!this.alive) this.alive = true;
     else this.alive = false;
-  }
-
-  setRole(role) {
-    this.role = role;
   }
 }
 
