@@ -30,7 +30,7 @@ export default class Lobby extends React.Component {
       array of player objects
   */
   componentDidMount() {
-    const { username, role } = this.props;
+    const { username, role, handleSwitchDisplay } = this.props;
     const { players } = this.state;
 
     if (role === 'moderator') {
@@ -48,13 +48,11 @@ export default class Lobby extends React.Component {
     });
 
     this.socket.on('update player ready', (playerStatus) => {
-      console.log(players);
-      // players.forEach(player => {
-      //   if (playerStatus.username === player.username) {
-      //     player.ready
-      //   }
-      // })
-      // this.setState( { })
+      console.log(playerStatus);
+    });
+
+    this.socket.on('start game', () => {
+      handleSwitchDisplay('gameboard');
     });
   }
 
@@ -97,7 +95,7 @@ export default class Lobby extends React.Component {
     - Emit 'start game' event
   */
   handleStartGameOnClick() {
-    this.socket.emit('start game');
+    this.socket.emit('try start game');
     console.log('Start Button was clicked');
   }
 
