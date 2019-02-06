@@ -78,6 +78,7 @@ export default class App extends React.Component {
           switch (display) {
             case 'gameboard': return (
               <Gameboard
+                username={username}
                 players={players}
               />
             );
