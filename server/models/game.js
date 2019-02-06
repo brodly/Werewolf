@@ -5,24 +5,24 @@ class Game {
     this.moderator = null;
     this.roles = {
       wolves: {
+        max: 2,
         alive: 2,
         list: [],
-        max: 2,
       },
       seers: {
+        max: 1,
         alive: 1,
         list: [],
-        max: 1,
       },
       doctors: {
+        max: 1,
         alive: 1,
         list: [],
-        max: 1,
       },
       villagers: {
-        alive: null,
+        alive: 0,
         list: [],
-        get count() {
+        get max() {
           return this.list.length;
         },
       },
@@ -30,27 +30,15 @@ class Game {
   }
 
   addPlayer(player) {
-    if (this.moderator === null) {
-      this.moderator = player;
-    } else {
-      this.players.push(player);
-    }
+    console.log(player, 'added to game');
   }
 
   removePlayer(player) {
-    const newPlayerList = this.players;
-    const index = newPlayerList.indexOf(player);
-
-    if (index > -1) {
-      newPlayerList.splice(index, 1);
-      this.players = newPlayerList;
-    } else {
-      console.log(player, 'does not exist');
-    }
+    console.log(player, 'removed from game');
   }
 
   addToWolves(player) {
-    console.log(player, 'added to wolves')
+    console.log(player, 'added to wolves');
   }
 
   addToVillagers(player) {
