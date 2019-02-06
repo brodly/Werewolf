@@ -2,6 +2,7 @@ import React from 'react';
 import Timer from './components/timer';
 import Login from './components/login';
 import Lobby from './components/lobby/lobby';
+import Gameboard from './components/gameboard/gameboard';
 
 export default class App extends React.Component {
   constructor() {
@@ -9,6 +10,7 @@ export default class App extends React.Component {
 
     this.state = {
       login: false,
+      display: 'lobby',
       username: '',
       role: '',
       gameTimer: 5,
@@ -17,6 +19,7 @@ export default class App extends React.Component {
     this.handleUsernameInput = this.handleUsernameInput.bind(this);
     this.handleCreateGameOnClick = this.handleCreateGameOnClick.bind(this);
     this.handleJoinGameOnClick = this.handleJoinGameOnClick.bind(this);
+    this.handleSwitchDisplay = this.handleSwitchDisplay.bind(this);
     this.toggleLogin = this.toggleLogin.bind(this);
   }
 
@@ -41,12 +44,17 @@ export default class App extends React.Component {
     this.setState({ role: null, login: true });
   }
 
+  handleSwitchDisplay(display) {
+    this.setState({ display });
+  }
+
   render() {
     const {
       role,
       username,
       gameTimer,
       login,
+      display,
     } = this.state;
 
     return (
@@ -55,24 +63,30 @@ export default class App extends React.Component {
           <h3>The Werewolf Game</h3>
         </div>
 
-        {
-          !login ? (
-            <Login
-              role={role}
-              username={username}
-              handleCreateGameOnClick={this.handleCreateGameOnClick}
-              handleUsernameInput={this.handleUsernameInput}
-              handleJoinGameOnClick={this.handleJoinGameOnClick}
-            />
-          ) : (
-            <Lobby
-              toggleLogin={this.toggleLogin}
-              username={username}
-              role={role}
-            />
-          )
-        }
-
+        {login ? (() => {
+          switch (display) {
+            case 'gameboard': return (
+              <Gameboard />
+            );
+            case 'lobby': return (
+              <Lobby
+                toggleLogin={this.toggleLogin}
+                username={username}
+                role={role}
+                handleSwitchDisplay={this.handleSwitchDisplay}
+              />
+            );
+            default: return 'DEFAULT STATE';
+          }
+        })() : (
+          <Login
+            role={role}
+            username={username}
+            handleCreateGameOnClick={this.handleCreateGameOnClick}
+            handleUsernameInput={this.handleUsernameInput}
+            handleJoinGameOnClick={this.handleJoinGameOnClick}
+          />
+        )}
         {/* <gameTimer gameTimer={gameTimer} /> */}
       </div>
     );
