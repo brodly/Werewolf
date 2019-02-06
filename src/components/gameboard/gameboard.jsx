@@ -1,4 +1,5 @@
 import React from 'react';
+import io from 'socket.io-client';
 import Player from './player';
 import Villager from './villager';
 import Seer from './seer';
@@ -9,11 +10,13 @@ export default class Gameboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      role: 'villager',
     };
 
-    this.role = (() => {
-      const { role } = this.props;
+    this.socket = io();
+
+    this.roleDisplay = (() => {
+      const { role } = this.state;
 
       switch (role) {
         case 'wolf': return <Wolf />;
@@ -23,6 +26,15 @@ export default class Gameboard extends React.Component {
         default: return 'Error: No role selected ';
       }
     })();
+  }
+
+  componentDidMount() {
+    const { username } = this.props;
+
+    this.socket.emit('get role', username);
+    this.socket.on('set role', (role) => {
+      console.log(role);
+    });
   }
 
   render() {
@@ -48,7 +60,7 @@ export default class Gameboard extends React.Component {
           </div>
         </div>
         <div id="player-role-container">
-          {this.role}
+          {this.roleDisplay}
         </div>
       </div>
     );
