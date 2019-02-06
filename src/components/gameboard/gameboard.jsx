@@ -14,18 +14,7 @@ export default class Gameboard extends React.Component {
     };
 
     this.socket = io();
-
-    this.roleDisplay = (() => {
-      const { role } = this.state;
-
-      switch (role) {
-        case 'wolf': return <Wolf />;
-        case 'villager': return <Villager />;
-        case 'seer': return <Seer />;
-        case 'doctor': return <Doctor />;
-        default: return 'Error: No role selected ';
-      }
-    })();
+    this.updateRole = this.updateRole.bind(this);
   }
 
   componentDidMount() {
@@ -33,8 +22,22 @@ export default class Gameboard extends React.Component {
 
     this.socket.emit('get role', username);
     this.socket.on('set role', (role) => {
-      console.log(role);
+      this.setState({ role });
     });
+  }
+
+  updateRole() {
+    const { role } = this.state;
+
+    return (() => {
+      switch (role) {
+        case 'wolves': return <Wolf />;
+        case 'villagers': return <Villager />;
+        case 'seers': return <Seer />;
+        case 'doctors': return <Doctor />;
+        default: return 'Error: No role selected ';
+      }
+    })();
   }
 
   render() {
@@ -60,7 +63,7 @@ export default class Gameboard extends React.Component {
           </div>
         </div>
         <div id="player-role-container">
-          {this.roleDisplay}
+          {this.updateRole()}
         </div>
       </div>
     );
