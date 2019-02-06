@@ -30,8 +30,13 @@ export default class Lobby extends React.Component {
       array of player objects
   */
   componentDidMount() {
-    const { username, role, handleSwitchDisplay } = this.props;
-    const { players } = this.state;
+    const {
+      username,
+      role,
+      handleSwitchDisplay,
+      players
+    } = this.props;
+    // const { players } = this.state;
 
     if (role === 'moderator') {
       const message = {
@@ -43,9 +48,7 @@ export default class Lobby extends React.Component {
       this.socket.emit('new user', username);
     }
 
-    this.socket.on('update player list', (players) => {
-      this.setState({ players });
-    });
+
 
     this.socket.on('update player ready', (playerStatus) => {
       console.log(playerStatus);
@@ -116,12 +119,12 @@ export default class Lobby extends React.Component {
   }
 
   render() {
-    const { username, role, ready } = this.props;
-    const { players } = this.state;
+    const { username, role, ready, players } = this.props;
+    // const { players } = this.state;
 
     return (
-      <div id="lobby-container">
-        <div id="lobby-header">
+      <div id="main-container">
+        <div id="main-header">
           <h3>Lobby</h3>
         </div>
         <div id="lobby-display-username">
