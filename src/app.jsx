@@ -1,6 +1,8 @@
 import React from 'react';
-import Timer from './components/timer';
-import Login from './components/login';
+import io from 'socket.io-client';
+
+import Timer from './components/gameboard/timer';
+import Login from './components/login/login';
 import Lobby from './components/lobby/lobby';
 import Gameboard from './components/gameboard/gameboard';
 
@@ -14,13 +16,21 @@ export default class App extends React.Component {
       username: '',
       role: '',
       gameTimer: 5,
+      players: [],
     };
+    this.socket = io();
 
     this.handleUsernameInput = this.handleUsernameInput.bind(this);
     this.handleCreateGameOnClick = this.handleCreateGameOnClick.bind(this);
     this.handleJoinGameOnClick = this.handleJoinGameOnClick.bind(this);
     this.handleSwitchDisplay = this.handleSwitchDisplay.bind(this);
     this.toggleLogin = this.toggleLogin.bind(this);
+  }
+
+  componentDidMount() {
+    this.socket.on('update player list', (players) => {
+      this.setState({ players });
+    });
   }
 
   toggleLogin() {
@@ -55,18 +65,21 @@ export default class App extends React.Component {
       gameTimer,
       login,
       display,
+      players,
     } = this.state;
 
     return (
       <div id="app-container">
-        <div id="header">
+        <div id="app-header">
           <h3>The Werewolf Game</h3>
         </div>
 
         {login ? (() => {
           switch (display) {
             case 'gameboard': return (
-              <Gameboard />
+              <Gameboard
+                players={players}
+              />
             );
             case 'lobby': return (
               <Lobby
@@ -74,13 +87,13 @@ export default class App extends React.Component {
                 username={username}
                 role={role}
                 handleSwitchDisplay={this.handleSwitchDisplay}
+                players={players}
               />
             );
-            default: return 'DEFAULT STATE';
+            default: return 'Loading...';
           }
         })() : (
           <Login
-            role={role}
             username={username}
             handleCreateGameOnClick={this.handleCreateGameOnClick}
             handleUsernameInput={this.handleUsernameInput}
