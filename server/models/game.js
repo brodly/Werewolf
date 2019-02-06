@@ -4,6 +4,7 @@ class Game {
     this.players = {};
     this.moderator = null;
     this.roles = {
+      list: {},
       wolves: {
         max: 2,
         alive: 2,
