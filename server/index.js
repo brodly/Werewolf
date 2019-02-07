@@ -92,7 +92,7 @@ io.on('connection', (socket) => {
   socket.on('disconnect', (data) => {
     // TODO: remove user from playerList
     // Have to find how to pass username into the data object
-    console.log(data, 'user disconnected');
+    console.log(data, socket.id, 'user disconnected');
   });
 
   socket.on('chat message', async (data) => {
