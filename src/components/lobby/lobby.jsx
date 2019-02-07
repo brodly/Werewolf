@@ -99,7 +99,6 @@ export default class Lobby extends React.Component {
   */
   handleStartGameOnClick() {
     this.socket.emit('try start game');
-    console.log('Start Button was clicked');
   }
 
   /*
@@ -127,16 +126,13 @@ export default class Lobby extends React.Component {
         <div id="main-header">
           <h3>Lobby</h3>
         </div>
-        <div id="lobby-display-username">
+        <div id="display-username">
           Hi&nbsp;
           {username}
           !
           <br />
         </div>
         <div id="lobby-player-role">
-          <h4>
-            You are a {role}
-          </h4>
           {role === 'moderator'
             ? (
               <ModeratorControls
