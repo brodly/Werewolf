@@ -104,6 +104,10 @@ io.on('connection', (socket) => {
     }
   });
 
+  socket.on('get my role', (username) => {
+    io.to(`${socket.id}`).emit('set my role', controller.Player.getRole(username));
+  });
+
   socket.on('get role', (username) => {
     io.to(`${socket.id}`).emit('set role', controller.Player.getRole(username));
   });
