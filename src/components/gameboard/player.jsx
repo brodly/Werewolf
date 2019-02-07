@@ -7,6 +7,14 @@ export default class Player extends React.Component {
       selected: false,
       style: { backgroundColor: 'white' },
     };
+
+    this.onClick = this.onClick.bind(this);
+  }
+
+  onClick() {
+    const { handlePlayerSelectOnClick, name } = this.props;
+    this.toggleColor();
+    handlePlayerSelectOnClick(name);
   }
 
   toggleColor() {
@@ -27,10 +35,10 @@ export default class Player extends React.Component {
 
   render() {
     const { style } = this.state;
-    const { name, image, handlePlayerSelectOnClick } = this.props;
+    const { name, image } = this.props;
 
     return (
-      <div id="player-id-container" onClick={handlePlayerSelectOnClick} style={style}>
+      <div id="player-id-container" onClick={this.onClick} style={style}>
         <div id="player-name">
           {name}
           <p />
