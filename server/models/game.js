@@ -3,24 +3,24 @@ class Game {
     this.id = 1;
     this.players = {};
     this.moderator = null;
+    this.rolesList = {};
     this.roles = {
-      list: {},
-      wolves: {
+      wolf: {
         max: 2,
         alive: 2,
         list: [],
       },
-      seers: {
+      seer: {
         max: 1,
         alive: 1,
         list: [],
       },
-      doctors: {
+      doctor: {
         max: 1,
         alive: 1,
         list: [],
       },
-      villagers: {
+      villager: {
         alive: 0,
         list: [],
         get max() {
