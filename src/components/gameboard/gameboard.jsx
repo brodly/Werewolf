@@ -12,22 +12,29 @@ export default class Gameboard extends React.Component {
     super(props);
     this.state = {
       role: 'villager',
+      selected: null,
     };
 
     this.socket = io();
     this.updateRole = this.updateRole.bind(this);
+    this.handlePlayerSelectOnClick = this.handlePlayerSelectOnClick.bind(this);
+    this.handlePlayerSelectOnSubmit = this.handlePlayerSelectOnSubmit.bind(this);
   }
 
   componentDidMount() {
     const { username } = this.props;
 
-    this.socket.emit('get role', username);
-    this.socket.on('set role', (role) => {
+    this.socket.emit('get my role', username);
+    this.socket.on('set my role', (role) => {
       if (role === null) {
         this.setState({ role: 'moderator' });
       } else {
         this.setState({ role });
       }
+    });
+
+    this.socket.on('set role', (role) => {
+      console.log(role);
     });
   }
 
@@ -36,14 +43,44 @@ export default class Gameboard extends React.Component {
 
     return (() => {
       switch (role) {
-        case 'wolf': return <Wolf />;
-        case 'villager': return <Villager />;
-        case 'seer': return <Seer />;
-        case 'doctor': return <Doctor />;
-        case 'moderator': return <Moderator />;
+        case 'wolf': return (
+          <Wolf
+            handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
+          />
+        );
+        case 'villager': return (
+          <Villager
+            handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
+          />
+        );
+        case 'seer': return (
+          <Seer
+            handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
+          />
+        );
+        case 'doctor': return (
+          <Doctor
+            handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
+          />
+        );
+        case 'moderator': return (
+          <Moderator
+            handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
+          />
+        );
         default: return 'Error: No Role Defined';
       }
     })();
+  }
+
+  handlePlayerSelectOnClick(selected) {
+    this.setState({ selected });
+  }
+
+  handlePlayerSelectOnSubmit() {
+    const { selected } = this.state;
+
+    this.socket.emit('get role', selected);
   }
 
   render() {
