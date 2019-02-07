@@ -47,7 +47,7 @@ module.exports = {
   deleteFromPlayerlist: username => delete db.game.players[username],
   deleteFromReadylist: (username) => { delete db.chat.readylist[username]; },
   get: username => db.game.players[username],
-  getRole: username => db.game.roles.list[username],
+  getRole: username => db.game.rolesList[username],
   get playerlist() { return Object.keys(db.game.players); },
   ready: (username) => { db.chat.readylist[username] = true; },
   unready: (username) => { db.chat.readylist[username] = false; },
