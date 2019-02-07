@@ -47,10 +47,9 @@ body {
 #login-header {
   padding-bottom: 20px;
 }
-
 /* END LOGIN STYLING */
 
-#lobby-display-username {
+#display-username {
   border: 1px solid black;
   padding: 10px;
   margin: 5px;
@@ -58,6 +57,12 @@ body {
 }
 
 #lobby-player-role {
+  border: 1px solid black;
+  padding: 10px;
+  margin: 5px;
+}
+
+#player-list-header {
   border: 1px solid black;
   padding: 10px;
   margin: 5px;
@@ -79,6 +84,12 @@ body {
   width: 100px;
   height: 150px;
   padding: 5px;
+  margin: 5px;
+}
+
+#player-role-container {
+  border: 1px solid black;
+  padding: 10px;
   margin: 5px;
 }
 
