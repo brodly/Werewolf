@@ -5,6 +5,7 @@ import Villager from './villager';
 import Seer from './seer';
 import Doctor from './doctor';
 import Wolf from './wolf';
+import Moderator from './moderator';
 
 export default class Gameboard extends React.Component {
   constructor(props) {
@@ -22,7 +23,11 @@ export default class Gameboard extends React.Component {
 
     this.socket.emit('get role', username);
     this.socket.on('set role', (role) => {
-      this.setState({ role });
+      if (role === null) {
+        this.setState({ role: 'moderator' });
+      } else {
+        this.setState({ role });
+      }
     });
   }
 
@@ -31,22 +36,27 @@ export default class Gameboard extends React.Component {
 
     return (() => {
       switch (role) {
-        case 'wolves': return <Wolf />;
-        case 'villagers': return <Villager />;
-        case 'seers': return <Seer />;
-        case 'doctors': return <Doctor />;
-        default: return 'Error: No role selected ';
+        case 'wolf': return <Wolf />;
+        case 'villager': return <Villager />;
+        case 'seer': return <Seer />;
+        case 'doctor': return <Doctor />;
+        case 'moderator': return <Moderator />;
+        default: return 'Error: No Role Defined';
       }
     })();
   }
 
   render() {
-    const { players } = this.props;
+    const { username, players } = this.props;
+    const { role } = this.state;
 
     return (
       <div id="main-container">
         <div id="main-header">
           <h3>Gameboard</h3>
+        </div>
+         <div id="display-username">
+          {username} is a {role}
         </div>
         <div id="player-list-container">
           <div id="player-list-header">
