@@ -23,6 +23,7 @@ export default class Player extends React.Component {
 
   onClick() {
     const { handlePlayerSelectOnClick, name } = this.props;
+
     handlePlayerSelectOnClick(name);
   }
 
