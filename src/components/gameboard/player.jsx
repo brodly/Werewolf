@@ -4,31 +4,38 @@ export default class Player extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selected: false,
+      selected: '',
       style: { backgroundColor: 'white' },
     };
 
     this.onClick = this.onClick.bind(this);
+    this.highlightSelected = this.highlightSelected.bind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { selected } = this.props;
+
+    if (prevProps.selected !== selected) {
+      this.setState({ selected });
+      this.highlightSelected();
+    }
   }
 
   onClick() {
     const { handlePlayerSelectOnClick, name } = this.props;
-    this.toggleColor();
     handlePlayerSelectOnClick(name);
   }
 
-  toggleColor() {
-    const { selected } = this.state;
+  highlightSelected() {
+    const { selected, name } = this.props;
 
-    if (selected) {
+    if (selected === name) {
       this.setState({
-        selected: false,
-        style: { backgroundColor: 'white' },
+        style: { backgroundColor: 'lightgrey' },
       });
     } else {
       this.setState({
-        selected: true,
-        style: { backgroundColor: 'lightgrey' },
+        style: { backgroundColor: 'white' },
       });
     }
   }
