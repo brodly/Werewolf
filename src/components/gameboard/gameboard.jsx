@@ -105,6 +105,7 @@ export default class Gameboard extends React.Component {
             {players.map(player => (
               <Player
                 name={player}
+                // ready={ready}
                 selected={selected}
                 image="Player Image"
                 handlePlayerSelectOnClick={this.handlePlayerSelectOnClick}
