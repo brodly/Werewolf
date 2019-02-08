@@ -43,7 +43,7 @@ export default class Player extends React.Component {
 
   render() {
     const { style } = this.state;
-    const { name, image } = this.props;
+    const { name, image, alive } = this.props;
 
     return (
       <div id="player-id-container" onClick={this.onClick} style={style}>
@@ -53,6 +53,9 @@ export default class Player extends React.Component {
         </div>
         <div id="player-image">
           {image}
+        </div>
+        <div id="player-status">
+          {alive}
         </div>
       </div>
     );
