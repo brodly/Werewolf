@@ -107,10 +107,10 @@ io.on('connection', (socket) => {
 
   socket.on('assign role', (username) => {
     const role = controller.Player.getRole(username);
-    const list = controller.Player.getRolePlayerlist(role);
+    const players = controller.Player.getRolePlayerlist(role);
 
     socket.join(role, () => {
-      io.to(`${socket.id}`).emit('assigned role', { role, list });
+      io.to(`${socket.id}`).emit('assigned role', { role, players });
     });
   });
 
