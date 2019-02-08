@@ -12,7 +12,8 @@ export default class Gameboard extends React.Component {
     super(props);
     this.state = {
       role: 'villager',
-      selected: null,
+      selected: '',
+      players: [],
     };
 
     this.socket = io();
@@ -24,12 +25,12 @@ export default class Gameboard extends React.Component {
   componentDidMount() {
     const { username } = this.props;
 
-    this.socket.emit('get my role', username);
-    this.socket.on('set my role', (role) => {
-      if (role === null) {
-        this.setState({ role: 'moderator' });
+    this.socket.emit('assign role', username);
+    this.socket.on('assigned role', ({ role, players }) => {
+      if (role === undefined) {
+        this.setState({ role: 'moderator', players });
       } else {
-        this.setState({ role });
+        this.setState({ role, players });
       }
     });
 
@@ -39,12 +40,13 @@ export default class Gameboard extends React.Component {
   }
 
   updateRole() {
-    const { role } = this.state;
+    const { role, players } = this.state;
 
     return (() => {
       switch (role) {
         case 'wolf': return (
           <Wolf
+            players={players}
             handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
           />
         );
