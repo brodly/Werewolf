@@ -85,7 +85,7 @@ export default class Gameboard extends React.Component {
 
   render() {
     const { username, players } = this.props;
-    const { role } = this.state;
+    const { role, selected } = this.state;
 
     return (
       <div id="main-container">
@@ -103,6 +103,7 @@ export default class Gameboard extends React.Component {
             {players.map(player => (
               <Player
                 name={player}
+                selected={selected}
                 image="Player Image"
                 handlePlayerSelectOnClick={this.handlePlayerSelectOnClick}
               />
