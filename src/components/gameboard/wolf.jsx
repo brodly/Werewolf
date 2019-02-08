@@ -1,8 +1,9 @@
 import React from 'react';
+import Player from './player';
 
 export default class Wolf extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
 
     };
@@ -16,10 +17,21 @@ export default class Wolf extends React.Component {
   }
 
   render() {
+    const { players } = this.props;
+
+    console.log(players);
+
     return (
       <div id="wolf-container">
         <h3>Wolf</h3>
         <button type="button" onClick={this.onClick} value="Kill">Kill</button>
+        <div id="wolf-players-list">
+          {players.map(wolf => (
+            <Player
+              name={wolf}
+            />
+          ))}
+        </div>
       </div>
     );
   }
