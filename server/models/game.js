@@ -3,7 +3,7 @@ class Game {
     this.id = 1;
     this.players = {};
     this.moderator = null;
-    this.rolesList = {};
+    this.rolelist = {};
     this.roles = {
       wolf: {
         max: 2,
