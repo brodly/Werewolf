@@ -92,6 +92,7 @@ io.on('connection', (socket) => {
   socket.on('disconnect', (data) => {
     // TODO: remove user from playerList
     // Have to find how to pass username into the data object
+    // make socket.id key, value is username -- store in DB
     console.log(data, socket.id, 'user disconnected');
   });
 
@@ -104,8 +105,13 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('get my role', (username) => {
-    io.to(`${socket.id}`).emit('set my role', controller.Player.getRole(username));
+  socket.on('assign role', (username) => {
+    const role = controller.Player.getRole(username);
+    const list = controller.Player.getRolePlayerlist(role);
+
+    socket.join(role, () => {
+      io.to(`${socket.id}`).emit('assigned role', { role, list });
+    });
   });
 
   socket.on('get role', (username) => {
