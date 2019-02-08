@@ -15,6 +15,7 @@ class Player extends User {
   constructor(username) {
     super(username);
     this.alive = true;
+    this.ready = false;
   }
 
   toggleAlive() {
