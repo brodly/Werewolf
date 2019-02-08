@@ -26,11 +26,12 @@ export default class Wolf extends React.Component {
         <h3>Wolf</h3>
         <button type="button" onClick={this.onClick} value="Kill">Kill</button>
         <div id="wolf-players-list">
-          {players.map(wolf => (
+          {players.map(wolf => (wolf ? (
             <Player
-              name={wolf}
+              name={wolf.username}
+              alive={wolf.alive}
             />
-          ))}
+          ) : null))}
         </div>
       </div>
     );
