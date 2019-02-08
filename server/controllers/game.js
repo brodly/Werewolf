@@ -59,7 +59,7 @@ module.exports = {
 
         randRoles.forEach((role, i) => {
           db.game.roles[role].list.push(db.game.players[randPlayers[i]]);
-          db.game.rolesList[randPlayers[i]] = role;
+          db.game.rolelist[randPlayers[i]] = role;
           controller.Player.deleteFromPlayerlist(randPlayers[i]);
           controller.Player.deleteFromReadylist(randPlayers[i]);
         });
