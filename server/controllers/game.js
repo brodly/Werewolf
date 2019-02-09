@@ -27,7 +27,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       if (readylist.length === players.length) {
         roles.forEach((role) => {
-          if (role !== 'villagers') {
+          if (role !== 'villager') {
             for (let i = 0; i < db.game.roles[role].max; i += 1) {
               const ran = Math.random(1, 10) * 10;
               if (ran < 5) {
