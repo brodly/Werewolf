@@ -37,6 +37,19 @@ export default class Gameboard extends React.Component {
     this.socket.on('set role', (role) => {
       console.log(role);
     });
+
+    this.socket.on('update selected', (data) => {
+      const { players } = this.state;
+      const newPlayers = players;
+
+      players.forEach((player, i) => {
+        if (player.username === data.username) {
+          newPlayers[i].selected = data.selected;
+        }
+      });
+
+      this.setState({ players: newPlayers });
+    });
   }
 
   updateRole() {
@@ -76,13 +89,19 @@ export default class Gameboard extends React.Component {
   }
 
   handlePlayerSelectOnClick(selected) {
+    const { username } = this.props;
+    const { role } = this.state;
+
     this.setState({ selected });
+    this.socket.emit('emit selected', { role, username, selected });
   }
 
   handlePlayerSelectOnSubmit() {
-    const { selected } = this.state;
+    const { selected, role } = this.state;
+    const { username } = this.props;
 
     this.socket.emit('get role', selected);
+    this.socket.emit('set selected', { role, username, selected });
   }
 
   render() {
@@ -105,9 +124,9 @@ export default class Gameboard extends React.Component {
             {players.map(player => (
               <Player
                 name={player}
-                // ready={ready}
+                subtitle="Player Image"
+                // status={ready}
                 selected={selected}
-                image="Player Image"
                 handlePlayerSelectOnClick={this.handlePlayerSelectOnClick}
               />
             ))}
