@@ -65,16 +65,19 @@ export default class Gameboard extends React.Component {
         );
         case 'villager': return (
           <Villager
+            players={players}
             handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
           />
         );
         case 'seer': return (
           <Seer
+            players={players}
             handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
           />
         );
         case 'doctor': return (
           <Doctor
+            players={players}
             handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
           />
         );
