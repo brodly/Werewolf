@@ -24,6 +24,8 @@ app.get('/debug', router);
 
 // Open socket connection
 io.on('connection', (socket) => {
+  console.log('A user connected', socket.id);
+
   socket.on('new game', (username) => {
     controller.Game.create();
     controller.Chat.create();
@@ -116,6 +118,11 @@ io.on('connection', (socket) => {
 
   socket.on('get role', (username) => {
     io.to(`${socket.id}`).emit('set role', controller.Player.getRole(username));
+  });
+
+  socket.on('emit selected', ({ role, username, selected }) => {
+    // controller.Player.setSelection(username, selected);
+    io.to(role).emit('update selected', { username, selected });
   });
 });
 
