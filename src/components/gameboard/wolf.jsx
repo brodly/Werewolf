@@ -19,17 +19,16 @@ export default class Wolf extends React.Component {
   render() {
     const { players } = this.props;
 
-    console.log(players);
-
     return (
       <div id="wolf-container">
         <h3>Wolf</h3>
         <button type="button" onClick={this.onClick} value="Kill">Kill</button>
-        <div id="wolf-players-list">
+        <div id="player-list-row">
           {players.map(wolf => (wolf ? (
             <Player
               name={wolf.username}
-              alive={wolf.alive}
+              subtitle={wolf.alive}
+              status={wolf.selected}
             />
           ) : null))}
         </div>
