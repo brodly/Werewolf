@@ -52,4 +52,17 @@ module.exports = {
   get playerlist() { return Object.keys(db.game.players); },
   ready: (username) => { db.chat.readylist[username] = true; },
   unready: (username) => { db.chat.readylist[username] = false; },
+  // getSelection: username => db.game.players[username].selected,
+  // setSelection: (username, selection) => { db.game.players[username].selected = selection; },
+
+  /* TODO: get/set for selection by Role
+     Note: Data is located in different locations,
+           make sure selection property is located
+           in the proper location for access and passing
+           around.
+  */
+  // getSelectionByRole: username => db.game.rolelist[username].selected,
+  // setSelectionByRole: (username, selection) => {
+  //   db.game.rolelist[username].selected = selection;
+  // },
 };
