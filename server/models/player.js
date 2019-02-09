@@ -16,12 +16,17 @@ class Player extends User {
     super(username);
     this.alive = true;
     this.ready = false;
+    this.selected = '';
   }
 
   toggleAlive() {
     if (!this.alive) this.alive = true;
     else this.alive = false;
   }
+
+  // get selected() { return this.selected; }
+
+  // set selected(selection) { this.selected = selection; }
 }
 
 module.exports.Moderator = Moderator;
