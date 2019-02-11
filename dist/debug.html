@@ -15,10 +15,13 @@
   <div><u><b>Game:</b></u></div>
   <div id="game"></div>
   <br/>
+  <div><u><b>Round:</b></u></div>
+  <div id="round"></div>
+  <br/>
   <div><u><b>Moderator:</b></u></div>
   <div id="moderator"></div>
   <br/>
-  <div><u><b>Players:</b></u></div>
+  <div><u><b>Unassigned Players:</b></u></div>
   <div id="players"></div>
   <br/>
   <div><u><b>Roles:</b></u></div>
@@ -36,10 +39,17 @@
         var roles = Object.keys(data.game.roles);
         var roleArr = [];
 
+        var action = Object.keys(data.game.action);
+        var actionArr = [];
+
+        action.forEach(a => {
+          console.log(data.game.action[a].list);
+        })
+
         roles.forEach(r => {
           const roles = [];
           data.game.roles[r].list.forEach(p => {
-            roles.push(p.username);
+            if (p) roles.push(p.username);
           })
           roleArr.push(`<b>${r.toUpperCase()}</b>`);
           roleArr.push('<u>Current Alive:</u>');
@@ -49,6 +59,9 @@
           roleArr.push('<u>Max Roles:</u>');
           roleArr.push(data.game.roles[r].max);
           roleArr.push('<br/>');
+          // roleArr.push('<u>Selected:</u>');
+          // roleArr.push(data.game.action[r].max);
+          // roleArr.push('<br/>');
         });
 
         ready.forEach(p => {
@@ -56,6 +69,7 @@
         });
 
         $('#game').html(data.game.id);
+        $('#round').html(data.game.round);
         $('#moderator').html(data.game.moderator.username);
         $('#players').html(readyArr.join('<br/>'));
         $('#roles').html(roleArr.join('<br/>'));
