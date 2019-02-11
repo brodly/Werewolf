@@ -120,9 +120,29 @@ io.on('connection', (socket) => {
     io.to(`${socket.id}`).emit('set role', controller.Player.getRole(username));
   });
 
+  socket.on('reveal player', ({ player, username }) => {
+    // console.log(username + ' wants to see ' + player);
+    controller.Game.addToAction(player, 'reveal');
+    // io.to('seer').emit('player role', controller.Player.getRole(player));
+  });
+
+  socket.on('kill player', ({ player, username }) => {
+    // console.log(username + ' wants to kill ' + player);
+    controller.Game.addToAction(player, 'kill');
+  });
+
+  socket.on('save player', ({ player, username }) => {
+    // console.log(username + ' wants to save ' + player);
+    controller.Game.addToAction(player, 'save');
+  });
+
   socket.on('emit selected', ({ role, username, selected }) => {
     // controller.Player.setSelection(username, selected);
     io.to(role).emit('update selected', { username, selected });
+  });
+
+  socket.on('next round', () => {
+    io.emit('update round', controller.Game.nextRound());
   });
 });
 
