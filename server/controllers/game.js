@@ -73,6 +73,11 @@ module.exports = {
       reject('Could not start game');
     });
   },
+  addToAction: (player, action) => { db.game.action.add(player, action); },
+  resetAction: (action) => { db.game.action.reset(action); },
+  tallyAction: (action) => { db.game.action.tally(action); },
+  nextRound: () => db.game.nextRound(),
+  toggleNight: () => db.game.toggleNight(),
 };
 
 // module.exports.create();
