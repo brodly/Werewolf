@@ -10,16 +10,17 @@ export default class Moderator extends React.Component {
     this.onClick = this.onClick.bind(this);
   }
 
-  onClick() {
+  onClick(e) {
     const { handlePlayerSelectOnSubmit } = this.props;
-    handlePlayerSelectOnSubmit();
+    handlePlayerSelectOnSubmit(e.target.value);
   }
 
   render() {
     return (
       <div id="moderator-container">
         <h3>Moderator</h3>
-        <button type="button" onClick={this.onClick} value="Start Timer">Start Timer</button>
+        <button type="button" onClick={this.onClick} value="start-timer">Start Timer</button>
+        <button type="button" onClick={this.onClick} value="next-round">Next Round</button>
       </div>
     );
   }
