@@ -1,5 +1,5 @@
 const db = require('../../database');
-const { Player, Moderator, Role } = require('../models/player');
+const { Player, Moderator } = require('../models/player');
 
 module.exports = {
   createModerator: (username) => {
@@ -42,10 +42,6 @@ module.exports = {
         resolve(true);
       }
     });
-  },
-  createRole: (username, role) => {
-    const GetRole = Role(username, role);
-    return new GetRole(username);
   },
   updateRole: (username, role) => {
     // const GetRole = Role(username, role);
