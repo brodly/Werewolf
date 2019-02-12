@@ -69,7 +69,7 @@ class Game {
 
   toggleNight() {
     if (this.night) this.night = false;
-    else this.night = true;
+    else this.night = true; this.nextRound();
     return this.night;
   }
 
