@@ -1,5 +1,5 @@
 const db = require('../../database');
-const { Player, Moderator } = require('../models/player');
+const { Player, Moderator, Role } = require('../models/player');
 
 module.exports = {
   createModerator: (username) => {
@@ -43,7 +43,16 @@ module.exports = {
       }
     });
   },
-  updateRole: (username, role) => { db.game.players[username].role = role; },
+  createRole: (username, role) => {
+    const GetRole = Role(username, role);
+    return new GetRole(username);
+  },
+  updateRole: (username, role) => {
+    // const GetRole = Role(username, role);
+    // return
+    // console.log(test);
+    db.game.players[username].updateRole(role, ['see']);
+  },
   deleteFromPlayerlist: username => delete db.game.players[username],
   deleteFromReadylist: (username) => { delete db.chat.readylist[username]; },
   get: username => db.game.players[username],
