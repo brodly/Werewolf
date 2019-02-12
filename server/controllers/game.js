@@ -80,19 +80,22 @@ module.exports = {
   toggleNight: () => db.game.toggleNight(),
 };
 
-// module.exports.create();
-// controller.Chat.create();
-// controller.Player.createModerator('Josh');
-// controller.Player.createPlayer('Player 1');
-// controller.Player.createPlayer('Player 2');
-// controller.Player.createPlayer('Player 3');
-// controller.Player.createPlayer('Player 4');
-// controller.Player.createPlayer('Player 5');
-// controller.Player.createPlayer('Player 6');
-// controller.Player.createPlayer('Player 7');
-// controller.Player.createPlayer('Player 8');
-// controller.Player.createPlayer('Player 9');
-// controller.Player.createPlayer('Player 10');
-// controller.Player.createPlayer('Player 11');
-// controller.Player.createPlayer('Player 12');
-// module.exports.startGame();
+module.exports.create();
+controller.Chat.create();
+controller.Player.createModerator('Josh');
+controller.Player.createPlayer('Player 1');
+controller.Player.createPlayer('Player 2');
+controller.Player.createPlayer('Player 3');
+controller.Player.createPlayer('Player 4');
+controller.Player.createPlayer('Player 5');
+controller.Player.createPlayer('Player 6');
+controller.Player.createPlayer('Player 7');
+controller.Player.createPlayer('Player 8');
+controller.Player.createPlayer('Player 9');
+controller.Player.createPlayer('Player 10');
+controller.Player.createPlayer('Player 11');
+controller.Player.createPlayer('Player 12');
+console.log(db.game.players['Player 9']);
+module.exports.startGame();
+controller.Player.updateRole('Player 9', 'seer');
+console.log(db.game.players['Player 9'].actions);
