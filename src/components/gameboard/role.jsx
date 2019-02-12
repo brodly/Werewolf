@@ -42,9 +42,9 @@ export default class Role extends React.Component {
     const { players, role } = this.props;
 
     return (
-      <div id="doctor-container">
-        <h3>Doctor</h3>
-        <button type="button" onClick={this.onClick} value="save">Save</button>
+      <div id="role-container">
+        <h3>{role}</h3>
+        <button type="button" onClick={this.onClick} value={role}>[ROLE ACTION]</button>
         <div id="player-list-row">
           {players.map(player => (player ? (
             <Player
