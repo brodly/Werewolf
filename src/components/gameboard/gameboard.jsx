@@ -1,3 +1,5 @@
+/* eslint-disable no-multi-spaces */
+/* eslint-disable key-spacing */
 import React from 'react';
 import io from 'socket.io-client';
 import Player from './player';
@@ -7,22 +9,25 @@ import Doctor from './doctor';
 import Wolf from './wolf';
 import Moderator from './moderator';
 
+import Role from './role';
+
 export default class Gameboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      role: 'villager',
-      selected: '',
-      players: [],
-      round: 1,
+      role:       'villager',
+      selected:   '',
+      players:    [],
+      round:      1,
     };
 
+    // INIT SOCKET VARIABLE
     this.socket = io();
 
-    this.updateRole = this.updateRole.bind(this);
-    this.handlePlayerSelectOnClick = this.handlePlayerSelectOnClick.bind(this);
-    this.handlePlayerSelectOnSubmit = this.handlePlayerSelectOnSubmit.bind(this);
-    this.roleAction = this.roleAction.bind(this);
+    // METHOD BINDING
+    this.handlePlayerSelectOnClick     = this.handlePlayerSelectOnClick.bind(this);
+    this.handlePlayerSelectOnSubmit    = this.handlePlayerSelectOnSubmit.bind(this);
+    this.roleAction                    = this.roleAction.bind(this);
   }
 
   componentDidMount() {
@@ -45,7 +50,7 @@ export default class Gameboard extends React.Component {
     // the changes
     this.socket.on('update selected', (data) => {
       const { players } = this.state;
-      const newPlayers = players;
+      const newPlayers  = players;
 
       players.forEach((player, i) => {
         if (player.username === data.username) {
@@ -67,52 +72,52 @@ export default class Gameboard extends React.Component {
     });
   }
 
-  updateRole() {
-    const { role, players, round } = this.state;
+  // updateRole() {
+  //   const { role, players, round } = this.state;
 
-    return (() => {
-      switch (role) {
-        case 'wolf': return (
-          <Wolf
-            round={round}
-            players={players}
-            handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
-          />
-        );
-        case 'villager': return (
-          <Villager
-            round={round}
-            players={players}
-            handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
-          />
-        );
-        case 'seer': return (
-          <Seer
-            round={round}
-            players={players}
-            handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
-          />
-        );
-        case 'doctor': return (
-          <Doctor
-            round={round}
-            players={players}
-            handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
-          />
-        );
-        case 'moderator': return (
-          <Moderator
-            handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
-          />
-        );
-        default: return 'Error: No Role Defined';
-      }
-    })();
-  }
+  //   return (() => {
+  //     switch (role) {
+  //       case 'wolf': return (
+  //         <Wolf
+  //           round={round}
+  //           players={players}
+  //           handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
+  //         />
+  //       );
+  //       case 'villager': return (
+  //         <Villager
+  //           round={round}
+  //           players={players}
+  //           handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
+  //         />
+  //       );
+  //       case 'seer': return (
+  //         <Seer
+  //           round={round}
+  //           players={players}
+  //           handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
+  //         />
+  //       );
+  //       case 'doctor': return (
+  //         <Doctor
+  //           round={round}
+  //           players={players}
+  //           handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
+  //         />
+  //       );
+  //       case 'moderator': return (
+  //         <Moderator
+  //           handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
+  //         />
+  //       );
+  //       default: return 'Error: No Role Defined';
+  //     }
+  //   })();
+  // }
 
   handlePlayerSelectOnClick(selected) {
     const { username } = this.props;
-    const { role } = this.state;
+    const { role }     = this.state;
 
     this.setState({ selected });
     this.socket.emit('emit selected', { role, username, selected });
@@ -139,7 +144,7 @@ export default class Gameboard extends React.Component {
 
   render() {
     const { username, players } = this.props;
-    const { role, selected } = this.state;
+    const { role, selected, round } = this.state;
 
     return (
       <div id="main-container">
@@ -147,9 +152,7 @@ export default class Gameboard extends React.Component {
           <h3>Gameboard</h3>
         </div>
         <div id="display-username">
-          {username}
-          is a
-          {role}
+          {username} is a {role}
         </div>
         <div id="player-list-container">
           <div id="player-list-header">
@@ -168,7 +171,12 @@ export default class Gameboard extends React.Component {
           </div>
         </div>
         <div id="player-role-container">
-          {this.updateRole()}
+          <Role
+            role={role}
+            round={round}
+            players={players}
+            handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
+          />
         </div>
       </div>
     );
