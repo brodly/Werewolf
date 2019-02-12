@@ -1,3 +1,4 @@
+/* eslint-disable no-multi-spaces */
 /* eslint-disable no-console */
 const axios = require('axios');
 const express = require('express');
@@ -108,7 +109,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('assign role', (username) => {
-    const role = controller.Player.getRole(username);
+    const role    = controller.Player.getRole(username);
     const players = controller.Player.getRolePlayerlist(role);
 
     socket.join(role, () => {
