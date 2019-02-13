@@ -108,17 +108,25 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('assign role', (username) => {
-    const role    = controller.Player.getRole(username);
-    const players = controller.Player.getRolePlayerlist(role);
+  socket.on('assign moderator', () => {
+    const moderator = controller.Player.getModerator;
 
-    socket.join(role, () => {
-      io.to(`${socket.id}`).emit('assigned role', { role, players });
+    socket.join('moderator', () => {
+      io.to('moderator').emit('assigned role', moderator);
     });
   });
 
-  socket.on('get role', (username) => {
-    io.to(`${socket.id}`).emit('set role', controller.Player.getRole(username));
+  socket.on('assign player', (username) => {
+    const player = controller.Player.getPlayer(username);
+
+    socket.join(player, () => {
+      io.to(`${socket.id}`).emit('assigned role', player);
+    });
+  });
+
+  socket.on('get player', (username) => {
+    const player = controller.Player.getPlayer(username);
+    io.to(`${socket.id}`).emit('set role', player);
   });
 
   socket.on('reveal player', ({ player, username }) => {
