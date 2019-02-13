@@ -58,10 +58,16 @@ module.exports = {
         });
 
         randRoles.forEach((role, i) => {
-          db.game.roles[role].list.push(db.game.players[randPlayers[i]]);
-          db.game.rolelist[randPlayers[i]] = role;
-          controller.Player.deleteFromPlayerlist(randPlayers[i]);
-          controller.Player.deleteFromReadylist(randPlayers[i]);
+          const username = randPlayers[i];
+          const player = db.game.players[username];
+
+          if (player) {
+            controller.Player.updateRole(username, role);
+            db.game.roles[role].list.push(player);
+            db.game.rolelist[username] = role;
+            // controller.Player.deleteFromPlayerlist(randPlayers[i]);
+            controller.Player.deleteFromReadylist(randPlayers[i]);
+          }
         });
 
         resolve([true, 'Game is starting']);
@@ -80,22 +86,22 @@ module.exports = {
   toggleNight: () => db.game.toggleNight(),
 };
 
-module.exports.create();
-controller.Chat.create();
-controller.Player.createModerator('Josh');
-controller.Player.createPlayer('Player 1');
-controller.Player.createPlayer('Player 2');
-controller.Player.createPlayer('Player 3');
-controller.Player.createPlayer('Player 4');
-controller.Player.createPlayer('Player 5');
-controller.Player.createPlayer('Player 6');
-controller.Player.createPlayer('Player 7');
-controller.Player.createPlayer('Player 8');
-controller.Player.createPlayer('Player 9');
-controller.Player.createPlayer('Player 10');
-controller.Player.createPlayer('Player 11');
-controller.Player.createPlayer('Player 12');
-console.log(db.game.players['Player 9']);
-module.exports.startGame();
-controller.Player.updateRole('Player 9', 'seer');
-console.log(db.game.players['Player 9'].actions);
+// module.exports.create();
+// controller.Chat.create();
+// controller.Player.createModerator('Josh');
+// controller.Player.createPlayer('Player 1');
+// controller.Player.createPlayer('Player 2');
+// controller.Player.createPlayer('Player 3');
+// controller.Player.createPlayer('Player 4');
+// controller.Player.createPlayer('Player 5');
+// controller.Player.createPlayer('Player 6');
+// controller.Player.createPlayer('Player 7');
+// controller.Player.createPlayer('Player 8');
+// controller.Player.createPlayer('Player 9');
+// controller.Player.createPlayer('Player 10');
+// controller.Player.createPlayer('Player 11');
+// controller.Player.createPlayer('Player 12');
+// console.log(db.game.players['Player 9']);
+// module.exports.startGame();
+// controller.Player.updateRole('Player 9', 'seer');
+// console.log(db.game.players['Player 9']);
