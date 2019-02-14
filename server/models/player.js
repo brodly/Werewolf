@@ -1,3 +1,26 @@
+const roleInfo = {
+  villager: {
+    role: 'villager',
+    title: 'Villager',
+    actions: ['Kill'],
+  },
+  wolf: {
+    role: 'wolf',
+    title: 'Wolf',
+    actions: ['Kill'],
+  },
+  seer: {
+    role: 'seer',
+    title: 'Seer',
+    actions: ['Reveal'],
+  },
+  doctor: {
+    role: 'doctor',
+    title: 'Doctor',
+    actions: ['Save'],
+  },
+};
+
 class User {
   constructor(username) {
     this.username = username;
@@ -9,8 +32,7 @@ class Moderator extends User {
     super(username);
     this.role = 'moderator';
     this.title = 'Moderator';
-    this.alive = false;
-    this.actions = ['start timer', 'next round'];
+    this.actions = ['Start Timer', 'Next Round'];
   }
 }
 
@@ -35,57 +57,12 @@ class Player extends User {
     else this.ready = false;
   }
 
-  updateRole(role, actions) {
-    this.role = role;
-    this.title = role.charAt(0).toUpperCase() + role.slice(1);
-    this.actions = actions;
+  updateRole(role) {
+    this.role = roleInfo[role].role;
+    this.title = roleInfo[role].title;
+    this.actions = roleInfo[role].actions;
   }
 }
 
-// class Villager extends Player {
-//   constructor(username) {
-//     super(username);
-//     this.role = 'villager';
-//     this.title = 'Villager';
-//     this.actions = ['kill'];
-//   }
-// }
-
-// class Wolf extends Player {
-//   constructor(username) {
-//     super(username);
-//     this.role = 'wolf';
-//     this.title = 'Wolf';
-//     this.actions = ['kill'];
-//   }
-// }
-
-// class Seer extends Player {
-//   constructor(username) {
-//     super(username);
-//     this.role = 'seer';
-//     this.title = 'Seer';
-//     this.actions = ['reveal'];
-//   }
-// }
-
-// class Doctor extends Player {
-//   constructor(username) {
-//     super(username);
-//     this.role = 'doctor';
-//     this.title = 'Doctor';
-//     this.actions = ['save'];
-//   }
-// }
-
 module.exports.Moderator = Moderator;
 module.exports.Player = Player;
-// module.exports.Role = (username, role) => (() => {
-//   switch (role) {
-//     case 'wolf': return Wolf;
-//     case 'doctor': return Doctor;
-//     case 'seer': return Seer;
-//     case 'villager': return Villager;
-//     default: return null;
-//   }
-// })();
