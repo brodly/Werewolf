@@ -27,7 +27,7 @@ export default class Role extends React.Component {
     const { submit } = this.state;
 
     if (submit) {
-      alert('Youve already submitted');
+      alert('You have already submitted');
     } else {
       handlePlayerSelectOnSubmit(e.target.value);
       this.setState({ submit: true });
@@ -39,21 +39,25 @@ export default class Role extends React.Component {
   }
 
   render() {
-    const { players, role } = this.props;
+    const { players, player } = this.props;
 
     return (
       <div id="role-container">
-        <h3>{role}</h3>
-        <button type="button" onClick={this.onClick} value={role}>[ROLE ACTION]</button>
+        <h3>{player.title}</h3>
+        {player.actions.map(action => (
+          <button type="button" onClick={this.onClick} value={`${player.role}-${action}`}>
+            {action}
+          </button>
+        ))}
         <div id="player-list-row">
-          {players.map(player => (player ? (
+          {players.map(p => (
             <Player
-              role={role}
-              name={player.username}
+              name={p}
               subtitle={player.alive}
               status={player.selected}
+              handlePlayerSelectOnClick={() => { }}
             />
-          ) : null))}
+          ))}
         </div>
       </div>
     );
