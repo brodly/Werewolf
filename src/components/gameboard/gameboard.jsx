@@ -15,10 +15,14 @@ export default class Gameboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      role:       'villager',
-      selected:   '',
-      players:    [],
-      round:      1,
+      player: {
+        role:       '',
+        title:      '',
+        actions:    [],
+      },
+      selected:     '',
+      players:      [],
+      round:        1,
     };
 
     // INIT SOCKET VARIABLE
@@ -31,17 +35,15 @@ export default class Gameboard extends React.Component {
   }
 
   componentDidMount() {
-    const { username } = this.props;
+    const { username, role } = this.props;
 
     // On mount client asks for their role and then assigns
     // itself a role based on the 'assigned role' data
-    this.socket.emit('assign role', username);
-    this.socket.on('assigned role', ({ role, players }) => {
-      if (role === undefined) {
-        this.setState({ role: 'moderator', players });
-      } else {
-        this.setState({ role, players });
-      }
+    if (role !== 'moderator') this.socket.emit('assign player', username);
+    else this.socket.emit('assign moderator', username);
+
+    this.socket.on('assigned role', (player) => {
+      this.setState({ player });
     });
 
     // Manages the client selecting a player in the player list
@@ -49,8 +51,9 @@ export default class Gameboard extends React.Component {
     // for the changed state and updates its local state to reflect
     // the changes
     this.socket.on('update selected', (data) => {
-      const { players } = this.state;
+      const { players } = this.props;
       const newPlayers  = players;
+
 
       players.forEach((player, i) => {
         if (player.username === data.username) {
@@ -117,7 +120,7 @@ export default class Gameboard extends React.Component {
 
   handlePlayerSelectOnClick(selected) {
     const { username } = this.props;
-    const { role }     = this.state;
+    const { role }     = this.state.player;
 
     this.setState({ selected });
     this.socket.emit('emit selected', { role, username, selected });
@@ -125,7 +128,6 @@ export default class Gameboard extends React.Component {
 
   handlePlayerSelectOnSubmit(action) {
     const { selected } = this.state;
-
     this.roleAction(action, selected);
   }
 
@@ -143,8 +145,8 @@ export default class Gameboard extends React.Component {
   }
 
   render() {
-    const { username, players } = this.props;
-    const { role, selected, round } = this.state;
+    const { username, players }            = this.props;
+    const { selected, round, player }      = this.state;
 
     return (
       <div id="main-container">
@@ -152,19 +154,18 @@ export default class Gameboard extends React.Component {
           <h3>Gameboard</h3>
         </div>
         <div id="display-username">
-          {username} is a {role}
+          {username} is a {player.role}
         </div>
         <div id="player-list-container">
           <div id="player-list-header">
             Player List
           </div>
           <div id="player-list-row">
-            {players.map(player => (
+            {players.map(name => (
               <Player
-                name={player}
+                name={name}
                 subtitle="Player Image"
-                // status={ready}
-                selected={selected}
+                // status={null}
                 handlePlayerSelectOnClick={this.handlePlayerSelectOnClick}
               />
             ))}
@@ -172,7 +173,7 @@ export default class Gameboard extends React.Component {
         </div>
         <div id="player-role-container">
           <Role
-            role={role}
+            player={player}
             round={round}
             players={players}
             handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
