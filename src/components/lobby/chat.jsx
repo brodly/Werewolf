@@ -1,5 +1,4 @@
 import React from 'react';
-import io from 'socket.io-client';
 
 export default class Chat extends React.Component {
   constructor(props) {
@@ -10,7 +9,7 @@ export default class Chat extends React.Component {
       messages: [],
     };
 
-    this.socket = io();
+    this.socket = this.props.socket;
     this.handleUpdateMessage = this.handleUpdateMessage.bind(this);
     this.handleOnSubmit = this.handleOnSubmit.bind(this);
   }
