@@ -1,25 +1,4 @@
-const roleInfo = {
-  villager: {
-    role: 'villager',
-    title: 'Villager',
-    actions: ['Kill'],
-  },
-  wolf: {
-    role: 'wolf',
-    title: 'Wolf',
-    actions: ['Kill'],
-  },
-  seer: {
-    role: 'seer',
-    title: 'Seer',
-    actions: ['Reveal'],
-  },
-  doctor: {
-    role: 'doctor',
-    title: 'Doctor',
-    actions: ['Save'],
-  },
-};
+const { Roles } = require('./');
 
 class User {
   constructor(username) {
@@ -58,9 +37,9 @@ class Player extends User {
   }
 
   updateRole(role) {
-    this.role = roleInfo[role].role;
-    this.title = roleInfo[role].title;
-    this.actions = roleInfo[role].actions;
+    this.role = Roles[role].role;
+    this.title = Roles[role].title;
+    this.actions = Roles[role].actions;
   }
 }
 
