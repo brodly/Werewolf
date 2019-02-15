@@ -81,6 +81,7 @@ export default class App extends React.Component {
                 role={role}
                 username={username}
                 players={players}
+                socket={this.socket}
               />
             );
             case 'lobby': return (
@@ -90,6 +91,7 @@ export default class App extends React.Component {
                 role={role}
                 handleSwitchDisplay={this.handleSwitchDisplay}
                 players={players}
+                socket={this.socket}
               />
             );
             default: return 'Loading...';
@@ -100,6 +102,7 @@ export default class App extends React.Component {
             handleCreateGameOnClick={this.handleCreateGameOnClick}
             handleUsernameInput={this.handleUsernameInput}
             handleJoinGameOnClick={this.handleJoinGameOnClick}
+            socket={this.socket}
           />
         )}
         {/* <gameTimer gameTimer={gameTimer} /> */}
