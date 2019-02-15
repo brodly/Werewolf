@@ -1,14 +1,7 @@
 /* eslint-disable no-multi-spaces */
 /* eslint-disable key-spacing */
 import React from 'react';
-import io from 'socket.io-client';
 import Player from './player';
-import Villager from './villager';
-import Seer from './seer';
-import Doctor from './doctor';
-import Wolf from './wolf';
-import Moderator from './moderator';
-
 import Role from './role';
 
 export default class Gameboard extends React.Component {
@@ -26,7 +19,7 @@ export default class Gameboard extends React.Component {
     };
 
     // INIT SOCKET VARIABLE
-    this.socket = io();
+    this.socket                        = this.props.socket;
 
     // METHOD BINDING
     this.handlePlayerSelectOnClick     = this.handlePlayerSelectOnClick.bind(this);
@@ -35,13 +28,23 @@ export default class Gameboard extends React.Component {
   }
 
   componentDidMount() {
-    const { username, role } = this.props;
+    const { username, role, players } = this.props;
+
+    // Assigns players list from props to state
+    this.setState({ players });
 
     // On mount client asks for their role and then assigns
     // itself a role based on the 'assigned role' data
-    if (role !== 'moderator') this.socket.emit('assign player', username);
-    else this.socket.emit('assign moderator', username);
+    // **Client recognizes if its a player or a moderator not the server**
+    if (role !== 'moderator') {
+      this.socket.emit('assign player', username);
+    } else {
+      this.socket.emit('assign moderator', username);
+    }
 
+    // Sets player role when it receieves role from server
+    // **This works regardless of player or moderator as the client
+    // will ask for moderator role if it recognizes its a moderator**
     this.socket.on('assigned role', (player) => {
       this.setState({ player });
     });
@@ -50,14 +53,14 @@ export default class Gameboard extends React.Component {
     // after game has started. Parses the updated player object
     // for the changed state and updates its local state to reflect
     // the changes
-    this.socket.on('update selected', (data) => {
-      const { players } = this.props;
+    this.socket.on('update selected', ({ username, selected }) => {
+      const { players } = this.state;
       const newPlayers  = players;
 
 
       players.forEach((player, i) => {
-        if (player.username === data.username) {
-          newPlayers[i].selected = data.selected;
+        if (player.username === username) {
+          newPlayers[i].selected = selected;
         }
       });
 
@@ -69,10 +72,10 @@ export default class Gameboard extends React.Component {
       this.setState({ round });
     });
 
-    // Seer On Listener Event
-    this.socket.on('player role', (role) => {
-      console.log(role);
-    });
+    // // Seer On Listener Event
+    // this.socket.on('player role', (role) => {
+    //   console.log(role);
+    // });
   }
 
   // updateRole() {
@@ -123,7 +126,7 @@ export default class Gameboard extends React.Component {
     const { role }     = this.state.player;
 
     this.setState({ selected });
-    this.socket.emit('emit selected', { role, username, selected });
+    this.socket.emit('player selected', { role, username, selected });
   }
 
   handlePlayerSelectOnSubmit(action) {
@@ -145,8 +148,8 @@ export default class Gameboard extends React.Component {
   }
 
   render() {
-    const { username, players }            = this.props;
-    const { selected, round, player }      = this.state;
+    const { round, player, players } = this.state;
+    const { username }               = this.props;
 
     return (
       <div id="main-container">
@@ -165,7 +168,7 @@ export default class Gameboard extends React.Component {
               <Player
                 name={name}
                 subtitle="Player Image"
-                // status={null}
+                status={name.selected}
                 handlePlayerSelectOnClick={this.handlePlayerSelectOnClick}
               />
             ))}
