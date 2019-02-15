@@ -59,13 +59,11 @@ module.exports = {
 
         randRoles.forEach((role, i) => {
           const username = randPlayers[i];
-          const player = db.game.players[username];
+          const player = controller.Player.getPlayer(username);
 
           if (player) {
-            controller.Player.updateRole(username, role);
-            db.game.roles[role].list.push(player);
-            db.game.rolelist[username] = role;
-            // controller.Player.deleteFromPlayerlist(randPlayers[i]);
+            controller.Player.assignRole(username, role);
+            controller.Player.deleteFromPlayerlist(randPlayers[i]);
             controller.Player.deleteFromReadylist(randPlayers[i]);
           }
         });
