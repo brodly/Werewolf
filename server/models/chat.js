@@ -9,6 +9,17 @@ class Chat {
     this.messageId += 1;
     return id;
   }
+
+  toggleReady(username) {
+    const status = this.readylist[username];
+    if (status) this.readylist[username] = false;
+    else this.readylist[username] = true;
+    return this.readylist[username];
+  }
+
+  deleteFromReadylist(username) {
+    delete this.readylist[username];
+  }
 }
 
 class Message {
