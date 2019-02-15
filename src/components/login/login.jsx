@@ -1,14 +1,12 @@
 import React from 'react';
-import io from 'socket.io-client';
 
 const Login = ({
   username,
   handleUsernameInput,
   handleCreateGameOnClick,
   handleJoinGameOnClick,
+  socket,
 }) => {
-  const socket = io();
-
   const usernameInput = (e) => {
     handleUsernameInput(e.target.value);
   };
