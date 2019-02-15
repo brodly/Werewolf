@@ -1,5 +1,4 @@
 import React from 'react';
-import io from 'socket.io-client';
 import PlayerId from './playerId';
 import ModeratorControls from './moderatorcontrols';
 import UserControls from './usercontrols';
@@ -13,7 +12,7 @@ export default class Lobby extends React.Component {
       selected: null,
     };
 
-    this.socket = io();
+    this.socket = this.props.socket;
     this.handleRemoveUserOnClick = this.handleRemoveUserOnClick.bind(this);
     this.handleStartGameOnClick = this.handleStartGameOnClick.bind(this);
     this.handleUserLeaveOnClick = this.handleUserLeaveOnClick.bind(this);
@@ -137,7 +136,10 @@ export default class Lobby extends React.Component {
             ))}
           </div>
         </div>
-        <Chat username={username} />
+        <Chat
+          username={username}
+          socket={this.socket}
+        />
       </div>
     );
   }
