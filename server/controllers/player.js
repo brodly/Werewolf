@@ -15,20 +15,20 @@ module.exports = {
       }
     });
   },
-  updateModerator(username) {
-    const moderator = new Moderator(username);
-    return new Promise((resolve, reject) => {
-      if (!moderator) {
-        console.log('Moderator could not be updated');
-        reject(false);
-      } else {
-        db.game.players[username] = db.game.moderator;
-        db.game.moderator = moderator;
-        console.log(`${username} is now the moderator`);
-        resolve(true);
-      }
-    });
-  },
+  // updateModerator(username) {
+  //   const moderator = new Moderator(username);
+  //   return new Promise((resolve, reject) => {
+  //     if (!moderator) {
+  //       console.log('Moderator could not be updated');
+  //       reject(false);
+  //     } else {
+  //       db.game.players[username] = db.game.moderator;
+  //       db.game.moderator = moderator;
+  //       console.log(`${username} is now the moderator`);
+  //       resolve(true);
+  //     }
+  //   });
+  // },
   createPlayer: (username) => {
     const player = new Player(username);
     return new Promise((resolve, reject) => {
@@ -36,43 +36,23 @@ module.exports = {
         console.log('Player could not be created');
         reject(false);
       } else {
-        db.game.players[username] = player;
-        db.chat.readylist[username] = false;
+        db.game.player.add(player);
+        db.chat.toggleReady(username);
         console.log(`${username} was created.`);
         resolve(true);
       }
     });
   },
-  updateRole: (username, role) => {
-    const player = db.game.players[username];
-
-    if (player) {
-      player.updateRole(role);
-      return player;
-    }
-
-    return null;
-  },
-  deleteFromPlayerlist: username => delete db.game.players[username],
-  deleteFromReadylist: (username) => { delete db.chat.readylist[username]; },
-  // get: username => db.game.players[username],
+  assignRole: (username, role) => { db.game.player.assignRole(username, role); },
+  deleteFromPlayerlist: (username) => { db.game.player.deleteFromPlayerlist(username); },
+  deleteFromReadylist: (username) => { db.chat.deleteFromReadylist(username); },
   get getModerator() { return db.game.moderator; },
-  getRole: username => db.game.rolelist[username],
-  getPlayer: (username) => {
-    let player;
-    const role = db.game.rolelist[username];
-
-    db.game.roles[role].list.forEach((p) => {
-      if (p.username === username) {
-        player = p;
-      }
-    });
-    return player;
-  },
-  getRolePlayerlist: role => (role !== undefined ? db.game.roles[role].list : null),
-  get playerlist() { return Object.keys(db.game.players); },
-  ready: (username) => { db.chat.readylist[username] = true; },
-  unready: (username) => { db.chat.readylist[username] = false; },
+  getPlayer: username => db.game.player.get(username),
+  getPlayerRole: username => db.game.player.getRole(username),
+  getListOfPlayersByRole: role => db.game.role.list(role),
+  getSelectedListByRole: role => db.game.selected.getList(role),
+  get playerlist() { return db.game.player.list; },
+  toggleReady: username => db.chat.toggleReady(username),
   // getSelection: username => db.game.players[username].selected,
   // setSelection: (username, selection) => { db.game.players[username].selected = selection; },
 
