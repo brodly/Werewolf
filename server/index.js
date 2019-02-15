@@ -46,8 +46,13 @@ io.on('connection', (socket) => {
 
   socket.on('player ready', async (username) => {
     try {
-      controller.Player.ready(username);
-      const message = await controller.Chat.newMessage(null, `${username} is ready`);
+      let message;
+      const status = controller.Player.toggleReady(username);
+      if (status) {
+        message = await controller.Chat.newMessage(null, `${username} is ready`);
+      } else {
+        message = await controller.Chat.newMessage(null, `${username} is not ready`);
+      }
       await io.emit('chat message', message);
     } catch (err) {
       console.error(err);
@@ -145,8 +150,9 @@ io.on('connection', (socket) => {
     controller.Game.addToAction(player, 'save');
   });
 
-  socket.on('emit selected', ({ role, username, selected }) => {
+  socket.on('player selected', ({ role, username, selected }) => {
     // controller.Player.setSelection(username, selected);
+    console.log(role, username, selected);
     io.to(role).emit('update selected', { username, selected });
   });
 
