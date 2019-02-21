@@ -1,4 +1,4 @@
-const { Roles } = require('./');
+const Roles = require('./roles');
 
 class User {
   constructor(username) {
