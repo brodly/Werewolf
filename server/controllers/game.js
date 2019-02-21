@@ -59,12 +59,11 @@ module.exports = {
 
         randRoles.forEach((role, i) => {
           const username = randPlayers[i];
-          const player = controller.Player.getPlayer(username);
 
-          if (player) {
+          if (username) {
             controller.Player.assignRole(username, role);
-            controller.Player.deleteFromPlayerlist(randPlayers[i]);
-            controller.Player.deleteFromReadylist(randPlayers[i]);
+            controller.Player.deleteFromPlayerlist(username);
+            controller.Player.deleteFromReadylist(username);
           }
         });
 
@@ -99,7 +98,8 @@ module.exports = {
 // controller.Player.createPlayer('Player 10');
 // controller.Player.createPlayer('Player 11');
 // controller.Player.createPlayer('Player 12');
-// console.log(db.game.players['Player 9']);
+// console.log(db.game.player.get('Player 9'));
 // module.exports.startGame();
-// controller.Player.updateRole('Player 9', 'seer');
+// controller.Player.assignRole('Player 9', 'seer');
+// console.log(db.game.player.get('Player 9'));
 // console.log(db.game.players['Player 9']);
