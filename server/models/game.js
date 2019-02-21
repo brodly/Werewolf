@@ -65,67 +65,56 @@ class Game {
       },
     };
 
-    this.action = {
-      add: (player, action) => {
-        if (this.action[action].list[player]) {
-          this.action[action].list[player] += 1;
-        } else {
-          this.action[action].list[player] = 1;
-        }
-      },
-      reset: (action) => { this.action[action].list = {}; },
-      tally: (action) => {
-        let result = '';
-        let maxCount = 0;
-
-        const list = Object.keys(this.action[action].list);
-
-        list.forEach((player) => {
-          if (list[player] > maxCount) {
-            result = player;
-            maxCount = list[player];
-          }
-        });
-
-        return result;
-      },
-      reveal: {
-        list: {},
-      },
-      save: {
-        list: {},
-      },
-      kill: {
-        list: {},
-      },
-    };
-
     this.player = {
+      /**
+       * @param {object} player Pass in the player object you want to add to the player list
+       */
       add(player) {
         that.players[player.username] = player;
       },
+      /**
+       * @param {string} username Pass in the username as a string
+       * @return {object} Returns the player object
+       */
       get(username) {
         const role = that.player.getRole(username);
         return that.roles[role].list[username];
       },
+      /**
+       * Assigns the indicated player with the passed in role on the actual player object
+       * @param {string} username
+       * @param {string} role
+       */
       assignRole(username, role) {
         that.players[username].updateRole(role);
         that.rolelist[username] = role;
         that.roles[role].list[username] = that.players[username];
       },
+      /**
+       * Removes the player object from the player list
+       * @param {string} username
+       */
       deleteFromPlayerlist(username) {
         delete that.players[username];
       },
+      /**
+       * Returns specific role of user
+       * @param {string} username
+       * @return {string} Returns users role
+       */
       getRole(username) {
-        return that.role.getUser(username);
+        return that.role.byUser(username);
       },
+      /**
+       * @return {array} Returns an array of all players in game
+       */
       get list() {
         return Object.keys(that.players);
       },
     };
 
     this.role = {
-      getUser(username) {
+      byUser(username) {
         return that.rolelist[username];
       },
       getList() {
@@ -167,6 +156,41 @@ class Game {
       nextRound() {
         that.round += 1;
         return that.round;
+      },
+    };
+
+    this.action = {
+      add: (player, action) => {
+        if (this.action[action].list[player]) {
+          this.action[action].list[player] += 1;
+        } else {
+          this.action[action].list[player] = 1;
+        }
+      },
+      reset: (action) => { this.action[action].list = {}; },
+      tally: (action) => {
+        let result = '';
+        let maxCount = 0;
+
+        const list = Object.keys(this.action[action].list);
+
+        list.forEach((player) => {
+          if (list[player] > maxCount) {
+            result = player;
+            maxCount = list[player];
+          }
+        });
+
+        return result;
+      },
+      reveal: {
+        list: {},
+      },
+      save: {
+        list: {},
+      },
+      kill: {
+        list: {},
       },
     };
   }
