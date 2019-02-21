@@ -1,20 +1,20 @@
 /* eslint-disable no-multi-spaces */
 /* eslint-disable no-console */
-const axios = require('axios');
-const express = require('express');
-const http = require('http');
-const path = require('path');
+const axios    = require('axios');
+const express  = require('express');
+const http     = require('http');
+const path     = require('path');
 const socketIO = require('socket.io');
 
-// routes and controller
-const router = require('./routes/index');
+// router and controller
+const router     = require('./routes/index');
 const controller = require('./controllers');
 
 // server variables
-const app = express();
+const app    = express();
 const server = http.createServer(app);
-const io = socketIO(server);
-const port = process.env.PORT || 3000;
+const io     = socketIO(server);
+const port   = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.static(path.join(__dirname, '../dist')));
@@ -27,113 +27,34 @@ app.get('/debug', router);
 io.on('connection', (socket) => {
   console.log('A user connected', socket.id);
 
-  socket.on('new game', (username) => {
-    controller.Game.create();
-    controller.Chat.create();
-    controller.Player.createModerator(username);
-  });
+  // CREATE EVENTS
+  socket.on('new game',         (username) => { controller.NewGame(username); });
+  socket.on('new user',         (username) => { controller.NewUser(io, username); });
 
-  socket.on('new user', async (username) => {
-    try {
-      await controller.Player.createPlayer(username);
-      const message = await controller.Chat.newMessage(null, `${username} has joined!`);
-      await io.emit('update player list', controller.Player.playerlist);
-      await io.emit('chat message', message);
-    } catch (err) {
-      console.error(err);
-    }
-  });
+  // GAME EVENTS
+  socket.on('try start game',   ()         => { controller.TryStartGame(io); });
+  socket.on('start game',       (data)     => { controller.StartGame(data); });
+  socket.on('next round',       ()         => { controller.NextRound(io); });
 
-  socket.on('player ready', async (username) => {
-    try {
-      let message;
-      const status = controller.Player.toggleReady(username);
-      if (status) {
-        message = await controller.Chat.newMessage(null, `${username} is ready`);
-      } else {
-        message = await controller.Chat.newMessage(null, `${username} is not ready`);
-      }
-      await io.emit('chat message', message);
-    } catch (err) {
-      console.error(err);
-    }
-  });
+  // MODERATOR EVENTS
+  socket.on('make moderator',   ()         => { controller.MakeModerator(io, socket); });
+  socket.on('update moderator', (username) => { controller.UpdateModerator(io, username); });
 
-  socket.on('player leave', async (username) => {
-    try {
-      await controller.Player.deletePlayer(username);
-      await io.emit('update player list', controller.Player.playerlist);
-      const message = await controller.Chat.newMessage(null, `${username} has left!`);
-      await io.emit('chat message', message);
-    } catch (err) {
-      console.error(err);
-    }
-  });
+  // PLAYER EVENTS
+  socket.on('make player',      (username) => { controller.MakePlayer(io, socket, username); });
+  socket.on('player ready',     (username) => { controller.PlayerReady(io, username); });
+  socket.on('player leave',     (username) => { controller.PlayerLeave(io, username); });
+  socket.on('get player',       (username) => { controller.GetPlayer(io, socket, username); });
+  socket.on('player selected',  (data)     => { controller.PlayerSelected(io, data); });
 
-  socket.on('update moderator', async (username) => {
-    try {
-      await controller.Player.updateModerator(username);
-      const message = await controller.Chat.newMessage(null, `${username} is now the moderator`);
-      await io.emit('chat message', message);
-    } catch (err) {
-      console.error(err);
-    }
-  });
+  // CHAT EVENTS
+  socket.on('chat message',     (data)     => { controller.ChatMessage(io, data); });
 
-  socket.on('try start game', async () => {
-    try {
-      const status = await controller.Game.startGame();
-      const message = await controller.Chat.newMessage(null, status[1]);
-      await io.emit('chat message', message);
-      if (status[0]) {
-        await io.emit('start game', 'game');
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  });
+  /**
+   * EVENTS BELOW ARE STILL WORK IN PROGRESS
+   */
 
-  socket.on('start game', (data) => {
-    console.log(data);
-  });
-
-  socket.on('disconnect', (data) => {
-    // TODO: remove user from playerList
-    // Have to find how to pass username into the data object
-    // make socket.id key, value is username -- store in DB
-    console.log(data, socket.id, 'user disconnected');
-  });
-
-  socket.on('chat message', async (data) => {
-    try {
-      const message = await controller.Chat.newMessage(data.username, data.message);
-      await io.emit('chat message', message);
-    } catch (err) {
-      console.error(err);
-    }
-  });
-
-  socket.on('assign moderator', () => {
-    const moderator = controller.Player.getModerator;
-
-    socket.join('moderator', () => {
-      io.to('moderator').emit('assigned role', moderator);
-    });
-  });
-
-  socket.on('assign player', (username) => {
-    const player = controller.Player.getPlayer(username);
-
-    socket.join(player, () => {
-      io.to(`${socket.id}`).emit('assigned role', player);
-    });
-  });
-
-  socket.on('get player', (username) => {
-    const player = controller.Player.getPlayer(username);
-    io.to(`${socket.id}`).emit('set role', player);
-  });
-
+  // ROLE EVENTS
   socket.on('reveal player', ({ player, username }) => {
     // console.log(username + ' wants to see ' + player);
     controller.Game.addToAction(player, 'reveal');
@@ -150,14 +71,12 @@ io.on('connection', (socket) => {
     controller.Game.addToAction(player, 'save');
   });
 
-  socket.on('player selected', ({ role, username, selected }) => {
-    // controller.Player.setSelection(username, selected);
-    console.log(role, username, selected);
-    io.to(role).emit('update selected', { username, selected });
-  });
-
-  socket.on('next round', () => {
-    io.emit('update round', controller.Game.nextRound());
+  // DISCONNET EVENTS
+  socket.on('disconnect', (data) => {
+    // TODO: remove user from playerList
+    // Have to find how to pass username into the data object
+    // make socket.id key, value is username -- store in DB
+    console.log(data, socket.id, 'user disconnected');
   });
 });
 
