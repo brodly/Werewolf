@@ -81,9 +81,14 @@ class Game {
        * @param {string} role
        */
       assignRole(username, role) {
+        const player = {
+          username,
+          selected: null,
+        };
+
         that.players[username].updateRole(role);
         that.rolelist[username] = role;
-        that.roles[role].list.push(that.players[username]);
+        that.roles[role].list.push(player);
       },
       /**
        * Removes the player object from the player list
