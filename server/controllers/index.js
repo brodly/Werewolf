@@ -14,3 +14,4 @@ module.exports.GetPlayer = require('./socket_events/get_player');
 module.exports.StartGame = require('./socket_events/start_game');
 module.exports.PlayerSelected = require('./socket_events/player_selected');
 module.exports.NextRound = require('./socket_events/next_round');
+module.exports.GetRolelist = require('./socket_events/get_rolelist');
