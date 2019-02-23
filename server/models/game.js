@@ -69,17 +69,12 @@ class Game {
       /**
        * @param {object} player Pass in the player object you want to add to the player list
        */
-      add(player) {
-        that.players[player.username] = player;
-      },
+      add(player) { that.players[player.username] = player; },
       /**
        * @param {string} username Pass in the username as a string
        * @return {object} Returns the player object
        */
-      get(username) {
-        const role = that.player.getRole(username);
-        return that.roles[role].list[username];
-      },
+      get(username) { return that.players[username]; },
       /**
        * Assigns the indicated player with the passed in role on the actual player object
        * @param {string} username
@@ -88,7 +83,7 @@ class Game {
       assignRole(username, role) {
         that.players[username].updateRole(role);
         that.rolelist[username] = role;
-        that.roles[role].list[username] = that.players[username];
+        that.roles[role].list.push(that.players[username]);
       },
       /**
        * Removes the player object from the player list
@@ -117,11 +112,12 @@ class Game {
       byUser(username) {
         return that.rolelist[username];
       },
-      getList() {
+      get list() {
         return that.rolelist;
       },
       listOfPlayers(role) {
-        return that.role[role].list;
+        // console.log(that.roles[role]);
+        return that.roles[role].list;
       },
     };
 
