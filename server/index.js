@@ -44,12 +44,14 @@ io.on('connection', (socket) => {
   socket.on('make player',      (username) => { controller.MakePlayer(io, socket, username); });
   socket.on('player ready',     (username) => { controller.PlayerReady(io, username); });
   socket.on('player leave',     (username) => { controller.PlayerLeave(io, username); });
-  socket.on('get player',       (username) => { controller.GetPlayer(io, socket, username); });
   socket.on('player selected',  (data)     => { controller.PlayerSelected(io, data); });
+
+  // CLIENT REQUESTS
+  socket.on('get player',       (username) => { controller.GetPlayer(io, socket, username); });
+  socket.on('get rolelist',     (role)     => { controller.GetRolelist(io, role); });
 
   // CHAT EVENTS
   socket.on('chat message',     (data)     => { controller.ChatMessage(io, data); });
-
   /**
    * EVENTS BELOW ARE STILL WORK IN PROGRESS
    */
