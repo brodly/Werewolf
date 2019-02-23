@@ -39,7 +39,7 @@ export default class Role extends React.Component {
   }
 
   render() {
-    const { players, player } = this.props;
+    const { rolelist, player } = this.props;
 
     return (
       <div id="role-container">
@@ -50,11 +50,11 @@ export default class Role extends React.Component {
           </button>
         ))}
         <div id="player-list-row">
-          {players.map(p => (
+          {rolelist.map(p => (
             <Player
-              name={p}
-              subtitle={player.alive}
-              status={player.selected}
+              name={p.username}
+              subtitle={p.alive}
+              status={p.selected}
               handlePlayerSelectOnClick={() => { }}
             />
           ))}
