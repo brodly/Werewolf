@@ -58,11 +58,7 @@ module.exports = {
 
       randRoles.forEach((role, i) => {
         const username = randPlayers[i];
-
-        if (username) {
-          controller.Player.assignRole(username, role);
-          controller.Player.deleteFromPlayerlist(username);
-        }
+        if (username) controller.Player.assignRole(username, role);
       });
 
       return [true, 'Game is starting'];
