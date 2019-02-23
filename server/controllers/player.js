@@ -33,6 +33,7 @@ module.exports = {
 
   // ACTION FUNCTIONS
   toggleReady: username => db.chat.toggleReady(username),
+  updateSelected: (role, username, selected) => db.game.selected.update(role, username, selected),
 
 
 
