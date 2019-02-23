@@ -51,7 +51,7 @@ export default class App extends React.Component {
   }
 
   handleJoinGameOnClick() {
-    this.setState({ role: null, login: true });
+    this.setState({ role: 'player', login: true });
   }
 
   handleSwitchDisplay(display) {
