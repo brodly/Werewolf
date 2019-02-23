@@ -22,4 +22,5 @@ module.exports = {
       else resolve(message);
     });
   },
+  get readylist() { return db.chat.readylist; },
 };
