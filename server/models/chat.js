@@ -17,8 +17,16 @@ class Chat {
     return this.readylist[username];
   }
 
+  addToReadylist(username) {
+    this.readylist[username] = false;
+  }
+
   deleteFromReadylist(username) {
     delete this.readylist[username];
+  }
+
+  readyStatus(username) {
+    return this.readylist[username];
   }
 }
 
