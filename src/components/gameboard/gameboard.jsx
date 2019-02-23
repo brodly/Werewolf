@@ -1,6 +1,8 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable no-multi-spaces */
 /* eslint-disable key-spacing */
 import React from 'react';
+import PropTypes from 'prop-types';
 import Player from './player';
 import Role from './role';
 
@@ -8,14 +10,14 @@ export default class Gameboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      player: {
-        role:       '',
-        title:      '',
-        actions:    [],
+      player:     {
+        title: '',
+        role: '',
+        actions: [],
       },
-      selected:     '',
-      players:      [],
-      round:        1,
+      rolelist:   [],
+      selected:   '',
+      round:      1,
     };
 
     // INIT SOCKET VARIABLE
@@ -25,46 +27,36 @@ export default class Gameboard extends React.Component {
     this.handlePlayerSelectOnClick     = this.handlePlayerSelectOnClick.bind(this);
     this.handlePlayerSelectOnSubmit    = this.handlePlayerSelectOnSubmit.bind(this);
     this.roleAction                    = this.roleAction.bind(this);
+    // this.getRolePlayerList             = this.getRolePlayerList.bind(this);
   }
 
   componentDidMount() {
-    const { username, role, players } = this.props;
-
-    // Assigns players list from props to state
-    this.setState({ players });
+    const { username, role } = this.props;
 
     // On mount client asks for their role and then assigns
     // itself a role based on the 'assigned role' data
-    // **Client recognizes if its a player or a moderator not the server**
-    if (role !== 'moderator') {
-      this.socket.emit('assign player', username);
+    //
+    // NOTE: Client recognizes if its a player or a moderator not the server
+    if (role === 'player') {
+      this.socket.emit('make player', username);
     } else {
-      this.socket.emit('assign moderator', username);
+      this.socket.emit('make moderator', username);
     }
 
-    // Sets player role when it receieves role from server
-    // **This works regardless of player or moderator as the client
-    // will ask for moderator role if it recognizes its a moderator**
-    this.socket.on('assigned role', (player) => {
-      this.setState({ player });
+    // Updates role list when it receives list from server
+    this.socket.on('rolelist', (rolelist) => {
+      this.setState({ rolelist });
     });
 
-    // Manages the client selecting a player in the player list
-    // after game has started. Parses the updated player object
-    // for the changed state and updates its local state to reflect
-    // the changes
-    this.socket.on('update selected', ({ username, selected }) => {
-      const { players } = this.state;
-      const newPlayers  = players;
-
-
-      players.forEach((player, i) => {
-        if (player.username === username) {
-          newPlayers[i].selected = selected;
+    // Sets player role when it receieves role from server
+    // Works for moderator and player
+    // NOTE: Rolelist is only requested by players
+    this.socket.on('assigned role', (player) => {
+      this.setState({ player }, () => {
+        if (player.role !== 'moderator') {
+          this.socket.emit('get rolelist', player.role);
         }
       });
-
-      this.setState({ players: newPlayers });
     });
 
     // Next Round Listen Event
@@ -78,52 +70,16 @@ export default class Gameboard extends React.Component {
     // });
   }
 
-  // updateRole() {
-  //   const { role, players, round } = this.state;
-
-  //   return (() => {
-  //     switch (role) {
-  //       case 'wolf': return (
-  //         <Wolf
-  //           round={round}
-  //           players={players}
-  //           handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
-  //         />
-  //       );
-  //       case 'villager': return (
-  //         <Villager
-  //           round={round}
-  //           players={players}
-  //           handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
-  //         />
-  //       );
-  //       case 'seer': return (
-  //         <Seer
-  //           round={round}
-  //           players={players}
-  //           handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
-  //         />
-  //       );
-  //       case 'doctor': return (
-  //         <Doctor
-  //           round={round}
-  //           players={players}
-  //           handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
-  //         />
-  //       );
-  //       case 'moderator': return (
-  //         <Moderator
-  //           handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
-  //         />
-  //       );
-  //       default: return 'Error: No Role Defined';
-  //     }
-  //   })();
+  // getRolePlayerList(role) {
+  //   this.socket.emit('get rolelist', role);
+  //   this.socket.on('rolelist', (rolelist) => {
+  //     this.setState({ rolelist });
+  //   });
   // }
 
   handlePlayerSelectOnClick(selected) {
-    const { username } = this.props;
-    const { role }     = this.state.player;
+    const { username }  = this.props;
+    const { role }      = this.state.player;
 
     this.setState({ selected });
     this.socket.emit('player selected', { role, username, selected });
@@ -148,8 +104,8 @@ export default class Gameboard extends React.Component {
   }
 
   render() {
-    const { round, player, players } = this.state;
-    const { username }               = this.props;
+    const { round, player, rolelist }     = this.state;
+    const { username, role, players }     = this.props;
 
     return (
       <div id="main-container">
@@ -157,7 +113,7 @@ export default class Gameboard extends React.Component {
           <h3>Gameboard</h3>
         </div>
         <div id="display-username">
-          {username} is a {player.role}
+          {username} is a {role === 'moderator' ? role : player.role}
         </div>
         <div id="player-list-container">
           <div id="player-list-header">
@@ -168,7 +124,7 @@ export default class Gameboard extends React.Component {
               <Player
                 name={name}
                 subtitle="Player Image"
-                status={name.selected}
+                status="Status"
                 handlePlayerSelectOnClick={this.handlePlayerSelectOnClick}
               />
             ))}
@@ -178,7 +134,7 @@ export default class Gameboard extends React.Component {
           <Role
             player={player}
             round={round}
-            players={players}
+            rolelist={rolelist}
             handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
           />
         </div>
@@ -186,3 +142,17 @@ export default class Gameboard extends React.Component {
     );
   }
 }
+
+Gameboard.propTypes = {
+  username: PropTypes.string,
+  role: PropTypes.string,
+  players: PropTypes.arrayOf,
+  socket: PropTypes.shape,
+};
+
+Gameboard.defaultProps = {
+  username: 'DefaultPlayer',
+  role: 'DefaultRole',
+  players: [],
+  socket: {},
+};
