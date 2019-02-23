@@ -1,3 +1,4 @@
+/* eslint-disable no-multi-spaces */
 import React from 'react';
 import PlayerId from './playerId';
 import ModeratorControls from './moderatorcontrols';
@@ -7,18 +8,20 @@ import Chat from './chat';
 export default class Lobby extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       selected: null,
     };
 
-    this.socket = this.props.socket;
-    this.handleRemoveUserOnClick = this.handleRemoveUserOnClick.bind(this);
-    this.handleStartGameOnClick = this.handleStartGameOnClick.bind(this);
-    this.handleUserLeaveOnClick = this.handleUserLeaveOnClick.bind(this);
-    this.handleUserReadyOnClick = this.handleUserReadyOnClick.bind(this);
-    this.handleMakeModeratorOnClick = this.handleMakeModeratorOnClick.bind(this);
-    this.handlePlayerSelectOnClick = this.handlePlayerSelectOnClick.bind(this);
+    // INIT SOCKET VARIABLE
+    this.socket                       = this.props.socket;
+
+    // METHOD BINDINGS
+    this.handleRemoveUserOnClick      = this.handleRemoveUserOnClick.bind(this);
+    this.handleStartGameOnClick       = this.handleStartGameOnClick.bind(this);
+    this.handleUserLeaveOnClick       = this.handleUserLeaveOnClick.bind(this);
+    this.handleUserReadyOnClick       = this.handleUserReadyOnClick.bind(this);
+    this.handleMakeModeratorOnClick   = this.handleMakeModeratorOnClick.bind(this);
+    this.handlePlayerSelectOnClick    = this.handlePlayerSelectOnClick.bind(this);
   }
 
   componentDidMount() {
