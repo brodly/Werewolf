@@ -38,6 +38,7 @@ class Game {
      ...
      "playerN":"role"}
     */
+
     this.roles = {
       // Each list holds player object in
       // same format at this.players
@@ -69,12 +70,18 @@ class Game {
       /**
        * @param {object} player Pass in the player object you want to add to the player list
        */
-      add(player) { that.players[player.username] = player; },
+      add(player) {
+        that.players[player.username] = player;
+      },
+
       /**
        * @param {string} username Pass in the username as a string
        * @return {object} Returns the player object
        */
-      get(username) { return that.players[username]; },
+      get(username) {
+        return that.players[username];
+      },
+
       /**
        * Assigns the indicated player with the passed in role on the actual player object
        * @param {string} username
@@ -83,6 +90,7 @@ class Game {
       assignRole(username, role) {
         const player = {
           username,
+          alive: true,
           selected: null,
         };
 
@@ -90,6 +98,7 @@ class Game {
         that.rolelist[username] = role;
         that.roles[role].list.push(player);
       },
+
       /**
        * Removes the player object from the player list
        * @param {string} username
@@ -97,6 +106,7 @@ class Game {
       deleteFromPlayerlist(username) {
         delete that.players[username];
       },
+
       /**
        * Returns specific role of user
        * @param {string} username
@@ -105,8 +115,11 @@ class Game {
       getRole(username) {
         return that.role.byUser(username);
       },
+
       /**
-       * @return {array} Returns an array of all players in game
+       * @return {array} Returns an array of strings which list all joined players.
+       * This list comes from the keys of the players list which contains each individual
+       * player object
        */
       get list() {
         return Object.keys(that.players);
@@ -114,36 +127,42 @@ class Game {
     };
 
     this.role = {
+      /**
+       *
+       * @param {string} username
+       * @returns {string} Specific role of user
+       */
       byUser(username) {
         return that.rolelist[username];
       },
+
+      /**
+       * @returns {array} Returns an array of objects where each
+       * object has a key denoted the user and a value denoted their role
+       */
       get list() {
         return that.rolelist;
       },
+
+      /**
+       *
+       * @param {string} role
+       * @returns {array} Returns an array of objects where each object is a player.
+       * The key is the username of the player and the value is the current selected user.
+       * This is currently used for role selection indication on the client.
+       */
       listOfPlayers(role) {
-        // console.log(that.roles[role]);
         return that.roles[role].list;
       },
     };
 
     this.selected = {
-      getList(role) {
-        const list = [];
-
+      update(role, username, selected) {
         that.roles[role].list.forEach((player) => {
-          const selected = {
-            username: player.username,
-            selected: player.selected,
-          };
-
-          list.push(selected);
+          if (player.username === username) {
+            player.selected = selected;
+          }
         });
-
-        return list;
-      },
-      update(username, selected) {
-        const role = that.player.getRole(username);
-        that.roles[role].list[username].selected = selected;
       },
     };
 
