@@ -95,7 +95,24 @@ describe('Start Game', () => {
       result.forEach((player) => {
         expect(typeof player.username).toBe('string');
         expect(player.selected).toBeNull();
+        expect(player.alive).toBeTruthy();
       });
     });
+  });
+});
+
+describe('In Game functions', () => {
+  it('Should update the selected field of specified player in the rolelist', () => {
+    const role = 'wolf';
+    let rolelist = controller.Player.getListOfPlayersByRole(role);
+    const p1 = rolelist[0];
+    const p2 = rolelist[1];
+
+    expect(p1.selected).toBeNull();
+
+    controller.Player.updateSelected(role, p1.username, p2.username);
+    rolelist = controller.Player.getListOfPlayersByRole(role);
+
+    expect(p1.selected).toBe(p2.username);
   });
 });
