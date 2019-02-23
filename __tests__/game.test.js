@@ -88,7 +88,14 @@ describe('Start Game', () => {
   it('Should display a list of players in the specified role and their selected status', () => {
     Object.keys(roles).forEach((role) => {
       const result = controller.Player.getListOfPlayersByRole(role);
-      expect(result.length).toBe(roles[role]);
+      const count = roles[role];
+
+      expect(result.length).toBe(count);
+
+      result.forEach((player) => {
+        expect(typeof player.username).toBe('string');
+        expect(player.selected).toBeNull();
+      });
     });
   });
 });
