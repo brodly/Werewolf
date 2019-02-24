@@ -21,12 +21,12 @@ export default class Gameboard extends React.Component {
     };
 
     // INIT SOCKET VARIABLE
-    this.socket                        = this.props.socket;
+    this.socket                     = this.props.socket;
 
     // METHOD BINDING
-    this.handlePlayerSelectOnClick     = this.handlePlayerSelectOnClick.bind(this);
-    this.handlePlayerSelectOnSubmit    = this.handlePlayerSelectOnSubmit.bind(this);
-    this.roleAction                    = this.roleAction.bind(this);
+    this.handlePlayerSelectOnClick  = this.handlePlayerSelectOnClick.bind(this);
+    this.handlePlayerSelectOnSubmit = this.handlePlayerSelectOnSubmit.bind(this);
+    this.roleAction                 = this.roleAction.bind(this);
   }
 
   componentDidMount() {
@@ -88,7 +88,7 @@ export default class Gameboard extends React.Component {
 
   render() {
     const { round, player, rolelist } = this.state;
-    const { username }                = player;
+    const { username, title }         = player;
     const { players }                 = this.props;
 
     return (
@@ -97,7 +97,7 @@ export default class Gameboard extends React.Component {
           <h3>Gameboard</h3>
         </div>
         <div id="display-username">
-          {username} is a {player.title}
+          {username} is a {title}
         </div>
         <div id="player-list-container">
           <div id="player-list-header">
