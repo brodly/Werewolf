@@ -27,30 +27,16 @@ export default class Gameboard extends React.Component {
     this.handlePlayerSelectOnClick     = this.handlePlayerSelectOnClick.bind(this);
     this.handlePlayerSelectOnSubmit    = this.handlePlayerSelectOnSubmit.bind(this);
     this.roleAction                    = this.roleAction.bind(this);
-    // this.getRolePlayerList             = this.getRolePlayerList.bind(this);
   }
 
   componentDidMount() {
     const { username, role } = this.props;
 
-    // On mount client asks for their role and then assigns
-    // itself a role based on the 'assigned role' data
-    //
-    // NOTE: Client recognizes if its a player or a moderator not the server
-    if (role === 'player') {
-      this.socket.emit('make player', username);
-    } else {
-      this.socket.emit('make moderator', username);
-    }
+    // On mount client asks for their role
+    this.socket.emit(`make ${role}`, username);
 
-    // Updates role list when it receives list from server
-    this.socket.on('rolelist', (rolelist) => {
-      this.setState({ rolelist });
-    });
-
-    // Sets player role when it receieves role from server
-    // Works for moderator and player
-    // NOTE: Rolelist is only requested by players
+    // Assigns role when player object is receieved from server
+    // NOTE: Rolelist is only requested by players not moderators
     this.socket.on('assigned role', (player) => {
       this.setState({ player }, () => {
         if (player.role !== 'moderator') {
@@ -59,27 +45,23 @@ export default class Gameboard extends React.Component {
       });
     });
 
+    // Updates role list in state when it
+    // receives a new list from server
+    this.socket.on('rolelist', (rolelist) => {
+      this.setState({ rolelist });
+    });
+
     // Next Round Listen Event
     this.socket.on('update round', (round) => {
       this.setState({ round });
     });
 
-    // // Seer On Listener Event
-    // this.socket.on('player role', (role) => {
-    //   console.log(role);
-    // });
+    // TODO: Action Event Handling
   }
 
-  // getRolePlayerList(role) {
-  //   this.socket.emit('get rolelist', role);
-  //   this.socket.on('rolelist', (rolelist) => {
-  //     this.setState({ rolelist });
-  //   });
-  // }
-
   handlePlayerSelectOnClick(selected) {
-    const { username }  = this.props;
-    const { role }      = this.state.player;
+    const { player }         = this.state;
+    const { role, username } = player;
 
     this.setState({ selected });
     this.socket.emit('player selected', { role, username, selected });
@@ -90,22 +72,24 @@ export default class Gameboard extends React.Component {
     this.roleAction(action, selected);
   }
 
-  roleAction(action, player) {
-    const { username } = this.props;
+  roleAction(action, target) {
+    const { player }   = this.state;
+    const { username } = player;
 
     switch (action) {
-      case 'next-round': this.socket.emit('next round'); break;
+      case 'next-round':  this.socket.emit('next round'); break;
       case 'start-timer': this.socket.emit('start timer'); break;
-      case 'reveal': this.socket.emit('reveal player', { player, username }); break;
-      case 'save': this.socket.emit('save player', { player, username }); break;
-      case 'kill': this.socket.emit('kill player', { player, username }); break;
+      case 'save':        this.socket.emit('save player', { target, username }); break;
+      case 'kill':        this.socket.emit('kill player', { target, username }); break;
+      case 'reveal':      this.socket.emit('reveal player', { target, username }); break;
       default: null;
     }
   }
 
   render() {
-    const { round, player, rolelist }     = this.state;
-    const { username, role, players }     = this.props;
+    const { round, player, rolelist } = this.state;
+    const { username }                = player;
+    const { players }                 = this.props;
 
     return (
       <div id="main-container">
@@ -113,7 +97,7 @@ export default class Gameboard extends React.Component {
           <h3>Gameboard</h3>
         </div>
         <div id="display-username">
-          {username} is a {role === 'moderator' ? role : player.role}
+          {username} is a {player.title}
         </div>
         <div id="player-list-container">
           <div id="player-list-header">
@@ -145,14 +129,14 @@ export default class Gameboard extends React.Component {
 
 Gameboard.propTypes = {
   username: PropTypes.string,
-  role: PropTypes.string,
-  players: PropTypes.arrayOf,
-  socket: PropTypes.shape,
+  role:     PropTypes.string,
+  players:  PropTypes.arrayOf,
+  socket:   PropTypes.shape,
 };
 
 Gameboard.defaultProps = {
   username: 'DefaultPlayer',
-  role: 'DefaultRole',
-  players: [],
-  socket: {},
+  role:     'DefaultRole',
+  players:  [],
+  socket:   {},
 };
