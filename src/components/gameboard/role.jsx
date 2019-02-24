@@ -1,4 +1,7 @@
+/* eslint-disable no-multi-spaces */
+/* eslint-disable key-spacing */
 import React from 'react';
+import PropTypes from 'prop-types';
 import Player from './player';
 
 export default class Role extends React.Component {
@@ -9,7 +12,8 @@ export default class Role extends React.Component {
       round: 1,
     };
 
-    this.onClick = this.onClick.bind(this);
+    // METHOD BINDING
+    this.onClick     = this.onClick.bind(this);
     this.resetSubmit = this.resetSubmit.bind(this);
   }
 
@@ -24,7 +28,7 @@ export default class Role extends React.Component {
 
   onClick(e) {
     const { handlePlayerSelectOnSubmit } = this.props;
-    const { submit } = this.state;
+    const { submit }                     = this.state;
 
     if (submit) {
       alert('You have already submitted');
@@ -63,3 +67,21 @@ export default class Role extends React.Component {
     );
   }
 }
+
+Role.propTypes = {
+  player: PropTypes.shape,
+  round: PropTypes.number,
+  rolelist: PropTypes.arrayOf,
+  handlePlayerSelectOnSubmit: PropTypes.func,
+};
+
+Role.defaultProps = {
+  player: {
+    title: 'DefaultTitle',
+    role: 'defaultrole',
+    actions: [],
+  },
+  round: 1,
+  rolelist: [],
+  handlePlayerSelectOnSubmit: () => {},
+};

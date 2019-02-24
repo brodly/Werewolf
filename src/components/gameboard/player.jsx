@@ -1,22 +1,25 @@
+/* eslint-disable no-multi-spaces */
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default class Player extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selected: '',
+      status: '',
       style: { backgroundColor: 'white' },
     };
 
-    this.onClick = this.onClick.bind(this);
+    // METHOD BINDING
+    this.onClick           = this.onClick.bind(this);
     this.highlightSelected = this.highlightSelected.bind(this);
   }
 
   componentDidUpdate(prevProps) {
-    const { selected } = this.props;
+    const { status } = this.props;
 
-    if (prevProps.selected !== selected) {
-      this.setState({ selected });
+    if (prevProps.status !== status) {
+      this.setState({ status });
       this.highlightSelected();
     }
   }
@@ -28,9 +31,9 @@ export default class Player extends React.Component {
   }
 
   highlightSelected() {
-    const { selected, name } = this.props;
+    const { status, name } = this.props;
 
-    if (selected === name) {
+    if (status === name) {
       this.setState({
         style: { backgroundColor: 'lightgrey' },
       });
@@ -42,8 +45,8 @@ export default class Player extends React.Component {
   }
 
   render() {
-    const { style } = this.state;
-    const { name, subtitle, status } = this.props;
+    const { name, subtitle } = this.props;
+    const { style, status }  = this.state;
 
     return (
       <div id="player-id-container" onClick={this.onClick} style={style}>
@@ -62,3 +65,17 @@ export default class Player extends React.Component {
     );
   }
 }
+
+Player.propTypes = {
+  name: PropTypes.string,
+  subtitle: PropTypes.bool,
+  status: PropTypes.string,
+  handlePlayerSelectOnClick: PropTypes.func,
+};
+
+Player.defaultProps = {
+  name: 'DefaultName',
+  subtitle: true,
+  status: null,
+  handlePlayerSelectOnClick: () => { },
+};
