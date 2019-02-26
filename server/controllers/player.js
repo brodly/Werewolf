@@ -9,7 +9,9 @@ module.exports = {
   // },
 
   // CREATE FUNCTIONS
-  createModerator: (username) => { db.game.moderator = new Moderator(username); },
+  createModerator: (username) => {
+    db.game.moderator.add(new Moderator(username));
+  },
   createPlayer: (username) => {
     db.chat.addToReadylist(username);
     db.game.player.add(new Player(username));
@@ -23,6 +25,7 @@ module.exports = {
   getListOfPlayersByRole: role => db.game.role.listOfPlayers(role),
   getSelectedListByRole: role => db.game.selected.getList(role),
   get playerlist() { return db.game.player.list; },
+  get rolelist() { return db.game.role.list; },
 
   // SET FUNCTIONS
   assignRole: (username, role) => { db.game.player.assignRole(username, role); },
