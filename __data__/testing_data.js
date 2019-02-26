@@ -22,7 +22,7 @@ const roles = {
 };
 
 module.exports.newGame = () => {
-  controller.NewGame('Player 1');
+  controller.Events.NewGame('Player 1');
 
   players.forEach((player) => {
     controller.Player.createPlayer(player);
@@ -31,8 +31,12 @@ module.exports.newGame = () => {
 
 module.exports.readyUp = (io) => {
   players.forEach((player) => {
-    controller.PlayerReady(io, player);
+    controller.Events.PlayerReady(io, player);
   });
+};
+
+module.exports.startGame = () => {
+  controller.Game.startGame();
 };
 
 module.exports.players = players;
