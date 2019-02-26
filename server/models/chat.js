@@ -1,3 +1,4 @@
+/* eslint-disable no-multi-spaces */
 class Chat {
   constructor() {
     this.messageId = 1;
@@ -6,12 +7,14 @@ class Chat {
 
   get getId() {
     const id = this.messageId;
+
     this.messageId += 1;
     return id;
   }
 
   toggleReady(username) {
     const status = this.readylist[username];
+
     if (status) this.readylist[username] = false;
     else this.readylist[username] = true;
     return this.readylist[username];
@@ -32,9 +35,9 @@ class Chat {
 
 class Message {
   constructor(id, username, message) {
-    this.id = id;
+    this.id       = id;
     this.username = username;
-    this.message = message;
+    this.message  = message;
   }
 }
 
