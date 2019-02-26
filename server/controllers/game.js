@@ -19,7 +19,7 @@ module.exports = {
   // ACTIONS
   startGame() {
     const players       = Object.keys(db.game.players);
-    const roles         = Object.keys(db.game.roles);
+    const roles         = Object.keys(db.game.roles).filter(role => role !== 'moderator');
     const roleCount     = roles.reduce((acc, role) => acc + db.game.roles[role].max, 0);
     const villagerCount = players.length - roleCount;
     const randRoles     = [];
