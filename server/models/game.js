@@ -1,71 +1,43 @@
+/* eslint-disable no-multi-spaces */
+/* eslint-disable key-spacing */
 class Game {
   constructor() {
     const that = this;
 
-    this.id = 1;
-    this.round = 1;
-    this.night = false;
-    this.players = {};
-    /* Contains a list of players
-        Key: Player Name
-        Value: {
-          "username":"<username>",
-          "role":"player",
-          "title":"Player",
-          "alive":true,
-          "ready":false,
-          "selected":"",
-          "actions":[]
-        }
-    */
-
+    this.id        = 1;
+    this.round     = 1;
+    this.night     = false;
+    this.players   = {};
     this.moderator = null;
-    /* Holds moderator Object
-
-      "moderator": {
-        "username": "<username>",
-        "role": "moderator",
-        "title": "Moderator",
-        "actions": ["Start Timer", "Next Round"]
-      }
-
-    */
-
-    this.rolelist = {};
-    /* Holds list of players and roles
-     "player1":"role",
-     "player2":"role",
-     ...
-     "playerN":"role"}
-    */
-
-    this.roles = {
-      // Each list holds player object in
-      // same format at this.players
+    this.rolelist  = {};
+    this.roles     = {
       wolf: {
-        max: 2,
+        max:   2,
         alive: 2,
-        list: [],
+        list:  [],
       },
       seer: {
-        max: 1,
+        max:   1,
         alive: 1,
-        list: [],
+        list:  [],
       },
       doctor: {
-        max: 1,
+        max:   1,
         alive: 1,
-        list: [],
+        list:  [],
       },
       villager: {
         alive: 0,
-        list: [],
+        list:  [],
         get max() {
           return this.list.length;
         },
       },
     };
 
+    /**
+     * PLAYER METHODS
+     */
     this.player = {
       /**
        * @param {object} player Pass in the player object you want to add to the player list
@@ -126,6 +98,9 @@ class Game {
       },
     };
 
+    /**
+     * ROLE METHODS
+     */
     this.role = {
       /**
        *
@@ -166,7 +141,18 @@ class Game {
       },
     };
 
+    /**
+     * MODERATOR METHODS
+     */
     this.moderator = {
+      /**
+       *
+       * @param {object} moderator takes in a new Moderator class and
+       * adds it to the  moderator property of the game object
+       */
+      add(moderator) {
+        that.moderator = moderator;
+      },
       toggleNight() {
         if (that.night) that.night = false;
         else that.night = true; that.nextRound();
