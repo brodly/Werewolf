@@ -1,0 +1,14 @@
+module.exports.NewGame = require('./new_game');
+module.exports.NewUser = require('./new_user');
+module.exports.PlayerReady = require('./player_ready');
+module.exports.PlayerLeave = require('./player_leave');
+module.exports.TryStartGame = require('./try_start_game');
+module.exports.ChatMessage = require('./chat_message');
+module.exports.MakeModerator = require('./make_moderator');
+module.exports.UpdateModerator = require('./update_moderator');
+module.exports.MakePlayer = require('./make_player');
+module.exports.GetPlayer = require('./get_player');
+module.exports.StartGame = require('./start_game');
+module.exports.PlayerSelected = require('./player_selected');
+module.exports.NextRound = require('./next_round');
+module.exports.GetRolelist = require('./get_rolelist');
