@@ -36,12 +36,9 @@ export default class Gameboard extends React.Component {
     this.socket.emit(`make ${role}`, username);
 
     // Assigns role when player object is receieved from server
-    // NOTE: Rolelist is only requested by players not moderators
     this.socket.on('assigned role', (player) => {
       this.setState({ player }, () => {
-        if (player.role !== 'moderator') {
-          this.socket.emit('get rolelist', player.role);
-        }
+        this.socket.emit('get rolelist', player.role);
       });
     });
 
