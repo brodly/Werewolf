@@ -1,3 +1,5 @@
+/* eslint-disable key-spacing */
+/* eslint-disable no-multi-spaces */
 /* eslint-disable prefer-promise-reject-errors */
 const db = require('../../database');
 const { Game } = require('../models');
@@ -16,13 +18,13 @@ module.exports = {
 
   // ACTIONS
   startGame() {
-    const players = Object.keys(db.game.players);
-    const roles = Object.keys(db.game.roles);
-    const roleCount = roles.reduce((acc, role) => acc + db.game.roles[role].max, 0);
+    const players       = Object.keys(db.game.players);
+    const roles         = Object.keys(db.game.roles);
+    const roleCount     = roles.reduce((acc, role) => acc + db.game.roles[role].max, 0);
     const villagerCount = players.length - roleCount;
-    const randRoles = [];
-    const randPlayers = [];
-    const readylist = Object.keys(db.chat.readylist).filter(player => db.chat.readylist[player]);
+    const randRoles     = [];
+    const randPlayers   = [];
+    const readylist     = Object.keys(db.chat.readylist).filter(player => db.chat.readylist[player]);
 
     if (readylist.length === players.length) {
       roles.forEach((role) => {
@@ -67,8 +69,8 @@ module.exports = {
     return [false, 'Not all players are ready'];
   },
   addToAction: (player, action) => { db.game.action.add(player, action); },
-  resetAction: (action) => { db.game.action.reset(action); },
-  tallyAction: (action) => { db.game.action.tally(action); },
-  nextRound: () => db.game.nextRound(),
-  toggleNight: () => db.game.toggleNight(),
+  resetAction: (action)         => { db.game.action.reset(action); },
+  tallyAction: (action)         => { db.game.action.tally(action); },
+  nextRound:   ()               => db.game.nextRound(),
+  toggleNight: ()               => db.game.toggleNight(),
 };
