@@ -30,6 +30,7 @@ describe('Create Game', () => {
       role: 'moderator',
       title: 'Moderator',
       username: 'Player 1',
+      selected: null,
     };
     const moderatorResult = controller.Player.getModerator;
     expect(moderatorResult).toEqual(moderator);
@@ -41,7 +42,7 @@ describe('Create Game', () => {
       alive: true,
       ready: false,
       role: 'player',
-      selected: '',
+      selected: null,
       title: 'Player',
       username: 'Player 5',
     };
@@ -55,10 +56,10 @@ describe('Lobby', () => {
     let status;
     status = controller.Player.getReadyStatus('Player 3');
     expect(status).toBeFalsy();
-    controller.PlayerReady(io, 'Player 3');
+    controller.Events.PlayerReady(io, 'Player 3');
     status = controller.Player.getReadyStatus('Player 3');
     expect(status).toBeTruthy();
-    controller.PlayerReady(io, 'Player 3');
+    controller.Events.PlayerReady(io, 'Player 3');
   });
 });
 

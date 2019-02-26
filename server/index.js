@@ -28,30 +28,30 @@ io.on('connection', (socket) => {
   console.log('A user connected', socket.id);
 
   // CREATE EVENTS
-  socket.on('new game',         (username) => { controller.NewGame(username); });
-  socket.on('new user',         (username) => { controller.NewUser(io, username); });
+  socket.on('new game',         (username) => { controller.Events.NewGame(username); });
+  socket.on('new user',         (username) => { controller.Events.NewUser(io, username); });
 
   // GAME EVENTS
-  socket.on('try start game',   ()         => { controller.TryStartGame(io); });
-  socket.on('start game',       (data)     => { controller.StartGame(data); });
-  socket.on('next round',       ()         => { controller.NextRound(io); });
+  socket.on('try start game',   ()         => { controller.Events.TryStartGame(io); });
+  socket.on('start game',       (data)     => { controller.Events.StartGame(data); });
+  socket.on('next round',       ()         => { controller.Events.NextRound(io); });
 
   // MODERATOR EVENTS
-  socket.on('make moderator',   ()         => { controller.MakeModerator(io, socket); });
-  socket.on('update moderator', (username) => { controller.UpdateModerator(io, username); });
+  socket.on('make moderator',   ()         => { controller.Events.MakeModerator(io, socket); });
+  socket.on('update moderator', (username) => { controller.Events.UpdateModerator(io, username); });
 
   // PLAYER EVENTS
-  socket.on('make player',      (username) => { controller.MakePlayer(io, socket, username); });
-  socket.on('player ready',     (username) => { controller.PlayerReady(io, username); });
-  socket.on('player leave',     (username) => { controller.PlayerLeave(io, username); });
-  socket.on('player selected',  (data)     => { controller.PlayerSelected(io, data); });
+  socket.on('make player',      (username) => { controller.Events.MakePlayer(io, socket, username); });
+  socket.on('player ready',     (username) => { controller.Events.PlayerReady(io, username); });
+  socket.on('player leave',     (username) => { controller.Events.PlayerLeave(io, username); });
+  socket.on('player selected',  (data)     => { controller.Events.PlayerSelected(io, data); });
 
   // CLIENT REQUESTS
-  socket.on('get player',       (username) => { controller.GetPlayer(io, socket, username); });
-  socket.on('get rolelist',     (role)     => { controller.GetRolelist(io, role); });
+  socket.on('get player',       (username) => { controller.Events.GetPlayer(io, socket, username); });
+  socket.on('get rolelist',     (role)     => { controller.Events.GetRolelist(io, role); });
 
   // CHAT EVENTS
-  socket.on('chat message',     (data)     => { controller.ChatMessage(io, data); });
+  socket.on('chat message',     (data)     => { controller.Events.ChatMessage(io, data); });
   /**
    * EVENTS BELOW ARE STILL WORK IN PROGRESS
    */

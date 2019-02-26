@@ -17,10 +17,10 @@ describe('Chat', () => {
     const message = { username: 'test', message: 'test' };
 
     expect(db.chat.messageId).toBe(1);
-    controller.ChatMessage(io, message);
+    controller.Events.ChatMessage(io, message);
     expect(db.chat.messageId).toBe(2);
-    controller.ChatMessage(io, message);
-    controller.ChatMessage(io, message);
+    controller.Events.ChatMessage(io, message);
+    controller.Events.ChatMessage(io, message);
     expect(db.chat.messageId).toBe(4);
   });
 });
