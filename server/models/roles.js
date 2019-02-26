@@ -1,3 +1,4 @@
+/* eslint-disable key-spacing */
 /*
   Defines role information --
   role: internal name for role, used by server/client
@@ -6,24 +7,29 @@
 */
 
 module.exports = {
+  moderator: {
+    role:    'moderator',
+    title:   'Moderator',
+    actions: ['Start Timer', 'Next Round'],
+  },
   villager: {
-    role: 'villager',
-    title: 'Villager',
+    role:    'villager',
+    title:   'Villager',
     actions: ['Kill'],
   },
   wolf: {
-    role: 'wolf',
-    title: 'Wolf',
+    role:    'wolf',
+    title:   'Wolf',
     actions: ['Kill'],
   },
   seer: {
-    role: 'seer',
-    title: 'Seer',
+    role:    'seer',
+    title:   'Seer',
     actions: ['Reveal'],
   },
   doctor: {
-    role: 'doctor',
-    title: 'Doctor',
+    role:    'doctor',
+    title:   'Doctor',
     actions: ['Save'],
   },
 };
