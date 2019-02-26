@@ -11,6 +11,9 @@ class Game {
     this.moderator = null;
     this.rolelist  = {};
     this.roles     = {
+      moderator: {
+        list:  [],
+      },
       wolf: {
         max:   2,
         alive: 2,
