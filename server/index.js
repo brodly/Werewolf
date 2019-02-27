@@ -52,27 +52,16 @@ io.on('connection', (socket) => {
 
   // CHAT EVENTS
   socket.on('chat message',     (data)     => { controller.Events.ChatMessage(io, data); });
+
+  // ROLE ACTION EVENTS
+  socket.on('kill',             (data)     => { controller.Events.Kill(data); });
+  socket.on('reveal',           (data)     => { controller.Events.Reveal(io, data); });
+  socket.on('save',             (data)     => { controller.Events.Save(data); });
+  socket.on('tally action',     (action)   => { controller.Events.TallyAction(action); });
+
   /**
-   * EVENTS BELOW ARE STILL WORK IN PROGRESS
+   * EVENTS BELOW ARE WORK IN PROGRESS
    */
-
-  // ROLE EVENTS
-  socket.on('reveal player', ({ player, username }) => {
-    // console.log(username + ' wants to see ' + player);
-    controller.Game.addToAction(player, 'reveal');
-    // io.to('seer').emit('player role', controller.Player.getRole(player));
-  });
-
-  socket.on('kill player', ({ player, username }) => {
-    // console.log(username + ' wants to kill ' + player);
-    controller.Game.addToAction(player, 'kill');
-  });
-
-  socket.on('save player', ({ player, username }) => {
-    // console.log(username + ' wants to save ' + player);
-    controller.Game.addToAction(player, 'save');
-  });
-
   // DISCONNET EVENTS
   socket.on('disconnect', (data) => {
     // TODO: remove user from playerList
