@@ -10,6 +10,17 @@ class Game {
     this.players   = {};
     this.moderator = null;
     this.rolelist  = {};
+    this.actions = {
+      reveal: {
+        list: {},
+      },
+      save: {
+        list: {},
+      },
+      kill: {
+        list: {},
+      },
+    };
     this.roles     = {
       moderator: {
         list:  [],
@@ -170,36 +181,30 @@ class Game {
 
     this.action = {
       add: (player, action) => {
-        if (this.action[action].list[player]) {
-          this.action[action].list[player] += 1;
+        if (this.actions[action].list[player]) {
+          this.actions[action].list[player] += 1;
         } else {
-          this.action[action].list[player] = 1;
+          this.actions[action].list[player] = 1;
         }
       },
-      reset: (action) => { this.action[action].list = {}; },
+      get: action => this.actions[action].list,
+      reset: (action) => { this.actions[action].list = {}; },
+      resetAll: () => { this.actions.forEach((action) => { that.action.reset(action); }); },
       tally: (action) => {
         let result = '';
         let maxCount = 0;
 
-        const list = Object.keys(this.action[action].list);
+        const list = Object.keys(this.actions[action].list);
+        const actionList = this.actions[action].list;
 
         list.forEach((player) => {
-          if (list[player] > maxCount) {
+          if (actionList[player] > maxCount) {
             result = player;
-            maxCount = list[player];
+            maxCount = actionList[player];
           }
         });
 
         return result;
-      },
-      reveal: {
-        list: {},
-      },
-      save: {
-        list: {},
-      },
-      kill: {
-        list: {},
       },
     };
   }
