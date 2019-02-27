@@ -1,4 +1,5 @@
 const controller = require('../server/controllers');
+const db = require('../database');
 
 const players = [
   'Player 2',
@@ -15,10 +16,22 @@ const players = [
 ];
 
 const roles = {
-  wolf: 2,
-  villager: 7,
-  doctor: 1,
-  seer: 1,
+  wolf: {
+    count: 2,
+    action: 'kill',
+  },
+  villager: {
+    count: 7,
+    action: 'kill',
+  },
+  doctor: {
+    count: 1,
+    action: 'save',
+  },
+  seer: {
+    count: 1,
+    action: 'reveal',
+  },
 };
 
 module.exports.newGame = () => {
@@ -37,6 +50,11 @@ module.exports.readyUp = (io) => {
 
 module.exports.startGame = () => {
   controller.Game.startGame();
+};
+
+module.exports.resetGame = () => {
+  db.game = null;
+  db.chat = null;
 };
 
 module.exports.players = players;
