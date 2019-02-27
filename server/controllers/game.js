@@ -72,10 +72,11 @@ module.exports = {
 
     return [false, 'Not all players are ready'];
   },
-  addToAction: (player, action) => { db.game.action.add(player, action); },
+  addToAction: (target, action) => { db.game.action.add(target, action); },
   resetAction: (action)         => { db.game.action.reset(action); },
-  tallyAction: action           => db.game.action.tally(action),
+  resetAllActions: ()           => { db.game.action.resetAll(); },
   getAction:   action           => db.game.action.get(action),
+  tallyAction: action           => db.game.action.tally(action),
   nextRound:   ()               => db.game.nextRound(),
   toggleNight: ()               => db.game.toggleNight(),
 };
