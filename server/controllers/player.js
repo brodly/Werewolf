@@ -10,7 +10,7 @@ module.exports = {
 
   // CREATE FUNCTIONS
   createModerator: (username) => {
-    db.game.moderator.add(new Moderator(username));
+    db.game.moderatorControls.add(new Moderator(username));
   },
   createPlayer: (username) => {
     db.chat.addToReadylist(username);
