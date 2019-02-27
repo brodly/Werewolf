@@ -54,9 +54,7 @@ io.on('connection', (socket) => {
   socket.on('chat message',     (data)     => { controller.Events.ChatMessage(io, data); });
 
   // ROLE ACTION EVENTS
-  socket.on('kill',             (data)     => { controller.Events.Kill(data); });
-  socket.on('reveal',           (data)     => { controller.Events.Reveal(io, data); });
-  socket.on('save',             (data)     => { controller.Events.Save(data); });
+  socket.on('action',           (data)     => { controller.Events.Action(data); });
   socket.on('tally action',     (action)   => { controller.Events.TallyAction(action); });
 
   /**
