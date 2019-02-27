@@ -7,6 +7,10 @@ const controller = require('../controllers');
 
 module.exports = {
   // CREATE
+  /**
+   * Creates a new Game class and sets the database game
+   * property equal to the class
+   */
   create() { db.game = new Game(); },
 
   // RETRIVE
@@ -70,7 +74,8 @@ module.exports = {
   },
   addToAction: (player, action) => { db.game.action.add(player, action); },
   resetAction: (action)         => { db.game.action.reset(action); },
-  tallyAction: (action)         => { db.game.action.tally(action); },
+  tallyAction: action           => db.game.action.tally(action),
+  getAction:   action           => db.game.action.get(action),
   nextRound:   ()               => db.game.nextRound(),
   toggleNight: ()               => db.game.toggleNight(),
 };
