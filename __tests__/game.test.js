@@ -45,6 +45,7 @@ describe('Create Game', () => {
       selected: null,
       title: 'Player',
       username: 'Player 5',
+      actionUsed: false,
     };
     const result = controller.Player.getPlayer('Player 5');
     expect(result).toEqual(player);
@@ -115,5 +116,73 @@ describe('In Game functions', () => {
     rolelist = controller.Player.getListOfPlayersByRole(role);
 
     expect(p1.selected).toBe(p2.username);
+  });
+});
+
+describe('Moderator Actions', () => {
+  it('Should start the timer when the timer button is clicked', () => {
+    // EXPECT TIMER FUNCTION TO HAVE BEEN CLICKED
+    // TIMER COUNTDOWN SHOULD BE TRIGGERED
+  });
+
+  it('Should reset all actions list count', () => {
+
+  });
+});
+
+describe('Player Actions', () => {
+  it('Should toggle ToggleActionUsed', () => {
+    const player = 'Player 7';
+    let result;
+
+    const checkActionUsed = () => {
+      result = controller.Player.getPlayer(player).actionUsed;
+    };
+
+    checkActionUsed();
+    expect(result).toBe(false);
+    controller.Player.toggleActionUsed(player);
+    checkActionUsed();
+    expect(result).toBe(true);
+    controller.Player.toggleActionUsed(player);
+    checkActionUsed();
+    expect(result).toBe(false);
+  });
+});
+
+describe('Villager Actions', () => {
+  const action = 'kill';
+  const [target1, target2] = players;
+
+  beforeEach(() => {
+    for (let i = 3; i < 8; i += 1) {
+      let target;
+      const username = players[i];
+
+      if (i % 2 === 0) target = target1;
+      else target = target2;
+      controller.Events.Kill({ username, target });
+    }
+  });
+
+  it('Should mark a player to be killed', () => {
+    const count = controller.Game.getAction(action);
+    const result = controller.Events.TallyAction(action);
+
+    expect(result).toBe(target2);
+    expect(count[target1]).toBe(2);
+    expect(count[target2]).toBe(3);
+  });
+
+  it('Should reset the Kill action list', () => {
+    const target = target1;
+    const username = target2;
+
+    controller.Events.Kill({ username, target });
+
+    // controller.Events.ResetAction(action);
+
+    const result = controller.Game.getAction(action);
+    expect(result).toEqual({});
   });
 });
