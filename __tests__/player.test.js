@@ -1,0 +1,67 @@
+const io = require('socket.io')();
+const controller = require('../server/controllers');
+const {
+  newGame,
+  readyUp,
+  startGame,
+  resetGame,
+  players,
+  roles,
+} = require('../__data__/testing_data');
+
+beforeAll(() => {
+  newGame();
+  readyUp(io);
+  startGame();
+});
+
+afterAll(() => {
+  resetGame();
+});
+
+it('Should display a list of players in the specified role and their selected status', () => {
+  Object.keys(roles).forEach((role) => {
+    const result = controller.Player.getListOfPlayersByRole(role);
+    const { count } = roles[role];
+
+    expect(result.length).toBe(count);
+
+    result.forEach((player) => {
+      expect(typeof player.username).toBe('string');
+      expect(player.selected).toBeNull();
+      expect(player.alive).toBeTruthy();
+    });
+  });
+});
+
+it('Should update the selected field of specified player in the rolelist', () => {
+  const role = 'wolf';
+  let rolelist = controller.Player.getListOfPlayersByRole(role);
+  const p1 = rolelist[0];
+  const p2 = rolelist[1];
+
+  expect(p1.selected).toBeNull();
+
+  controller.Player.updateSelected(role, p1.username, p2.username);
+  rolelist = controller.Player.getListOfPlayersByRole(role);
+
+  expect(p1.selected).toBe(p2.username);
+});
+
+it('Should toggle ToggleActionUsed', () => {
+  const player = 'Player 7';
+  let result;
+
+  const checkActionUsed = () => {
+    result = controller.Player.getPlayer(player).actionUsed;
+  };
+
+  checkActionUsed();
+  expect(result).toBe(false);
+  controller.Player.toggleActionUsed(player);
+  checkActionUsed();
+  expect(result).toBe(true);
+  controller.Player.toggleActionUsed(player);
+  checkActionUsed();
+  expect(result).toBe(false);
+});
