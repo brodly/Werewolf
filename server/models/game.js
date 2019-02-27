@@ -180,18 +180,18 @@ class Game {
     };
 
     this.action = {
-      add: (player, action) => {
-        if (this.actions[action].list[player]) {
-          this.actions[action].list[player] += 1;
+      add: (target, action) => {
+        if (this.actions[action].list[target]) {
+          this.actions[action].list[target] += 1;
         } else {
-          this.actions[action].list[player] = 1;
+          this.actions[action].list[target] = 1;
         }
       },
       get: action => this.actions[action].list,
       reset: (action) => { this.actions[action].list = {}; },
-      resetAll: () => { this.actions.forEach((action) => { that.action.reset(action); }); },
+      resetAll: () => { Object.keys(this.actions).forEach((a) => { that.action.reset(a); }); },
       tally: (action) => {
-        let result = '';
+        let result = [];
         let maxCount = 0;
 
         const list = Object.keys(this.actions[action].list);
@@ -199,8 +199,10 @@ class Game {
 
         list.forEach((player) => {
           if (actionList[player] > maxCount) {
-            result = player;
+            result = [player];
             maxCount = actionList[player];
+          } else if (actionList[player] === maxCount) {
+            result.push(player);
           }
         });
 
