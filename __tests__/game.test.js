@@ -6,10 +6,16 @@ const {
   players,
   readyUp,
   roles,
+  startGame,
+  resetGame,
 } = require('../__data__/testing_data');
 
-beforeAll(() => {
+beforeEach(() => {
   newGame();
+});
+
+afterEach(() => {
+  resetGame();
 });
 
 describe('Create Game', () => {
@@ -52,18 +58,6 @@ describe('Create Game', () => {
   });
 });
 
-describe('Lobby', () => {
-  it('Should toggle ready for a specific player', () => {
-    let status;
-    status = controller.Player.getReadyStatus('Player 3');
-    expect(status).toBeFalsy();
-    controller.Events.PlayerReady(io, 'Player 3');
-    status = controller.Player.getReadyStatus('Player 3');
-    expect(status).toBeTruthy();
-    controller.Events.PlayerReady(io, 'Player 3');
-  });
-});
-
 describe('Start Game', () => {
   it('Should not start game if all players are not ready', () => {
     const startGameResult = controller.Game.startGame();
@@ -77,6 +71,8 @@ describe('Start Game', () => {
   });
 
   it('Should display all players and their roles', () => {
+    readyUp(io);
+    startGame();
     const { rolelist } = controller.Game;
 
     expect(Object.keys(rolelist).length).toBe(players.length);
@@ -86,36 +82,142 @@ describe('Start Game', () => {
       expect(Object.keys(roles)).toContain(role);
     });
   });
+});
 
-  it('Should display a list of players in the specified role and their selected status', () => {
-    Object.keys(roles).forEach((role) => {
-      const result = controller.Player.getListOfPlayersByRole(role);
-      const count = roles[role];
+describe('Retrive Rolelist', () => {
+  it('Should be an object containing list of every player and their role', () => {
+    readyUp(io);
+    startGame();
 
-      expect(result.length).toBe(count);
+    const result = controller.Game.rolelist;
+    const list = Object.keys(roles);
 
-      result.forEach((player) => {
-        expect(typeof player.username).toBe('string');
-        expect(player.selected).toBeNull();
-        expect(player.alive).toBeTruthy();
-      });
+    players.forEach((player) => {
+      expect(list).toContain(result[player]);
     });
   });
 });
 
-describe('In Game functions', () => {
-  it('Should update the selected field of specified player in the rolelist', () => {
-    const role = 'wolf';
-    let rolelist = controller.Player.getListOfPlayersByRole(role);
-    const p1 = rolelist[0];
-    const p2 = rolelist[1];
+describe('Actions', () => {
+  const mockAction = (count, username, target, action) => {
+    for (let i = 0; i < count; i += 1) {
+      controller.Events.Action({ username, target, action });
+    }
+  };
 
-    expect(p1.selected).toBeNull();
+  beforeEach(() => {
+    readyUp(io);
+    startGame();
+    controller.Events.ResetAllActions();
+  });
 
-    controller.Player.updateSelected(role, p1.username, p2.username);
-    rolelist = controller.Player.getListOfPlayersByRole(role);
+  it('Should return an Object with player and their votes', () => {
+    const action = 'reveal';
+    const [t1, t2, t3, username] = players;
 
-    expect(p1.selected).toBe(p2.username);
+    mockAction(2, username, t1, action);
+    mockAction(3, username, t2, action);
+    mockAction(3, username, t3, action);
+    const result = controller.Game.getAction(action);
+    expect(result).toEqual({
+      [t1]: 2,
+      [t2]: 3,
+      [t3]: 3,
+    });
+  });
+
+  it('Should add a targetted player to the appropriate action list', () => {
+    controller.Game.addToAction('Player 6', 'kill');
+    controller.Game.addToAction('Player 6', 'reveal');
+    controller.Game.addToAction('Player 7', 'reveal');
+    controller.Game.addToAction('Player 9', 'save');
+    controller.Game.addToAction('Player 8', 'kill');
+    controller.Game.addToAction('Player 8', 'kill');
+
+    const kill = controller.Game.getAction('kill');
+    const save = controller.Game.getAction('save');
+    const reveal = controller.Game.getAction('reveal');
+
+    expect(kill).toEqual({ 'Player 6': 1, 'Player 8': 2 });
+    expect(save).toEqual({ 'Player 9': 1 });
+    expect(reveal).toEqual({ 'Player 6': 1, 'Player 7': 1 });
+    expect(save).not.toEqual({ 'Player 6': 0 });
+    expect(reveal).not.toEqual({ 'Player 6': 0 });
+  });
+
+  it('Should reset the specified action list', () => {
+    let result;
+    const username = players[5];
+    const targets = [players[3], players[4], players[7]];
+    const [target1, target2, target3] = targets;
+    const action = 'kill';
+
+    targets.forEach((target) => {
+      mockAction(1, username, target, action);
+    });
+    result = controller.Game.getAction(action);
+    expect(result).toEqual({ [target1]: 1, [target2]: 1, [target3]: 1 });
+
+    controller.Game.resetAction(action);
+
+    result = controller.Game.getAction(action);
+    expect(result).toEqual({});
+  });
+
+  it('Should reset all action lists', () => {
+    let result;
+    const username = players[5];
+    const targets = [players[3], players[4], players[7]];
+    const actions = ['kill', 'reveal', 'save'];
+
+    targets.forEach((target, i) => {
+      mockAction(1, username, target, actions[i]);
+    });
+
+    actions.forEach((action) => {
+      result = controller.Game.getAction(action);
+      expect(result).not.toEqual({});
+    });
+
+    controller.Game.resetAllActions();
+
+    actions.forEach((action) => {
+      result = controller.Game.getAction(action);
+      expect(result).toEqual({});
+    });
+  });
+
+  it('Should return array with player that has the most votes', () => {
+    const username = players[4];
+    const action = 'kill';
+
+    mockAction(4, username, players[3], action);
+    mockAction(1, username, players[1], action);
+    mockAction(1, username, players[2], action);
+
+    const result = controller.Game.tallyAction(action);
+    expect(Array.isArray(result)).toBe(true);
+    expect(result.length).toBe(1);
+    expect(result[0]).toBe(players[3]);
+    expect(result[0]).not.toBe(players[2]);
+  });
+
+  it('Should return array of all players with equal votes', () => {
+    const username = players[4];
+    const action = 'reveal';
+    const list = [players[3], players[4]];
+
+    mockAction(3, username, players[2], action);
+    mockAction(4, username, players[3], action);
+    mockAction(4, username, players[4], action);
+
+    const result = controller.Game.tallyAction(action);
+
+    expect(Array.isArray(result)).toBe(true);
+    expect(result.length).toBe(2);
+    expect(list).toContain(result[0]);
+    expect(list).toContain(result[1]);
+    expect(result[2]).not.toBeDefined();
   });
 });
 
@@ -125,64 +227,8 @@ describe('Moderator Actions', () => {
     // TIMER COUNTDOWN SHOULD BE TRIGGERED
   });
 
-  it('Should reset all actions list count', () => {
-
+  it('Should advance the round', () => {
+    // TODO: advance round button for moderator;
   });
 });
 
-describe('Player Actions', () => {
-  it('Should toggle ToggleActionUsed', () => {
-    const player = 'Player 7';
-    let result;
-
-    const checkActionUsed = () => {
-      result = controller.Player.getPlayer(player).actionUsed;
-    };
-
-    checkActionUsed();
-    expect(result).toBe(false);
-    controller.Player.toggleActionUsed(player);
-    checkActionUsed();
-    expect(result).toBe(true);
-    controller.Player.toggleActionUsed(player);
-    checkActionUsed();
-    expect(result).toBe(false);
-  });
-});
-
-describe('Villager Actions', () => {
-  const action = 'kill';
-  const [target1, target2] = players;
-
-  beforeEach(() => {
-    for (let i = 3; i < 8; i += 1) {
-      let target;
-      const username = players[i];
-
-      if (i % 2 === 0) target = target1;
-      else target = target2;
-      controller.Events.Kill({ username, target });
-    }
-  });
-
-  it('Should mark a player to be killed', () => {
-    const count = controller.Game.getAction(action);
-    const result = controller.Events.TallyAction(action);
-
-    expect(result).toBe(target2);
-    expect(count[target1]).toBe(2);
-    expect(count[target2]).toBe(3);
-  });
-
-  it('Should reset the Kill action list', () => {
-    const target = target1;
-    const username = target2;
-
-    controller.Events.Kill({ username, target });
-
-    // controller.Events.ResetAction(action);
-
-    const result = controller.Game.getAction(action);
-    expect(result).toEqual({});
-  });
-});
