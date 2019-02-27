@@ -158,21 +158,30 @@ class Game {
     /**
      * MODERATOR METHODS
      */
-    this.moderator = {
+    this.moderatorControls = {
       /**
        *
        * @param {object} moderator takes in a new Moderator class and
-       * adds it to the  moderator property of the game object
+       * adds it to the moderator property of the game object
        */
       add(moderator) {
         that.moderator = moderator;
       },
+
+      /**
+       * Toggles night between true and false
+       * @returns {boolean} Current night state
+       */
       toggleNight() {
         if (that.night) that.night = false;
-        else that.night = true; that.nextRound();
+        else that.night = true; this.nextRound();
         return that.night;
       },
 
+      /**
+       * Increases the round number by 1
+       * @returns {number} Current round number
+       */
       nextRound() {
         that.round += 1;
         return that.round;
