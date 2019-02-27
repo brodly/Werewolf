@@ -1,10 +1,14 @@
 const io = require('socket.io-client')();
 const controller = require('../server/controllers/index');
 const db = require('../database');
-const { newGame } = require('../__data__/testing_data');
+const { newGame, resetGame } = require('../__data__/testing_data');
 
 beforeAll(() => {
   newGame();
+});
+
+afterAll(() => {
+  resetGame();
 });
 
 describe('Chat', () => {
