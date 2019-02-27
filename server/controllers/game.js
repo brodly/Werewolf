@@ -75,8 +75,11 @@ module.exports = {
   addToAction: (target, action) => { db.game.action.add(target, action); },
   resetAction: (action)         => { db.game.action.reset(action); },
   resetAllActions: ()           => { db.game.action.resetAll(); },
-  getAction:   action           => db.game.action.get(action),
+  getAction: action             => db.game.action.get(action),
   tallyAction: action           => db.game.action.tally(action),
-  nextRound:   ()               => db.game.nextRound(),
-  toggleNight: ()               => db.game.toggleNight(),
+
+  // MODERATOR CONTROLS
+  nextRound: ()                 => db.game.moderatorControls.nextRound(),
+  getRound: ()                  => db.game.round,
+  toggleNight: ()               => db.game.moderatorControls.toggleNight(),
 };
