@@ -31,6 +31,7 @@ class Player extends User {
     this.title = 'Player';
     this.alive = true;
     this.ready = false;
+    this.actionUsed = false;
   }
 
   toggleAlive() {
@@ -41,6 +42,11 @@ class Player extends User {
   toggleReady() {
     if (!this.ready) this.ready = true;
     else this.ready = false;
+  }
+
+  toggleActionUsed() {
+    if (!this.actionUsed) this.actionUsed = true;
+    else this.actionUsed = false;
   }
 }
 
