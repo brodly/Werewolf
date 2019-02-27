@@ -36,4 +36,13 @@ describe('Events', () => {
       });
     });
   });
+
+  it('Should reset the specific action list', () => {
+    const action = 'reveal';
+    controller.Events.ResetAction(action);
+  });
+
+  it('Should reset all action lists', () => {
+    controller.Events.ResetAllActions();
+  });
 });
