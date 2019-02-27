@@ -222,13 +222,43 @@ describe('Actions', () => {
 });
 
 describe('Moderator Actions', () => {
+  beforeEach(() => {
+    readyUp(io);
+    startGame();
+    controller.Events.ResetAllActions();
+  });
+
   it('Should start the timer when the timer button is clicked', () => {
     // EXPECT TIMER FUNCTION TO HAVE BEEN CLICKED
     // TIMER COUNTDOWN SHOULD BE TRIGGERED
   });
 
+  it('Should get the current round count', () => {
+    const result = controller.Game.getRound();
+    expect(result).toBe(1);
+  });
+
   it('Should advance the round', () => {
-    // TODO: advance round button for moderator;
+    let result;
+    result = controller.Game.getRound();
+    expect(result).toBe(1);
+    result = controller.Game.nextRound();
+    expect(result).toBe(2);
+    result = controller.Game.nextRound();
+    expect(result).toBe(3);
+  });
+
+  it('Should toggle night and increase the round when its a new night', () => {
+    let result;
+    expect(controller.Game.getRound()).toBe(1);
+    result = controller.Game.toggleNight();
+    expect(result).toBe(true);
+    expect(controller.Game.getRound()).toBe(2);
+    result = controller.Game.toggleNight();
+    expect(result).toBe(false);
+    expect(controller.Game.getRound()).toBe(3);
+    result = controller.Game.toggleNight();
+    expect(result).toBe(true);
+    expect(controller.Game.getRound()).toBe(4);
   });
 });
-
