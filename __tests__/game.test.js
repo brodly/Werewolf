@@ -231,6 +231,7 @@ describe('Moderator Actions', () => {
   it('Should start the timer when the timer button is clicked', () => {
     // EXPECT TIMER FUNCTION TO HAVE BEEN CLICKED
     // TIMER COUNTDOWN SHOULD BE TRIGGERED
+    expect(true).toBe(false);
   });
 
   it('Should get the current round count', () => {
