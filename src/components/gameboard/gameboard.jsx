@@ -73,14 +73,7 @@ export default class Gameboard extends React.Component {
     const { player }   = this.state;
     const { username } = player;
 
-    switch (action) {
-      case 'next-round':  this.socket.emit('next round'); break;
-      case 'start-timer': this.socket.emit('start timer'); break;
-      case 'save':        this.socket.emit('save player', { target, username }); break;
-      case 'kill':        this.socket.emit('kill player', { target, username }); break;
-      case 'reveal':      this.socket.emit('reveal player', { target, username }); break;
-      default: null;
-    }
+    this.socket.emit('action', { username, target, action });
   }
 
   render() {
