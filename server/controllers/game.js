@@ -6,21 +6,8 @@ const { Game } = require('../models');
 const controller = require('../controllers');
 
 module.exports = {
-  // CREATE
-  /**
-   * Creates a new Game class and sets the database game
-   * property equal to the class
-   */
+  // GAME CONTROLS
   create() { db.game = new Game(); },
-
-  // RETRIVE
-  get rolelist() { return db.game.rolelist; },
-
-  // UPDATE
-
-  // DELETE
-
-  // ACTIONS
   startGame() {
     const players       = Object.keys(db.game.players);
     const roles         = Object.keys(db.game.roles).filter(role => role !== 'moderator');
@@ -72,6 +59,11 @@ module.exports = {
 
     return [false, 'Not all players are ready'];
   },
+
+  // ROLE CONTROLS
+  get rolelist() { return db.game.rolelist; },
+
+  // ACTION CONTROLS
   addToAction: (target, action) => { db.game.action.add(target, action); },
   resetAction: (action)         => { db.game.action.reset(action); },
   resetAllActions: ()           => { db.game.action.resetAll(); },
