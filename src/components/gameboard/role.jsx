@@ -8,7 +8,7 @@ export default class Role extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      submit: false,
+      hasSubmit: false,
       round: 1,
     };
 
@@ -28,18 +28,18 @@ export default class Role extends React.Component {
 
   onClick(e) {
     const { handlePlayerSelectOnSubmit } = this.props;
-    const { submit }                     = this.state;
+    const { hasSubmit }                  = this.state;
 
-    if (submit) {
+    if (hasSubmit) {
       alert('You have already submitted');
     } else {
       handlePlayerSelectOnSubmit(e.target.value);
-      this.setState({ submit: true });
+      this.setState({ hasSubmit: true });
     }
   }
 
   resetSubmit() {
-    this.setState({ submit: false });
+    this.setState({ hasSubmit: false });
   }
 
   render() {
@@ -77,6 +77,7 @@ Role.propTypes = {
 
 Role.defaultProps = {
   player: {
+    username: 'DefaultName',
     title: 'DefaultTitle',
     role: 'defaultrole',
     actions: [],
