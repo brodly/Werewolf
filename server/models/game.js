@@ -112,6 +112,25 @@ class Game {
       get list() {
         return Object.keys(that.players);
       },
+
+      get listOfPlayers() {
+        const players = Object.keys(that.players);
+        const result = [];
+
+        players.forEach((player) => {
+          const { username, alive } = that.players[player];
+
+          const obj = {
+            username,
+            subtitle: 'Player Image',
+            status: alive ? 'Alive' : 'Dead',
+          };
+
+          result.push(obj);
+        });
+
+        return result;
+      },
     };
 
     /**
