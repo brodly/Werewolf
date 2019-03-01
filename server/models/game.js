@@ -5,6 +5,7 @@ class Game {
     const that = this;
 
     this.id        = 1;
+    this.timer     = 300; // In Seconds
     this.round     = 1;
     this.night     = false;
     this.players   = {};
@@ -21,7 +22,7 @@ class Game {
         list: {},
       },
     };
-    this.roles     = {
+    this.roles = {
       moderator: {
         list:  [],
       },
@@ -76,6 +77,7 @@ class Game {
       assignRole(username, role) {
         const player = {
           username,
+          role,
           alive: true,
           selected: null,
         };
@@ -173,9 +175,12 @@ class Game {
        * @returns {boolean} Current night state
        */
       toggleNight() {
-        if (that.night) that.night = false;
-        else that.night = true; this.nextRound();
-        return that.night;
+        if (!that.night) {
+          that.night = true;
+        } else {
+          that.night = false;
+          this.nextRound();
+        }
       },
 
       /**
@@ -185,6 +190,27 @@ class Game {
       nextRound() {
         that.round += 1;
         return that.round;
+      },
+
+      startTimer() {
+        const { currentTime } = that.moderatorControls;
+        const timer = setInterval(decrementTimer, 1000);
+
+        function decrementTimer() {
+          that.timer -= 1;
+
+          if (currentTime() === 0) {
+            clearInterval(timer);
+          }
+        }
+      },
+
+      currentTime() {
+        return that.timer;
+      },
+
+      getNight() {
+        return that.night;
       },
     };
 
