@@ -6,7 +6,7 @@ export default class Player extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      status: '',
+      status: null,
       style: { backgroundColor: 'white' },
     };
 
@@ -59,7 +59,7 @@ export default class Player extends React.Component {
         </div>
         <div id="player-status">
           Status:
-          {status}
+          {status ? this.state.status : this.props.status}
         </div>
       </div>
     );
