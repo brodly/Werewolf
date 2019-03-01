@@ -49,12 +49,13 @@ io.on('connection', (socket) => {
   // CLIENT REQUESTS
   socket.on('get player',       (username) => { controller.Events.GetPlayer(io, socket, username); });
   socket.on('get rolelist',     (role)     => { controller.Events.GetRolelist(io, role); });
+  socket.on('get time',         ()         => { controller.Events.GetTime(io); });
 
   // CHAT EVENTS
   socket.on('chat message',     (data)     => { controller.Events.ChatMessage(io, data); });
 
   // ROLE ACTION EVENTS
-  socket.on('action',           (data)     => { controller.Events.Action(data); });
+  socket.on('action',           (data)     => { controller.Events.Action(io, data); });
   socket.on('tally action',     (action)   => { controller.Events.TallyAction(action); });
 
   /**
