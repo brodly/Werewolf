@@ -228,10 +228,11 @@ describe('Moderator Actions', () => {
     controller.Events.ResetAllActions();
   });
 
-  it('Should start the timer when the timer button is clicked', () => {
-    // EXPECT TIMER FUNCTION TO HAVE BEEN CLICKED
-    // TIMER COUNTDOWN SHOULD BE TRIGGERED
-    expect(true).toBe(false);
+  it('Should start the timer', () => {
+    jest.useFakeTimers();
+    controller.Game.startTimer();
+    expect(setInterval).toHaveBeenCalled();
+    expect(setInterval).toHaveBeenLastCalledWith(expect.any(Function), 1000);
   });
 
   it('Should get the current round count', () => {
