@@ -5,6 +5,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Player from './player';
 import Role from './role';
+import Timer from './timer';
 
 export default class Gameboard extends React.Component {
   constructor(props) {
@@ -16,7 +17,7 @@ export default class Gameboard extends React.Component {
         actions: [],
       },
       rolelist:   [],
-      selected:   '',
+      selected:   null,
       round:      1,
     };
 
@@ -85,6 +86,11 @@ export default class Gameboard extends React.Component {
       <div id="main-container">
         <div id="main-header">
           <h3>Gameboard</h3>
+        </div>
+        <div id="timer-container">
+          {<Timer
+            socket={this.socket}
+          />}
         </div>
         <div id="display-username">
           {username} is a {title}
