@@ -17,6 +17,7 @@ export default class Gameboard extends React.Component {
         actions: [],
       },
       rolelist:   [],
+      playerlist: [],
       selected:   null,
       round:      1,
     };
@@ -54,7 +55,11 @@ export default class Gameboard extends React.Component {
       this.setState({ round });
     });
 
-    // TODO: Action Event Handling
+    // Gets a list of players from the server as an array of objects
+    this.socket.emit('get playerlist');
+    this.socket.on('set playerlist', (playerlist) => {
+      this.setState({ playerlist });
+    });
   }
 
   handlePlayerSelectOnClick(selected) {
@@ -78,9 +83,14 @@ export default class Gameboard extends React.Component {
   }
 
   render() {
-    const { round, player, rolelist } = this.state;
-    const { username, title }         = player;
-    const { players }                 = this.props;
+    const {
+      round,
+      player,
+      rolelist,
+      playerlist,
+    } = this.state;
+
+    const { username, title } = player;
 
     return (
       <div id="main-container">
@@ -100,11 +110,11 @@ export default class Gameboard extends React.Component {
             Player List
           </div>
           <div id="player-list-row">
-            {players.map(name => (
+            {playerlist.map(p => (
               <Player
-                name={name}
-                subtitle="Player Image"
-                status="Status"
+                name={p.username}
+                subtitle={p.subtitle}
+                status={p.status}
                 handlePlayerSelectOnClick={this.handlePlayerSelectOnClick}
               />
             ))}
