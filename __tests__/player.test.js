@@ -34,6 +34,21 @@ describe('Create Functions', () => {
 });
 
 describe('Player List', () => {
+  it('Should return an array of players', () => {
+    const result = controller.Player.getListOfPlayers();
+
+    expect(Array.isArray(result)).toBe(true);
+    expect(result.length).toBe(players.length);
+
+    result.forEach((player, i) => {
+      expect(player.username).toBe(players[i]);
+      expect(typeof player.subtitle).toBe('string');
+      expect(player.status).toBe('Alive');
+    });
+  });
+});
+
+describe('Role List', () => {
   it('Should display a list of players in the specified role and their selected status', () => {
     Object.keys(roles)
       .filter(role => role !== 'moderator')
