@@ -1,16 +1,68 @@
+/* eslint-disable no-multi-spaces */
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const Timer = (props) => {
-  const { time } = props;
+export default class Timer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      time: null,
+    };
 
-  return (
-    <div id="timer-container">
-      <h2>Timer</h2>
-      <div id="timer-countdown">
-        {time}
+    // INIT SOCKET
+    this.socket     = this.props.socket;
+
+    // METHOD BINDING
+    this.startTimer = this.startTimer.bind(this);
+  }
+
+  componentDidMount() {
+    this.socket.emit('get time');
+
+    this.socket.on('set time', (time) => {
+      this.setState({ time });
+    });
+
+    this.socket.on('start timer', () => {
+      this.startTimer();
+    });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  startTimer() {
+    const timer = setInterval(decrementTimer.bind(this), 1000);
+
+    function decrementTimer() {
+      let { time } = this.state;
+      time -= 1;
+      this.setState({ time });
+
+      if (time === 0) {
+        clearInterval(timer);
+      }
+    }
+  }
+
+  render() {
+    const { time } = this.state;
+
+    return (
+      <div>
+        <div id="timer-header">
+          Timer
+        </div>
+        <div id="timer-countdown">
+          {time}
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+}
+
+Timer.propTypes = {
+  socket: PropTypes.shape,
 };
 
-export default Timer;
+Timer.defaultProps = {
+  socket: {},
+};
