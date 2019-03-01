@@ -1,3 +1,4 @@
+/* eslint-disable no-multi-spaces */
 const io = require('socket.io')();
 const controller = require('../server/controllers');
 const {
@@ -9,16 +10,16 @@ const {
   players,
 } = require('../__data__/testing_data');
 
-beforeAll(() => {
+beforeEach(() => {
   newGame();
   startGame();
 });
 
-afterAll(() => {
+afterEach(() => {
   resetGame();
 });
 
-describe('Events', () => {
+describe('Ready Status', () => {
   it('Should toggle ready for a specific player', () => {
     let status;
     status = controller.Player.getReadyStatus('Player 3');
@@ -28,7 +29,9 @@ describe('Events', () => {
     expect(status).toBeTruthy();
     controller.Events.PlayerReady(io, 'Player 3');
   });
+});
 
+describe('Role Events', () => {
   it('Should return a role list specific to the moderator role', () => {
     const list = controller.Events.GetRolelist(io, 'moderator');
     players.forEach((player, i) => {
@@ -39,28 +42,38 @@ describe('Events', () => {
   });
 
   it('Should return a role list specific to the specified role', () => {
-    Object.keys(roles).forEach((role) => {
-      const list = controller.Events.GetRolelist(io, role);
-      const { count } = roles[role];
+    Object.keys(roles)
+      .filter(role => role !== 'moderator')
+      .forEach((role) => {
+        const list = controller.Events.GetRolelist(io, role);
+        const { count } = roles[role];
 
-      list.forEach((player) => {
-        expect(player.username).toBeDefined();
-        expect(player.alive).toBe(true);
-        expect(player.selected).toBeNull();
-        expect(list.length).toBe(count);
+        list.forEach((player) => {
+          expect(player.username).toBeDefined();
+          expect(player.alive).toBe(true);
+          expect(player.selected).toBeNull();
+          expect(list.length).toBe(count);
+        });
       });
-    });
+  });
+});
+
+describe('Action Events', () => {
+  it('Should detect incoming action and add it to the appropriate action count', () => {
+    Object.keys(roles)
+      .filter(role => role !== 'moderator')
+      .forEach((role, i) => {
+        const username = players[5];
+        const target = players[i];
+        const { action } = roles[role];
+        controller.Events.Action({ username, target, action });
+        const result = controller.Game.getAction(action);
+        expect(result[target]).toBe(1);
+      });
   });
 
-  it('Should detect incoming action and add it to the appropriate action count', () => {
-    Object.keys(roles).forEach((role, i) => {
-      const username = players[5];
-      const target = players[i];
-      const { action } = roles[role];
-      controller.Events.Action({ username, target, action });
-      const result = controller.Game.getAction(action);
-      expect(result[target]).toBe(1);
-    });
+  it('Should handle moderator specific events', () => {
+
   });
 
   it('Should reset all actions list count', () => {
@@ -84,5 +97,31 @@ describe('Events', () => {
 
   it('Should reset all action lists', () => {
     controller.Events.ResetAllActions();
+  });
+});
+
+describe('Round Events', () => {
+  const { Game, Events } = controller;
+  it('Should call controller.Game.startTimer', () => {
+    const spy = jest.spyOn(Game, 'startTimer');
+
+    Events.StartTimer(io);
+
+    expect(spy).toHaveBeenCalled();
+
+    spy.mockReset();
+    spy.mockRestore();
+  });
+
+  it('Should call controller.Game.nextRound', () => {
+    const spy = jest.spyOn(Game, 'nextRound');
+
+    Events.NextRound(io);
+    Events.NextRound(io);
+
+    expect(spy).toHaveBeenCalledTimes(2);
+
+    spy.mockReset();
+    spy.mockRestore();
   });
 });
