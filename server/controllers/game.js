@@ -1,3 +1,4 @@
+/* eslint-disable switch-colon-spacing */
 /* eslint-disable key-spacing */
 /* eslint-disable no-multi-spaces */
 /* eslint-disable prefer-promise-reject-errors */
@@ -74,4 +75,7 @@ module.exports = {
   nextRound: ()                 => db.game.moderatorControls.nextRound(),
   getRound: ()                  => db.game.round,
   toggleNight: ()               => db.game.moderatorControls.toggleNight(),
+  getNight: ()                  => db.game.moderatorControls.getNight(),
+  startTimer: ()                => db.game.moderatorControls.startTimer(),
+  getCurrentTime: ()            => db.game.moderatorControls.currentTime(),
 };
