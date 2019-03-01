@@ -146,3 +146,21 @@ form button {
   padding: 10px;
   margin: 10px;
 }
+
+#timer-container {
+  text-align: center;
+  border: 1px solid black;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
+  width: 100px;
+}
+
+#timer-header {
+  font-size: 2em;
+}
+
+#timer-countdown {
+  color: green;
+  font-size: 1.5em;
+}
