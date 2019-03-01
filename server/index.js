@@ -1,6 +1,6 @@
 /* eslint-disable no-multi-spaces */
 /* eslint-disable no-console */
-const axios    = require('axios');
+// const axios    = require('axios');
 const express  = require('express');
 const http     = require('http');
 const path     = require('path');
@@ -48,6 +48,7 @@ io.on('connection', (socket) => {
 
   // CLIENT REQUESTS
   socket.on('get player',       (username) => { controller.Events.GetPlayer(io, socket, username); });
+  socket.on('get playerlist',   ()         => { controller.Events.GetPlayerlist(io); });
   socket.on('get rolelist',     (role)     => { controller.Events.GetRolelist(io, role); });
   socket.on('get time',         ()         => { controller.Events.GetTime(io); });
 
