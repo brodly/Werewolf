@@ -1,21 +1,66 @@
 const io = require('socket.io')();
 const controller = require('../server/controllers');
+const db = require('../database');
 const {
   newGame,
   readyUp,
   startGame,
   resetGame,
   players,
+  roles,
 } = require('../__data__/testing_data');
 
-beforeAll(() => {
+beforeEach(() => {
   newGame();
   readyUp(io);
   startGame();
 });
 
-afterAll(() => {
+afterEach(() => {
   resetGame();
+});
+
+describe('Moderator Actions', () => {
+  const username = players[2];
+  const target = null;
+  const [startTimer, nextRound, toggleNight] = roles.moderator.actions;
+
+  it('Should call function to start timer', () => {
+    const { moderatorControls } = db.game;
+    const spy = jest.spyOn(moderatorControls, 'startTimer');
+
+    controller.Game.startTimer(startTimer);
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('Should start the timer', () => {
+    // TODO: Figure out how to test functions with time in Jest
+  });
+
+  it('Should increment the round', () => {
+    const round = controller.Game.getRound;
+    expect(round()).toBe(1);
+    controller.Game.nextRound(nextRound);
+    expect(round()).toBe(2);
+    controller.Game.nextRound(nextRound);
+    expect(round()).toBe(3);
+  });
+
+  it('Should toggle between day and night', () => {
+    const night = controller.Game.getNight;
+    const round = controller.Game.getRound;
+
+    expect(night()).toBe(false);
+    expect(round()).toBe(1);
+
+    controller.Game.toggleNight();
+    expect(night()).toBe(true);
+    expect(round()).toBe(1);
+
+    controller.Game.toggleNight();
+    expect(night()).toBe(false);
+    expect(round()).toBe(2);
+  });
 });
 
 describe('Villager Actions', () => {
