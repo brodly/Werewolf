@@ -1,7 +1,7 @@
+/* eslint-disable no-multi-spaces */
 import React from 'react';
 import io from 'socket.io-client';
 
-import Timer from './components/gameboard/timer';
 import Login from './components/login/login';
 import Lobby from './components/lobby/lobby';
 import Gameboard from './components/gameboard/gameboard';
@@ -15,16 +15,18 @@ export default class App extends React.Component {
       display: 'lobby',
       username: '',
       role: '',
-      gameTimer: 5,
       players: [],
     };
-    this.socket = io();
 
-    this.handleUsernameInput = this.handleUsernameInput.bind(this);
+    // INIT SOCKET
+    this.socket                  = io();
+
+    // METHOD BINDINGS
+    this.handleUsernameInput     = this.handleUsernameInput.bind(this);
     this.handleCreateGameOnClick = this.handleCreateGameOnClick.bind(this);
-    this.handleJoinGameOnClick = this.handleJoinGameOnClick.bind(this);
-    this.handleSwitchDisplay = this.handleSwitchDisplay.bind(this);
-    this.toggleLogin = this.toggleLogin.bind(this);
+    this.handleJoinGameOnClick   = this.handleJoinGameOnClick.bind(this);
+    this.handleSwitchDisplay     = this.handleSwitchDisplay.bind(this);
+    this.toggleLogin             = this.toggleLogin.bind(this);
   }
 
   componentDidMount() {
@@ -35,7 +37,7 @@ export default class App extends React.Component {
 
   toggleLogin() {
     const { login } = this.state;
-    let status = login;
+    let status      = login;
 
     if (login) status = false;
     else status = true;
@@ -62,7 +64,6 @@ export default class App extends React.Component {
     const {
       role,
       username,
-      gameTimer,
       login,
       display,
       players,
@@ -105,7 +106,6 @@ export default class App extends React.Component {
             socket={this.socket}
           />
         )}
-        {/* <gameTimer gameTimer={gameTimer} /> */}
       </div>
     );
   }
