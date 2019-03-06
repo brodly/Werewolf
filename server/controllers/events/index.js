@@ -27,7 +27,9 @@ module.exports.GetRolelist = require('./get_rolelist');
 
 // ACTIONS
 module.exports.Action = require('./action');
+module.exports.GetActionlist = require('./get_actionlist');
 module.exports.TallyAction = require('./tally_action');
+module.exports.TallyAllActions = require('./tally_all_actions');
 module.exports.ResetAction = require('./reset_action');
 module.exports.ResetAllActions = require('./reset_all_actions');
 
