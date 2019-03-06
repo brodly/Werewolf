@@ -62,13 +62,15 @@ module.exports = {
   },
 
   // ROLE CONTROLS
-  get rolelist() { return db.game.rolelist; },
+  get rolelist()             { return db.game.rolelist; },
+  getAllRoles:               () => db.roles.getAll(),
 
   // ACTION CONTROLS
   addToAction: (target, action) => { db.game.action.add(target, action); },
   resetAction:         (action) => { db.game.action.reset(action); },
   resetAllActions:           () => { db.game.action.resetAll(); },
   getAction:             action => db.game.action.get(action),
+  get actionlist()        { return db.game.action.actionlist; },
   tallyAction:           action => db.game.action.tally(action),
 
   // MODERATOR CONTROLS
