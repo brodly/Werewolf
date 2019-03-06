@@ -81,7 +81,6 @@ export default class App extends React.Component {
               <Gameboard
                 role={role}
                 username={username}
-                players={players}
                 socket={this.socket}
               />
             );
