@@ -200,6 +200,7 @@ class Game {
           that.night = false;
           this.nextRound();
         }
+        return that.night;
       },
 
       /**
