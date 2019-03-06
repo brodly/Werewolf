@@ -66,16 +66,16 @@ module.exports = {
 
   // ACTION CONTROLS
   addToAction: (target, action) => { db.game.action.add(target, action); },
-  resetAction: (action)         => { db.game.action.reset(action); },
-  resetAllActions: ()           => { db.game.action.resetAll(); },
-  getAction: action             => db.game.action.get(action),
-  tallyAction: action           => db.game.action.tally(action),
+  resetAction:         (action) => { db.game.action.reset(action); },
+  resetAllActions:           () => { db.game.action.resetAll(); },
+  getAction:             action => db.game.action.get(action),
+  tallyAction:           action => db.game.action.tally(action),
 
   // MODERATOR CONTROLS
-  nextRound: ()                 => db.game.moderatorControls.nextRound(),
-  getRound: ()                  => db.game.round,
-  toggleNight: ()               => db.game.moderatorControls.toggleNight(),
-  getNight: ()                  => db.game.moderatorControls.getNight(),
-  startTimer: ()                => db.game.moderatorControls.startTimer(),
-  getCurrentTime: ()            => db.game.moderatorControls.currentTime(),
+  nextRound:                 () => db.game.moderatorControls.nextRound(),
+  getRound:                  () => db.game.round,
+  toggleNight:               () => db.game.moderatorControls.toggleNight(),
+  getNight:                  () => db.game.moderatorControls.getNight(),
+  startTimer:                () => db.game.moderatorControls.startTimer(),
+  getCurrentTime:            () => db.game.moderatorControls.currentTime(),
 };

@@ -11,10 +11,8 @@ module.exports = {
   // },
 
   // CREATE FUNCTIONS
-  createModerator: (username) => {
-    db.game.moderatorControls.add(new Moderator(username));
-  },
-  createPlayer: (username) => {
+  createModerator: (username) => { db.game.moderatorControls.add(new Moderator(username)); },
+  createPlayer:    (username) => {
     db.chat.addToReadylist(username);
     db.game.player.add(new Player(username));
   },
@@ -35,10 +33,10 @@ module.exports = {
 
   // DELETE FUNCTIONS
   deleteFromPlayerlist: (username) => { db.game.player.deleteFromPlayerlist(username); },
-  deleteFromReadylist: (username) => { db.chat.deleteFromReadylist(username); },
+  deleteFromReadylist:  (username) => { db.chat.deleteFromReadylist(username); },
 
   // ACTION FUNCTIONS
-  toggleReady: username => db.chat.toggleReady(username),
+  toggleReady:                      username => db.chat.toggleReady(username),
   updateSelected: (role, username, selected) => db.game.selected.update(role, username, selected),
-  toggleActionUsed: username => db.game.players[username].toggleActionUsed(),
+  toggleActionUsed:                 username => db.game.players[username].toggleActionUsed(),
 };
