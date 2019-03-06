@@ -74,7 +74,7 @@ describe('Villager Actions', () => {
 
       if (i % 2 === 0) target = target1;
       else target = target2;
-      controller.Events.Action({ username, target, action });
+      controller.Events.Action(io, { username, target, action });
     }
   });
 
