@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable no-multi-spaces */
 /* eslint-disable key-spacing */
 import React from 'react';
@@ -9,8 +10,10 @@ export default class Role extends React.Component {
     super(props);
     this.state = {
       hasSubmit: false,
-      round: 1,
     };
+
+    // INIT SOCKET
+    this.socket      = this.props.socket;
 
     // METHOD BINDING
     this.onClick     = this.onClick.bind(this);
@@ -21,20 +24,21 @@ export default class Role extends React.Component {
     const { round } = this.props;
 
     if (prevProps.round !== round) {
-      this.setState({ round });
       this.resetSubmit();
     }
   }
 
   onClick(e) {
-    const { handlePlayerSelectOnSubmit } = this.props;
-    const { hasSubmit }                  = this.state;
+    const { handleActionOnSubmit, player } = this.props;
+    const { hasSubmit }                    = this.state;
 
     if (hasSubmit) {
       alert('You have already submitted');
     } else {
-      handlePlayerSelectOnSubmit(e.target.value);
-      this.setState({ hasSubmit: true });
+      handleActionOnSubmit(e.target.value);
+      if (player.role !== 'moderator') {
+        this.setState({ hasSubmit: true });
+      }
     }
   }
 
@@ -43,7 +47,12 @@ export default class Role extends React.Component {
   }
 
   render() {
-    const { rolelist, player } = this.props;
+    const {
+      rolelist,
+      player,
+      info,
+      round,
+    } = this.props;
 
     return (
       <div id="role-container">
@@ -56,11 +65,20 @@ export default class Role extends React.Component {
         <div id="player-list-row">
           {rolelist.map(p => (
             <Player
+              round={round}
               name={p.username}
               subtitle={p.alive}
               status={p.selected}
               handlePlayerSelectOnClick={() => { }}
             />
+          ))}
+        </div>
+        <div id="role-info">
+          {player.title} Info
+          {info.map(({ action, target }) => (
+            <div>
+              {action}: {target}
+            </div>
           ))}
         </div>
       </div>
@@ -69,20 +87,24 @@ export default class Role extends React.Component {
 }
 
 Role.propTypes = {
+  socket: PropTypes.shape,
   player: PropTypes.shape,
+  info: PropTypes.shape,
   round: PropTypes.number,
   rolelist: PropTypes.arrayOf,
-  handlePlayerSelectOnSubmit: PropTypes.func,
+  handleActionOnSubmit: PropTypes.func,
 };
 
 Role.defaultProps = {
+  socket: {},
   player: {
     username: 'DefaultName',
     title: 'DefaultTitle',
     role: 'defaultrole',
     actions: [],
   },
+  info: {},
   round: 1,
   rolelist: [],
-  handlePlayerSelectOnSubmit: () => {},
+  handleActionOnSubmit: () => {},
 };
