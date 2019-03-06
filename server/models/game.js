@@ -155,6 +155,13 @@ class Game {
       },
 
       /**
+       * @returns Array of all the roles in game
+       */
+      getAllRoles() {
+        return that.roles.filter(role => role !== 'moderator');
+      },
+
+      /**
        *
        * @param {string} role
        * @returns {array} Returns an array of objects where each object is a player.
@@ -243,6 +250,7 @@ class Game {
         }
       },
       get: action => this.actions[action].list,
+      get actionlist() { return Object.keys(that.actions); },
       reset: (action) => { this.actions[action].list = {}; },
       resetAll: () => { Object.keys(this.actions).forEach((a) => { that.action.reset(a); }); },
       tally: (action) => {
