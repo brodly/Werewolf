@@ -6,7 +6,7 @@ module.exports = (io, action) => {
   switch (action) {
     case 'start timer' : controller.Events.StartTimer(io); break;
     case 'next round'  : controller.Events.NextRound(io); break;
-    case 'toggle night': controller.Events.ToggleNight(io); break;
-    default: console.log(`'${action}' does not exist`);
+    case 'tally'       : controller.Events.TallyAllActions(io); break;
+    default            : console.log(`'${action}' does not exist`);
   }
 };
