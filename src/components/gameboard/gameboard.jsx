@@ -34,32 +34,22 @@ export default class Gameboard extends React.Component {
   componentDidMount() {
     const { username, role } = this.props;
 
-    // On mount client asks for their role
+    // ROLE
     this.socket.emit(`make ${role}`, username);
-
-    // Assigns role when player object is receieved from server
     this.socket.on('assigned role', (player) => {
-      this.setState({ player }, () => {
-        this.socket.emit('get rolelist', player.role);
-      });
+      this.setState({ player });
+      this.socket.emit('get rolelist', player.role);
     });
 
-    // Updates role list in state when it
-    // receives a new list from server
-    this.socket.on('rolelist', (rolelist) => {
-      this.setState({ rolelist });
-    });
+    // ROLELIST
+    this.socket.on('set rolelist', (rolelist) => { this.setState({ rolelist }); });
 
-    // Next Round Listen Event
-    this.socket.on('update round', (round) => {
-      this.setState({ round });
-    });
+    // ROUND
+    this.socket.on('update round', (round) => { this.setState({ round }); });
 
-    // Gets a list of players from the server as an array of objects
+    // PLAYERLIST
     this.socket.emit('get playerlist');
-    this.socket.on('set playerlist', (playerlist) => {
-      this.setState({ playerlist });
-    });
+    this.socket.on('set playerlist', (playerlist) => { this.setState({ playerlist }); });
   }
 
   handlePlayerSelectOnClick(selected) {
@@ -136,13 +126,11 @@ export default class Gameboard extends React.Component {
 Gameboard.propTypes = {
   username: PropTypes.string,
   role:     PropTypes.string,
-  players:  PropTypes.arrayOf,
   socket:   PropTypes.shape,
 };
 
 Gameboard.defaultProps = {
   username: 'DefaultPlayer',
   role:     'DefaultRole',
-  players:  [],
   socket:   {},
 };
