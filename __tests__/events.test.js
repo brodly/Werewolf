@@ -72,8 +72,31 @@ describe('Action Events', () => {
       });
   });
 
-  it('Should handle moderator specific events', () => {
+  describe('Moderator', () => {
+    it('Should tally all actions', () => {
+      const username = players[3];
+      const actions = Object.keys(roles)
+        .filter(role => role !== 'moderator')
+        .filter(role => role !== 'villager')
+        .map(role => roles[role].action);
 
+      for (let i = 0; i < 8; i += 1) {
+        const action = actions[Math.floor(Math.random() * actions.length)];
+        const target = players[Math.floor(Math.random() * players.length)];
+        controller.Events.Action(io, { username, target, action });
+      }
+
+      const result = controller.Events.TallyAllActions(io);
+
+      expect(result.length).toBe(actions.length);
+      expect(result[0]).toHaveProperty('action');
+      expect(result[0]).toHaveProperty('target');
+      expect(Array.isArray(result[0].target)).toBe(true);
+    });
+
+    it('Should alert the moderator in case of a tie', () => {
+
+    });
   });
 
   it('Should reset all actions list count', () => {
