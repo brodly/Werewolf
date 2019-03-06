@@ -35,6 +35,8 @@ export default class Timer extends React.Component {
         clearInterval(timer);
       }
 
+      // KEEP CLIENT TIME IN-SYNC WITH SERVER TIME
+      // EVERY 10 SECONDS
       if (time % 10 === 0) {
         this.socket.emit('get time');
       }
