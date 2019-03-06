@@ -17,7 +17,7 @@ const players = [
 
 const roles = {
   moderator: {
-    actions: ['start timer', 'next round', 'toggle night'],
+    actions: ['start timer', 'next round', 'tally'],
   },
   wolf: {
     count: 2,
