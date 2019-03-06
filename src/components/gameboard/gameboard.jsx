@@ -11,15 +11,17 @@ export default class Gameboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      player:     {
-        title: '',
-        role: '',
+      player: {
+        title:   '',
+        role:    '',
         actions: [],
       },
       rolelist:   [],
       playerlist: [],
       selected:   null,
       round:      1,
+      night:      false,
+      info:       [],
     };
 
     // INIT SOCKET VARIABLE
@@ -27,28 +29,30 @@ export default class Gameboard extends React.Component {
 
     // METHOD BINDING
     this.handlePlayerSelectOnClick  = this.handlePlayerSelectOnClick.bind(this);
-    this.handlePlayerSelectOnSubmit = this.handlePlayerSelectOnSubmit.bind(this);
+    this.handleActionOnSubmit       = this.handleActionOnSubmit.bind(this);
     this.roleAction                 = this.roleAction.bind(this);
   }
 
   componentDidMount() {
     const { username, role } = this.props;
 
-    // ROLE
+    // INITIALIZE GAMEBOARD
     this.socket.emit(`make ${role}`, username);
-    this.socket.on('assigned role', (player) => {
+    this.socket.emit('get playerlist');
+
+    // ROLE
+    this.socket.on('set rolelist', (rolelist) => { this.setState({ rolelist }); });
+    this.socket.on('set info',         (info) => { this.setState({ info }); });
+    this.socket.on('assigned role',  (player) => {
       this.setState({ player });
       this.socket.emit('get rolelist', player.role);
     });
 
-    // ROLELIST
-    this.socket.on('set rolelist', (rolelist) => { this.setState({ rolelist }); });
-
     // ROUND
-    this.socket.on('update round', (round) => { this.setState({ round }); });
+    this.socket.on('set round',    (round) => { this.setState({ round }); });
+    this.socket.on('toggle night', (night) => { this.setState({ night }); });
 
     // PLAYERLIST
-    this.socket.emit('get playerlist');
     this.socket.on('set playerlist', (playerlist) => { this.setState({ playerlist }); });
   }
 
@@ -60,7 +64,7 @@ export default class Gameboard extends React.Component {
     this.socket.emit('player selected', { role, username, selected });
   }
 
-  handlePlayerSelectOnSubmit(action) {
+  handleActionOnSubmit(action) {
     const { selected } = this.state;
     this.roleAction(action, selected);
   }
@@ -78,6 +82,8 @@ export default class Gameboard extends React.Component {
       player,
       rolelist,
       playerlist,
+      info,
+      night,
     } = this.state;
 
     const { username, title } = player;
@@ -86,6 +92,10 @@ export default class Gameboard extends React.Component {
       <div id="main-container">
         <div id="main-header">
           <h3>Gameboard</h3>
+        </div>
+        <div id="round-info">
+          {round}
+          {night ? 'Night' : 'Day'}
         </div>
         <div id="timer-container">
           {<Timer
@@ -112,10 +122,12 @@ export default class Gameboard extends React.Component {
         </div>
         <div id="player-role-container">
           <Role
+            socket={this.socket}
+            info={info}
             player={player}
             round={round}
             rolelist={rolelist}
-            handlePlayerSelectOnSubmit={this.handlePlayerSelectOnSubmit}
+            handleActionOnSubmit={this.handleActionOnSubmit}
           />
         </div>
       </div>
