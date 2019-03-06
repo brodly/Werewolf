@@ -18,18 +18,12 @@ export default class Timer extends React.Component {
 
   componentDidMount() {
     this.socket.emit('get time');
-
-    this.socket.on('set time', (time) => {
-      this.setState({ time });
-    });
-
-    this.socket.on('start timer', () => {
-      this.startTimer();
-    });
+    this.socket.on('set time', (time) => { this.setState({ time }); });
+    this.socket.on('start timer', () => { this.startTimer(); });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   startTimer() {
+    // eslint-disable-next-line no-use-before-define
     const timer = setInterval(decrementTimer.bind(this), 1000);
 
     function decrementTimer() {
@@ -39,6 +33,10 @@ export default class Timer extends React.Component {
 
       if (time === 0) {
         clearInterval(timer);
+      }
+
+      if (time % 10 === 0) {
+        this.socket.emit('get time');
       }
     }
   }
