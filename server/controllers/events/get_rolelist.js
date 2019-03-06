@@ -12,7 +12,7 @@ module.exports = (io, role) => {
   } else {
     list = controller.Player.getListOfPlayersByRole(role);
   }
-  io.to(role).emit('rolelist', list);
+  io.to(role).emit('set rolelist', list);
 
   // NOTE: THIS RETURN IS FOR JEST TESTING PURPOSES ONLY
   return list;
