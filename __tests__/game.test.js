@@ -32,7 +32,7 @@ describe('Create Game', () => {
 
   it('Should return the moderator object', () => {
     const moderator = {
-      actions: ['Start Timer', 'Next Round'],
+      actions: ['Start Timer', 'Next Round', 'Tally'],
       role: 'moderator',
       title: 'Moderator',
       username: 'Player 1',
@@ -114,16 +114,17 @@ describe('Actions', () => {
   it('Should return an Object with player and their votes', () => {
     const action = 'reveal';
     const [t1, t2, t3, username] = players;
+    const expected = {
+      [t1]: 2,
+      [t2]: 3,
+      [t3]: 3,
+    };
 
     mockAction(2, username, t1, action);
     mockAction(3, username, t2, action);
     mockAction(3, username, t3, action);
     const result = controller.Game.getAction(action);
-    expect(result).toEqual({
-      [t1]: 2,
-      [t2]: 3,
-      [t3]: 3,
-    });
+    expect(result).toEqual(expected);
   });
 
   it('Should add a targetted player to the appropriate action list', () => {
@@ -269,5 +270,9 @@ describe('Moderator Actions', () => {
     controller.Game.toggleNight();
     expect(db.game.night).toBe(true);
     expect(controller.Game.getRound()).toBe(2);
+  });
+
+  it('Should tally all the actions', () => {
+
   });
 });
