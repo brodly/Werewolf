@@ -101,7 +101,7 @@ describe('Retrive Rolelist', () => {
 describe('Actions', () => {
   const mockAction = (count, username, target, action) => {
     for (let i = 0; i < count; i += 1) {
-      controller.Events.Action({ username, target, action });
+      controller.Events.Action(io, { username, target, action });
     }
   };
 
@@ -250,17 +250,24 @@ describe('Moderator Actions', () => {
     expect(result).toBe(3);
   });
 
-  it('Should toggle night and increase the round when its a new night', () => {
-    let result;
+  it('Should toggle night and increase the round when its a new day', () => {
+    // DAY 1
+    expect(db.game.night).toBe(false);
     expect(controller.Game.getRound()).toBe(1);
-    result = controller.Game.toggleNight();
-    expect(result).toBe(true);
+
+    // NIGHT 1
+    controller.Game.toggleNight();
+    expect(db.game.night).toBe(true);
+    expect(controller.Game.getRound()).toBe(1);
+
+    // DAY 2
+    controller.Game.toggleNight();
+    expect(db.game.night).toBe(false);
     expect(controller.Game.getRound()).toBe(2);
-    result = controller.Game.toggleNight();
-    expect(result).toBe(false);
-    expect(controller.Game.getRound()).toBe(3);
-    result = controller.Game.toggleNight();
-    expect(result).toBe(true);
-    expect(controller.Game.getRound()).toBe(4);
+
+    // NIGHT 2
+    controller.Game.toggleNight();
+    expect(db.game.night).toBe(true);
+    expect(controller.Game.getRound()).toBe(2);
   });
 });
