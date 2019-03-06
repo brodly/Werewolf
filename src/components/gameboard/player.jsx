@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-multi-spaces */
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -11,12 +13,17 @@ export default class Player extends React.Component {
     };
 
     // METHOD BINDING
+    this.resetComponent    = this.resetComponent.bind(this);
     this.onClick           = this.onClick.bind(this);
     this.highlightSelected = this.highlightSelected.bind(this);
   }
 
   componentDidUpdate(prevProps) {
-    const { status } = this.props;
+    const { status, round } = this.props;
+
+    if (prevProps.round !== round) {
+      this.resetComponent();
+    }
 
     if (prevProps.status !== status) {
       this.setState({ status });
@@ -26,8 +33,13 @@ export default class Player extends React.Component {
 
   onClick() {
     const { handlePlayerSelectOnClick, name } = this.props;
-
     handlePlayerSelectOnClick(name);
+  }
+
+  resetComponent() {
+    this.setState({
+      style: { backgroundColor: 'white' },
+    });
   }
 
   highlightSelected() {
@@ -67,6 +79,7 @@ export default class Player extends React.Component {
 }
 
 Player.propTypes = {
+  round: PropTypes.number,
   name: PropTypes.string,
   subtitle: PropTypes.bool,
   status: PropTypes.string,
@@ -74,6 +87,7 @@ Player.propTypes = {
 };
 
 Player.defaultProps = {
+  round: 1,
   name: 'DefaultName',
   subtitle: true,
   status: null,
