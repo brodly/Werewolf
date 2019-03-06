@@ -23,7 +23,7 @@ afterEach(() => {
 describe('Moderator Actions', () => {
   const username = players[2];
   const target = null;
-  const [startTimer, nextRound, toggleNight] = roles.moderator.actions;
+  const [startTimer, nextRound, tally] = roles.moderator.actions;
 
   it('Should call function to start timer', () => {
     const { moderatorControls } = db.game;
