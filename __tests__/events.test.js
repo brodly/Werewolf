@@ -66,7 +66,7 @@ describe('Action Events', () => {
         const username = players[5];
         const target = players[i];
         const { action } = roles[role];
-        controller.Events.Action({ username, target, action });
+        controller.Events.Action(io, { username, target, action });
         const result = controller.Game.getAction(action);
         expect(result[target]).toBe(1);
       });
@@ -86,7 +86,7 @@ describe('Action Events', () => {
     const target = players[7];
 
     for (let i = 0; i < 8; i += 1) {
-      controller.Events.Action({ username, target, action });
+      controller.Events.Action(io, { username, target, action });
     }
 
     controller.Events.ResetAction(action);
