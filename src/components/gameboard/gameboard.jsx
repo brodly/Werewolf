@@ -93,14 +93,17 @@ export default class Gameboard extends React.Component {
         <div id="main-header">
           <h3>Gameboard</h3>
         </div>
-        <div id="round-info">
-          {round}
-          {night ? 'Night' : 'Day'}
-        </div>
-        <div id="timer-container">
-          {<Timer
-            socket={this.socket}
-          />}
+        <div id="main-info">
+          <div id="round-container">
+            <div id="round-info">
+              {night ? 'Night' : 'Day'} {round}
+            </div>
+          </div>
+          <div id="timer-container">
+            {<Timer
+              socket={this.socket}
+            />}
+          </div>
         </div>
         <div id="display-username">
           {username} is a {title}
