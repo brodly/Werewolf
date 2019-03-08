@@ -36,4 +36,5 @@ module.exports.ResetAllActions = require('./reset_all_actions');
 // CONTROLS
 module.exports.PlayerSelected = require('./player_selected');
 module.exports.StartTimer = require('./start_timer');
+module.exports.StopTimer = require('./stop_timer');
 module.exports.GetTime = require('./get_time');
