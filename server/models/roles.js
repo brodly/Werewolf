@@ -10,7 +10,7 @@ module.exports = {
   moderator: {
     role:    'moderator',
     title:   'Moderator',
-    actions: ['Start Timer', 'Next Round', 'Tally'],
+    actions: ['Start Timer', 'Stop Timer', 'Next Round', 'Tally'],
   },
   villager: {
     role:    'villager',
