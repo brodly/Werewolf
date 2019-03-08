@@ -187,6 +187,7 @@ class Game {
      * MODERATOR METHODS
      */
     this.moderatorControls = {
+      timer: null,
       /**
        *
        * @param {object} moderator takes in a new Moderator class and
@@ -219,17 +220,21 @@ class Game {
         return that.round;
       },
 
-      startTimer() {
-        const { currentTime } = that.moderatorControls;
-        const timer = setInterval(decrementTimer, 1000);
+      decrementTimer() {
+        that.timer -= 1;
 
-        function decrementTimer() {
-          that.timer -= 1;
-
-          if (currentTime() === 0) {
-            clearInterval(timer);
-          }
+        if (that.timer === 0) {
+          this.stopTimer();
         }
+      },
+
+      startTimer() {
+        this.timer = setInterval(this.decrementTimer, 1000);
+      },
+
+      stopTimer() {
+        clearInterval(this.timer);
+        this.timer = null;
       },
 
       currentTime() {
