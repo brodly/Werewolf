@@ -7,39 +7,54 @@ export default class Timer extends React.Component {
     super(props);
     this.state = {
       time: null,
+      timer: null,
     };
 
     // INIT SOCKET
     this.socket     = this.props.socket;
 
     // METHOD BINDING
-    this.startTimer = this.startTimer.bind(this);
+    this.startTimer     = this.startTimer.bind(this);
+    this.stopTimer      = this.stopTimer.bind(this);
+    this.decrementTimer = this.decrementTimer.bind(this);
   }
 
   componentDidMount() {
     this.socket.emit('get time');
     this.socket.on('set time', (time) => { this.setState({ time }); });
-    this.socket.on('start timer', () => { this.startTimer(); });
+    this.socket.on('start timer',  () => { this.startTimer(); });
+    this.socket.on('stop timer',   () => { this.stopTimer(); });
   }
 
   startTimer() {
-    // eslint-disable-next-line no-use-before-define
-    const timer = setInterval(decrementTimer.bind(this), 1000);
+    let { timer } = this.state;
+    timer = setInterval(this.decrementTimer, 1000);
+    this.setState({ timer });
+  }
 
-    function decrementTimer() {
-      let { time } = this.state;
-      time -= 1;
-      this.setState({ time });
+  stopTimer() {
+    let { timer } = this.state;
+    clearInterval(timer);
+    timer = null;
+    this.setState({ timer });
+  }
 
-      if (time === 0) {
-        clearInterval(timer);
-      }
+  decrementTimer() {
+    let { time } = this.state;
 
-      // KEEP CLIENT TIME IN-SYNC WITH SERVER TIME
-      // EVERY 10 SECONDS
-      if (time % 10 === 0) {
-        this.socket.emit('get time');
-      }
+    // Decrement Time and update state
+    time -= 1;
+    this.setState({ time });
+
+    // If time reaches 0 stop timer;
+    if (time === 0) {
+      this.stopTimer();
+    }
+
+    // KEEP CLIENT TIME IN-SYNC WITH SERVER TIME
+    // EVERY 10 SECONDS
+    if (time % 10 === 0) {
+      this.socket.emit('get time');
     }
   }
 
