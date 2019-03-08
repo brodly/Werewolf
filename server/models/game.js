@@ -237,6 +237,10 @@ class Game {
         this.timer = null;
       },
 
+      resetTimer() {
+        that.timer = 300;
+      },
+
       currentTime() {
         return that.timer;
       },

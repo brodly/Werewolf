@@ -24,6 +24,7 @@ export default class Timer extends React.Component {
     this.socket.on('set time', (time) => { this.setState({ time }); });
     this.socket.on('start timer',  () => { this.startTimer(); });
     this.socket.on('stop timer',   () => { this.stopTimer(); });
+    this.socket.on('reset timer',  () => { this.socket.emit('get time'); });
   }
 
   startTimer() {

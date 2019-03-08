@@ -80,5 +80,6 @@ module.exports = {
   getNight:                  () => db.game.moderatorControls.getNight(),
   startTimer:                () => db.game.moderatorControls.startTimer(),
   stopTimer:                 () => db.game.moderatorControls.stopTimer(),
+  resetTimer:                () => db.game.moderatorControls.resetTimer(),
   getCurrentTime:            () => db.game.moderatorControls.currentTime(),
 };
