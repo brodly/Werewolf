@@ -229,7 +229,7 @@ class Game {
       },
 
       startTimer() {
-        this.timer = setInterval(this.decrementTimer, 1000);
+        this.timer = setInterval(this.decrementTimer.bind(this), 1000);
       },
 
       stopTimer() {
