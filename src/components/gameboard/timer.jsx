@@ -28,8 +28,7 @@ export default class Timer extends React.Component {
   }
 
   startTimer() {
-    let { timer } = this.state;
-    timer = setInterval(this.decrementTimer, 1000);
+    const timer = setInterval(this.decrementTimer, 1000);
     this.setState({ timer });
   }
 
