@@ -39,3 +39,6 @@ module.exports.StartTimer = require('./start_timer');
 module.exports.StopTimer = require('./stop_timer');
 module.exports.ResetTimer = require('./reset_timer');
 module.exports.GetTime = require('./get_time');
+
+// DISCONNECT
+module.exports.PlayerDisconnect = require('./player_disconnect');
