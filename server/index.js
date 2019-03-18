@@ -28,6 +28,7 @@ io.on('connection', (socket) => {
   console.log('A user connected', socket.id);
 
   // CREATE EVENTS
+  socket.on('client start',     (username) => { controller.Events.ClientStart(io, socket, username); });
   socket.on('new game',         (username) => { controller.Events.NewGame(username); });
   socket.on('new user',         (username) => { controller.Events.NewUser(io, socket, username); });
 
