@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server/index.js",
+    "start-watch": "nodemon server/index.js",
     "build": "webpack --watch",
     "build-no-watch": "webpack",
     "test": "jest"
