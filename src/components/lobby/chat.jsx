@@ -20,6 +20,9 @@ export default class Chat extends React.Component {
     this.socket.on('chat message', (data) => {
       const updatedMessages = messages;
       updatedMessages.push(data);
+      if (updatedMessages.length === 9) {
+        updatedMessages.shift();
+      }
       this.setState({ messages: updatedMessages });
     });
   }
@@ -46,18 +49,22 @@ export default class Chat extends React.Component {
           {messages.map((m) => {
             if (m.username === null) {
               return (
-                <div key={m.id}>
-                  {m.message}
-                </div>
+                <li>
+                  <div key={m.id}>
+                    {m.message}
+                  </div>
+                </li>
               );
             }
             return (
-              <div key={m.id}>
-                {m.username}
-                :
-                {'\u00A0'}
-                {m.message}
-              </div>
+              <li>
+                <div key={m.id}>
+                  {m.username}
+                  :
+                  {'\u00A0'}
+                  {m.message}
+                </div>
+              </li>
             );
           })}
         </ul>
