@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node server/index.js",
     "start-watch": "nodemon server/index.js",
-    "build": "webpack --watch",
-    "build-no-watch": "webpack",
+    "build-watch": "webpack --watch",
+    "build": "webpack",
     "test": "jest"
   },
   "author": "Joshua Marx",
