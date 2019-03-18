@@ -61,9 +61,10 @@ export default class Lobby extends React.Component {
     e.preventDefault();
     const { username, toggleLogin } = this.props;
 
-    this.socket.emit('player leave', username);
-    this.socket.disconnect();
-    toggleLogin();
+    // TODO: IMPLEMENT BUTTON
+    // this.socket.emit('player leave', username);
+    // this.socket.disconnect();
+    // toggleLogin();
   }
 
   handleRemoveUserOnClick() {
