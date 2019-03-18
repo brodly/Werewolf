@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
 
   // CREATE EVENTS
   socket.on('new game',         (username) => { controller.Events.NewGame(username); });
-  socket.on('new user',         (username) => { controller.Events.NewUser(io, username); });
+  socket.on('new user',         (username) => { controller.Events.NewUser(io, socket, username); });
 
   // GAME EVENTS
   socket.on('try start game',           () => { controller.Events.TryStartGame(io); });
@@ -59,16 +59,8 @@ io.on('connection', (socket) => {
   socket.on('action',               (data) => { controller.Events.Action(io, data); });
   socket.on('tally action',       (action) => { controller.Events.TallyAction(action); });
 
-  /**
-   * EVENTS BELOW ARE WORK IN PROGRESS
-   */
   // DISCONNET EVENTS
-  socket.on('disconnect', (data) => {
-    // TODO: remove user from playerList
-    // Have to find how to pass username into the data object
-    // make socket.id key, value is username -- store in DB
-    console.log(data, socket.id, 'user disconnected');
-  });
+  socket.on('disconnect',               () => { controller.Events.PlayerDisconnect(socket); });
 });
 
 server.listen(port, () => { console.log('Listening on port:', port); });
