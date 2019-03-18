@@ -23,15 +23,20 @@ export default class App extends React.Component {
 
     // METHOD BINDINGS
     this.handleUsernameInput     = this.handleUsernameInput.bind(this);
-    this.handleCreateGameOnClick = this.handleCreateGameOnClick.bind(this);
-    this.handleJoinGameOnClick   = this.handleJoinGameOnClick.bind(this);
+    // this.handleCreateGameOnClick = this.handleCreateGameOnClick.bind(this);
+    // this.handleJoinGameOnClick   = this.handleJoinGameOnClick.bind(this);
     this.handleSwitchDisplay     = this.handleSwitchDisplay.bind(this);
     this.toggleLogin             = this.toggleLogin.bind(this);
+    this.handleStartOnClick      = this.handleStartOnClick.bind(this);
   }
 
   componentDidMount() {
     this.socket.on('update player list', (players) => {
       this.setState({ players });
+    });
+
+    this.socket.on('load lobby', (role) => {
+      this.setState({ role, login: true });
     });
   }
 
@@ -48,13 +53,18 @@ export default class App extends React.Component {
     this.setState({ username });
   }
 
-  handleCreateGameOnClick() {
-    this.setState({ role: 'moderator', login: true });
+  handleStartOnClick() {
+    const { username } = this.state;
+    this.socket.emit('client start', username);
   }
 
-  handleJoinGameOnClick() {
-    this.setState({ role: 'player', login: true });
-  }
+  // handleCreateGameOnClick() {
+  //   this.setState({ role: 'moderator', login: true });
+  // }
+
+  // handleJoinGameOnClick() {
+  //   this.setState({ role: 'player', login: true });
+  // }
 
   handleSwitchDisplay(display) {
     this.setState({ display });
@@ -99,9 +109,10 @@ export default class App extends React.Component {
         })() : (
           <Login
             username={username}
-            handleCreateGameOnClick={this.handleCreateGameOnClick}
+            handleStartOnClick={this.handleStartOnClick}
+            // handleCreateGameOnClick={this.handleCreateGameOnClick}
             handleUsernameInput={this.handleUsernameInput}
-            handleJoinGameOnClick={this.handleJoinGameOnClick}
+            // handleJoinGameOnClick={this.handleJoinGameOnClick}
             socket={this.socket}
           />
         )}
