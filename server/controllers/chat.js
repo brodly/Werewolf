@@ -3,6 +3,7 @@ const db = require('../../database');
 const { Chat, Message } = require('../models/chat');
 
 module.exports = {
+  // CREATE CHAT
   create() {
     const chat = new Chat();
 
@@ -14,6 +15,8 @@ module.exports = {
       }
     });
   },
+
+  // MESSAGE
   newMessage(username, msg) {
     const message = new Message(db.chat.getId, username, msg);
 
@@ -22,5 +25,9 @@ module.exports = {
       else resolve(message);
     });
   },
+
+  // READYLIST
   get readylist() { return db.chat.readylist; },
+  deleteFromReadylist(username) { db.chat.deleteFromReadylist(username); },
+
 };
