@@ -60,7 +60,7 @@ io.on('connection', (socket) => {
   socket.on('tally action',       (action) => { controller.Events.TallyAction(action); });
 
   // DISCONNET EVENTS
-  socket.on('disconnect',               () => { controller.Events.PlayerDisconnect(socket); });
+  socket.on('disconnect',               () => { controller.Events.PlayerDisconnect(io, socket); });
 });
 
 server.listen(port, () => { console.log('Listening on port:', port); });
