@@ -3,6 +3,7 @@ module.exports.NewGame = require('./new_game');
 module.exports.TryStartGame = require('./try_start_game');
 module.exports.StartGame = require('./start_game');
 module.exports.NextRound = require('./next_round');
+module.exports.ClientStart = require('./client_start');
 
 // MODERTOR
 module.exports.MakeModerator = require('./make_moderator');
