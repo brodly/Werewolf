@@ -6,8 +6,8 @@ const UserControls = ({
 }) => (
   <div id="user-container">
     <h2>User Controls</h2>
-    <button type="submit" onClick={handleUserReadyOnClick}>Ready</button>
-    <button type="submit" onClick={handleUserLeaveOnClick}>Leave Game</button>
+    <button id="controls" type="submit" onClick={handleUserReadyOnClick}>Ready</button>
+    <button id="controls" type="submit" onClick={handleUserLeaveOnClick}>Leave Game</button>
   </div>
 );
 

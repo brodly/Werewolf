@@ -58,7 +58,7 @@ export default class Role extends React.Component {
       <div id="role-container">
         <h3>{player.title}</h3>
         {player.actions.map(action => (
-          <button type="button" onClick={this.onClick} value={action.toLowerCase()}>
+          <button id="controls" type="button" onClick={this.onClick} value={action.toLowerCase()}>
             {action}
           </button>
         ))}

@@ -8,9 +8,9 @@ const ModeratorControls = ({
   <div id="moderator-container">
     <h2>Moderator Controls</h2>
     Kick User
-    <button type="submit" onClick={handleStartGameOnClick}>Start Game</button>
-    <button type="submit" onClick={handleMakeModeratorOnClick}>Make Moderator</button>
-    <button type="submit" onClick={handleUserLeaveOnClick}>Leave Game</button>
+    <button id="controls" type="submit" onClick={handleStartGameOnClick}>Start Game</button>
+    <button id="controls" type="submit" onClick={handleMakeModeratorOnClick}>Make Moderator</button>
+    <button id="controls" type="submit" onClick={handleUserLeaveOnClick}>Leave Game</button>
   </div>
 );
 
