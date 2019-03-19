@@ -91,7 +91,7 @@ export default class Gameboard extends React.Component {
     return (
       <div id="main-container">
         <div id="main-header">
-          <h3>Gameboard</h3>
+          Gameboard
         </div>
         <div id="main-info">
           <div id="round-container">
@@ -109,9 +109,7 @@ export default class Gameboard extends React.Component {
           {username} is a {title}
         </div>
         <div id="player-list-container">
-          <div id="player-list-header">
-            Player List
-          </div>
+          <div id="player-list-header" />
           <div id="player-list-row">
             {playerlist.map(p => (
               <Player
