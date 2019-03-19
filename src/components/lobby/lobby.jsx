@@ -25,21 +25,7 @@ export default class Lobby extends React.Component {
   }
 
   componentDidMount() {
-    const {
-      username,
-      role,
-      handleSwitchDisplay,
-    } = this.props;
-
-    if (role === 'moderator') {
-      const message = {
-        username: null,
-        message: `${username} has created a new game`,
-      };
-      this.socket.emit('chat message', message);
-    } else {
-      this.socket.emit('new user', username);
-    }
+    const { handleSwitchDisplay } = this.props;
 
     this.socket.on('update player ready', (playerStatus) => {
       console.log(playerStatus);
@@ -54,7 +40,6 @@ export default class Lobby extends React.Component {
     e.preventDefault();
     const { username } = this.props;
     this.socket.emit('player ready', username);
-    //TODO: Pass reeady status to props to playerId
   }
 
   handleUserLeaveOnClick(e) {
@@ -67,7 +52,8 @@ export default class Lobby extends React.Component {
     // toggleLogin();
   }
 
-  handleRemoveUserOnClick() {
+  handleRemoveUserOnClick(e) {
+    e.preventDefault();
     console.log('User Removed');
   }
 
