@@ -8,8 +8,8 @@ export default class Player extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isSelected: false,
       status: null,
-      style: { backgroundColor: 'white' },
     };
 
     // METHOD BINDING
@@ -37,31 +37,22 @@ export default class Player extends React.Component {
   }
 
   resetComponent() {
-    this.setState({
-      style: { backgroundColor: 'white' },
-    });
+    this.setState({ isSelected: false });
   }
 
   highlightSelected() {
     const { status, name } = this.props;
 
-    if (status === name) {
-      this.setState({
-        style: { backgroundColor: 'lightgrey' },
-      });
-    } else {
-      this.setState({
-        style: { backgroundColor: 'white' },
-      });
-    }
+    if (status === name) this.setState({ isSelected: true });
+    else this.setState({ isSelected: false });
   }
 
   render() {
     const { name, subtitle } = this.props;
-    const { style, status }  = this.state;
+    const { status, isSelected }  = this.state;
 
     return (
-      <div id="player-id-container" onClick={this.onClick} style={style}>
+      <div id="player-container" onClick={this.onClick} data-selected={isSelected}>
         <div id="player-name">
           {name}
           <p />
