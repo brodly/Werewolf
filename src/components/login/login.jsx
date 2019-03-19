@@ -3,10 +3,7 @@ import React from 'react';
 const Login = ({
   username,
   handleUsernameInput,
-  // handleCreateGameOnClick,
-  // handleJoinGameOnClick,
   handleStartOnClick,
-  socket,
 }) => {
   const usernameInput = (e) => {
     handleUsernameInput(e.target.value);
@@ -14,15 +11,7 @@ const Login = ({
 
   const onClick = (e) => {
     e.preventDefault();
-
     handleStartOnClick();
-
-    // if (e.target.value === 'join') {
-    //   handleJoinGameOnClick();
-    // } else if (e.target.value === 'create') {
-    //   socket.emit('new game', username);
-    //   handleCreateGameOnClick();
-    // }
   };
 
   return (
@@ -37,7 +26,6 @@ const Login = ({
         </label>
         <p />
         <button id="login" type="submit" value="join" onClick={onClick}>Start</button>
-        {/* <button id="login" type="submit" value="create" onClick={onClick}>Create Game</button> */}
       </form>
     </div>
   );
