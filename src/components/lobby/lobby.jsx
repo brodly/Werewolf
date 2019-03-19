@@ -84,7 +84,7 @@ export default class Lobby extends React.Component {
     return (
       <div id="main-container">
         <div id="main-header">
-          <h3>Lobby</h3>
+          Lobby
         </div>
         <div id="display-username">
           Hi&nbsp;
@@ -111,9 +111,7 @@ export default class Lobby extends React.Component {
           }
         </div>
         <div id="player-list-container">
-          <div id="player-list-header">
-          Player List
-          </div>
+          <div id="player-list-header" />
           <div id="player-list-row">
             {players.map(player => (
               <PlayerId
