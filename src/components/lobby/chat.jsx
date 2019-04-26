@@ -20,7 +20,7 @@ export default class Chat extends React.Component {
     this.socket.on('chat message', (data) => {
       const updatedMessages = messages;
       updatedMessages.push(data);
-      if (updatedMessages.length === 8) {
+      if (updatedMessages.length === 12) {
         updatedMessages.shift();
       }
       this.setState({ messages: updatedMessages });
