@@ -61,7 +61,6 @@ export default class Player extends React.Component {
           {subtitle}
         </div>
         <div id="player-status">
-          Status:
           {status ? this.state.status : this.props.status}
         </div>
       </div>
