@@ -122,7 +122,7 @@ class Game {
 
           const obj = {
             username,
-            subtitle: 'Player Image',
+            subtitle: '',
             status: alive ? 'Alive' : 'Dead',
           };
 
