@@ -72,7 +72,7 @@ export default class App extends React.Component {
     return (
       <div id="app-container">
         <div id="app-header">
-          The Werewolf Game
+          Werewolf Game Manager
         </div>
 
         {login ? (() => {
