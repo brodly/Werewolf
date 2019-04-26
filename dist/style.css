@@ -7,7 +7,7 @@
 }
 
 body {
-  background-color: #6986949c;
+  background-color: white;
 }
 
 #app-container {
@@ -148,7 +148,7 @@ form input, button#login {
 
 form button {
   width: 9%;
-  background: rgb(130, 224, 255);
+  background: green;
   border: 1px solid black;
   box-shadow: 2px 2px 0px #292929;
   padding: 10px;
