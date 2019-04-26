@@ -54,7 +54,7 @@ export default class Player extends React.Component {
     return (
       <div id="player-container" onClick={this.onClick} data-selected={isSelected}>
         <div id="player-name">
-          {name}
+          <u>{name}</u>
           <p />
         </div>
         <div id="player-subtitle">
