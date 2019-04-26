@@ -111,14 +111,14 @@ export default class Lobby extends React.Component {
           }
         </div>
         <div id="player-list-container">
-          <div id="player-list-header" />
+          <div id="player-list-header">Player List</div>
           <div id="player-list-row">
             {players.map(player => (
               <PlayerId
                 name={player}
                 ready={ready}
                 selected={selected}
-                image="Player Image"
+                image=""
                 handlePlayerSelectOnClick={this.handlePlayerSelectOnClick}
               />
             ))}
