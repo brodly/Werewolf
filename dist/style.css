@@ -50,8 +50,11 @@ button {
 }
 
 button:focus {
-  border: 1px solid rgba(204, 204, 204, 0.884);
   outline: none;
+}
+
+button:active {
+  border: 1px solid rgba(204, 204, 204, 0.884);
 }
 
 /* LOGIN */
@@ -158,6 +161,15 @@ form {
   padding: 3px;
   bottom: 0;
   width: 100%;
+}
+
+form input:focus {
+  outline: none;
+  border: 1px solid rgba(119, 47, 47, 0.61);
+}
+
+form input:active {
+  border: 1px solid rgba(119, 47, 47, 0.61);
 }
 
 form input {
