@@ -47,8 +47,10 @@ export default class Timer extends React.Component {
     this.setState({ time });
 
     // If time reaches 0 stop timer;
-    if (time === 0) {
+    if (time <= 0) {
       this.stopTimer();
+      time = 0;
+      this.setState({ time });
     }
 
     // KEEP CLIENT TIME IN-SYNC WITH SERVER TIME

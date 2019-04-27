@@ -223,8 +223,9 @@ class Game {
       decrementTimer() {
         that.timer -= 1;
 
-        if (that.timer === 0) {
+        if (that.timer <= 0) {
           this.stopTimer();
+          that.timer = 0;
         }
       },
 
